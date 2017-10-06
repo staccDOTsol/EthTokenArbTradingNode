@@ -1,0 +1,21 @@
+{
+  "name": "jare-arb-script",
+  "version": "0.1.0",
+  "description": "Arb! Arb!",
+  "main": "node arb-master.js -a \"ed\" -b \"hit\" -c \"COSS\"",
+  "scripts": {
+    "start": "node arb-master.js -a \"ed\" -b \"hit\" -c \"COSS\""
+  },
+  "dependencies": {
+    "nonce": "latest",
+    "command-line-args": "latest",
+    "google-spreadsheet": "latest",
+    "bignumber.js": "latest",
+    "request": "latest",
+    "js-sha256": "latest",
+    "ethereumjs-util": "latest",
+    "system-sleep": "latest",
+    "crypto": "latest",
+    "web3": "latest"
+  }
+}
