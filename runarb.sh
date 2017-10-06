@@ -6,7 +6,7 @@ sleep 5s
 while :
 do
 
-if [ $(ps -ef | grep -v grep | grep node arb-master.js -a "hit" -b "ed" -c "CDT" | wc -l) -lt 1 ]; then
+if [ $(ps -ef | grep -v grep | grep 'node arb-master.js -a "hit" -b "ed" -c "CDT"' | wc -l) -lt 1 ]; then
 
     echo "less than 1 running"
 killall node
