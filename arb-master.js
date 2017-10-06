@@ -39,6 +39,7 @@ if (isLin) {
 var GoogleSpreadsheet = require('google-spreadsheet');
 var request = require("request");
 const BigNumber = require('bignumber.js');
+BigNumber.config({ ERRORS: false });
 const sha256 = require('js-sha256').sha256;
 const ethUtil = require('ethereumjs-util');
 var sleep = require('system-sleep');
@@ -47,6 +48,7 @@ var sheet;
 var crypto = require("crypto");
 var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
 var Eth = require('web3-eth');
 const wei = 1000000000000000000;
 const tokwei = wei / 100000000000;
@@ -229,6 +231,8 @@ const options = commandLineArgs(optionDefinitions)
 //console.log(options['max']);
 function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
 	sleep(2000);
+													var edBuys = [];
+														var edSells = [];
     var running = false;
     if (running == false) {
         running = true;
@@ -403,6 +407,14 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                                 if (bidEx == "ed") {
                                                     while (buyDone == false) {
                                                         for (var buys in data6['buys']) {
+														edBuys[buys] = {};
+															edBuys[buys]['v'] = data6['buys'][buys]['v'];
+															edBuys[buys]['r'] = data6['buys'][buys]['r'];
+														
+															edBuys[buys]['s'] = data6['buys'][buys]['s'];
+															edBuys[buys]['user'] = data6['buys'][buys]['user'];
+															edBuys[buys]['amountGet'] = data6['buys'][buys]['amountGet']; //tokens
+															edBuys[buys]['amountGive'] = data6['buys'][buys]['amountGive']; //eth
                                                             if (buys == data6['buys'].length) {
                                                                 buyDone = true;
                                                                 break;
@@ -430,6 +442,17 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                                 if (askEx == "ed") {
                                                     while (sellDone == false) {
                                                         for (var sells in data6['sells']) {
+															//console.log(data6['sells']);
+														edSells[sells] = {};
+															edSells[sells]['v'] = data6['sells'][sells]['v'];
+															edSells[sells]['r'] = data6['sells'][sells]['r'];
+														
+															edSells[sells]['s'] = data6['sells'][sells]['s'];
+															edSells[sells]['user'] = data6['sells'][sells]['user'];
+															edSells[sells]['amountGet'] = data6['sells'][sells]['amountGet']; //tokens
+															edSells[sells]['amountGive'] = data6['sells'][sells]['amountGive']; //eth
+															console.log(edSells[sells]['amountGive']);
+															
                                                             if (sells == data6['sells'].length) {
                                                                 sellDone = true;
                                                                 break;
@@ -461,7 +484,244 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                         } catch (err) {
                                             console.log(err);
                                         }
+									sleep(3000);
+									
+                                var winBp = 0;
+                                var winExBp = "";
+                                var winExSp = "";
+                                for (var bp in bps) {
+                                    if (bps[bp] >= winBp && bps[bp] != 1000000 && bps[bp] != 0) {
+                                        winBp = bps[bp];
+                                        winBpEx = bp;
+                                    }
+                                }
+                                var winSp = 10;
+                                for (var sp in sps) {
 
+                                    if (sps[sp] <= winSp && sps[sp] != 1000000 && sps[sp] != 0) {
+                                        winSp = sps[sp];
+                                        winSpEx = sp;
+                                    }
+                                }
+                                console.log(winSp);
+                                console.log(winBp);
+                                if (winSp != 10 && winBp != 0) {
+                                    var arb = -1 * (1 - (winBp / winSp));
+                                    console.log(arb);
+                                    if (arb > -20.01 && arb <= 10) {
+                                        console.log('arb arb! ' + arb + ' ' + currentValue + ' winsp: ' + winSpEx + ' winbp: ' + winBpEx);
+                                        sheet.addRow({
+                                            'time': new Date().toString(),
+                                            'ticker': currentValue,
+                                            'bid': winBp,
+                                            'ask': winSp,
+                                            'arb': arb,
+                                            'bid ex': winBpEx,
+                                            'ask ex': winSpEx
+                                        }, function(err, row) {
+                                            console.log(err);
+                                        });
+                                        //HitBTC
+                                        if (askEx == "hit") { //sell eth buy token
+										console.log('hit ask');
+                                            var n = require('nonce')();
+											var uri = '/api/2/trading/balance';
+											 var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+											 request({
+                                                            url: 'https://api.hitbtc.com' + uri, //
+                                                            method: 'GET',
+															headers : {
+																"Authorization" : auth
+															},
+                                                            json: true,
+                                                        }, (error, response, body) => {
+															//console.log(body);
+                                                            for (var currency in body){
+																if (body[currency]['currency'] == "ETH"){
+																	var qty = (parseFloat(body[currency]['available']) * .05).toFixed(precise);
+																	console.log('qty!');
+																}	
+															}
+											const orderObject = {
+                                                            clientOrderId: n().toString(),
+															symbol: currentValue + "ETH",
+															side: "buy",
+															price: parseFloat(winSp).toFixed(precise),
+															quantity: qty / parseFloat(winSp).toFixed(precise)
+                                                        };
+                                                        console.log(orderObject);
+											 var uri = '/api/2/order';
+																	 var options = {
+												url: 'https://api.hitbtc.com' + uri,
+												'json': true,
+												'method': 'POST',
+															headers : {
+																"Authorization" : auth
+															},
+												 'body': orderObject
+
+												};
+												 request(options, function (error, response, body)  {
+                                                            console.log(body);
+                                                        });
+                                                        });
+                                        } else if (bidEx == "hit") { 
+                                            var n = require('nonce')();
+										console.log('hit bid');//sell token get eth
+											var uri = '/api/2/trading/balance';
+											 var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+											 request({
+                                                            url: 'https://api.hitbtc.com' + uri, //
+                                                            method: 'GET',
+															headers : {
+																"Authorization" : auth
+															},
+                                                            json: true,
+                                                        }, (error, response, body) => {
+															//console.log(body);
+                                                            for (var currency in body){
+																if (body[currency]['currency'] == currentValue){
+																	var qty = (parseFloat(body[currency]['available']) * .05).toFixed(precise);
+																	console.log('qty!');
+																}	
+															}
+                                            console.log('bidex hit');
+											const orderObject = {
+                                                            clientOrderId: n().toString(),
+															symbol: currentValue + "ETH",
+															side: "sell",
+															price: parseFloat(winSp).toFixed(precise),
+															quantity: qty
+                                                        };
+                                                        console.log(orderObject);
+											 var uri = '/api/2/order';
+																	 var options = {
+												url: 'https://api.hitbtc.com' + uri,
+												'json': true,
+												'method': 'POST',
+															headers : {
+																"Authorization" : auth
+															},
+												 'body': orderObject
+
+												};
+												 request(options, function (error, response, body)  {
+                                                            console.log(body);
+                                                        });
+                                                        });
+                                        }
+                                        //ED
+
+                                        if (askEx == "ed") { //sell eth buy token//don't kno if this works with qty...
+                                            console.log(tokenAddr);
+
+                                            console.log('askex ed');
+                                            try {
+
+                                                (eth.getBlock('latest')).then(function(data) {
+                                                    var block = data.number + 10000;
+                                                    console.log(block);
+
+
+                                                    var callData = contract.methods.balanceOf("0x0000000000000000000000000000000000000000", "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
+														
+                                                        var tokenBal = data;
+                                                        console.log('eth: ' + tokenBal);
+                                                        const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
+                                                        const tokenGet = tokenAddr; // VERI is what I want to get -- this is a buy order for VERI/ETH
+                                                        const tokenGive = '0x0000000000000000000000000000000000000000'; // 0x0 address means ETH
+														tokenBal = (tokenBal / 1000000000000000000);
+														
+                                                        const amountGet = new BigNumber((tokenBal * .05) * winSp).times(new BigNumber(10 ** decimals)); // // 6.31 VERI 1 / 0.001623
+                                                        const amountGive = new BigNumber(tokenBal * .05).times(new BigNumber(10 ** 18)); // 0.01 ETH
+                                                        const expires = block; // this is a block number
+														var selltotal = 0;
+														console.log(edSells);
+														web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
+														web3.eth.getTransactionCount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", function (data){
+															var n2 = data + 1;
+															for (var sell in edSells){
+                                                        var n = require('nonce')();
+                                                        var orderNonce = n();
+														console.log(edSells);
+														if (edSells[sell]['amountGet'] > 0){
+														if (sell < edSells.length && (selltotal + edSells[sell]['amountGet']) <= amountGive){
+														selltotal = selltotal + edSells[sell]['amountGet'];
+														var callData2 = contract.methods.trade(tokenGet, new BigNumber( edSells[sell]['amountGive']), tokenGive,  new BigNumber(edSells[sell]['amountGet']), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(edSells[sell]['amountGet'])).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+															console.log(data);
+														});
+														n2++;
+														}
+														else {
+															var callData2 = contract.methods.trade(tokenGet, new BigNumber( edSells[sell]['amountGive'] ), tokenGive,  new BigNumber(edSells[sell]['amountGet']), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(amountGive - sellTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+															console.log(data);
+															});
+														n2++;
+															}
+														}
+														}
+														});
+													
+														
+                                                    });
+                                                });
+                                            } catch (err) {
+                                                console.log(err);
+                                            }
+                                        } else if (bidEx == "ed") { //sell token get eth
+
+                                                    var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
+														var tokenBal =  data;
+														console.log('token bal ed: ' + tokenBal);
+                                            
+                                            
+                                            var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
+                                                var tokenBal = data;
+                                                console.log(tokenBal);
+
+
+                                                (eth.getBlock('latest')).then(function(data) {
+                                                    var block = data.number + 10000;
+                                                    console.log(block);
+
+
+													tokenBal = (tokenBal / Math.pow(10, decimals));
+													console.log('decimals? ' + decimals);
+													console.log('do I have ' + tokenBal);
+													const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
+													const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
+													const tokenGive = tokenAddr; // 0x0 address means ETH
+													const amountGet = new BigNumber((tokenBal * .05) * winBp).times(new BigNumber(10 ** 18)); // // 1 eth
+													const amountGive = new BigNumber((tokenBal * .05)).times(new BigNumber(10 ** decimals)); // 15 tokens rate 0.066
+													const expires = block; // this is a block number
+													web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
+														var buytotal = 0;
+														web3.eth.getTransactionCount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", function (data){
+																var n2 = data + 1;
+														for (var buy in edBuys){
+                                                        var n = require('nonce')();
+                                                        var orderNonce = n();
+														if (buy != edBuys.length && (selltotal + edBuys[buy]['amountGet']) < amountGive){
+														selltotal = selltotal + edBuys[buy]['amountGet'];
+														var callData2 = contract.methods.trade(tokenGet,  edBuys[buy]['amountGive'], tokenGive,  edBuys[buy]['amountGet'], expires, n2, edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],edBuys[buy]['amountGet']).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+															console.log(data);
+														});
+														n2++;
+														}
+														else {
+															var callData2 = contract.methods.trade(tokenGet,  edBuys[buy]['amountGive'], tokenGive,  edBuys[buy]['amountGet'], expires, n2, edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(amountGive - buyTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+															console.log(data);
+														});
+														n2++;
+														}
+														}
+														});
+
+                                                });
+                                            });});
+									}
+                                    }
+                                }
                                     });
                                 }
                                 if (bidEx == "bit" || askEx == "bit") {
@@ -908,289 +1168,9 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                         }
                                     });
                                 }
-                                //sleep(5000);
+                                sleep(10000);
 
 
-                                var winBp = 0;
-                                var winExBp = "";
-                                var winExSp = "";
-                                for (var bp in bps) {
-                                    if (bps[bp] >= winBp && bps[bp] != 1000000 && bps[bp] != 0) {
-                                        winBp = bps[bp];
-                                        winBpEx = bp;
-                                    }
-                                }
-                                var winSp = 10;
-                                for (var sp in sps) {
-
-                                    if (sps[sp] <= winSp && sps[sp] != 1000000 && sps[sp] != 0) {
-                                        winSp = sps[sp];
-                                        winSpEx = sp;
-                                    }
-                                }
-                                console.log(winSp);
-                                console.log(winBp);
-                                if (winSp != 10 && winBp != 0) {
-                                    var arb = -1 * (1 - (winBp / winSp));
-                                    console.log(arb);
-                                    if (arb > .01 && arb <= 10) {
-                                        console.log('arb arb! ' + arb + ' ' + currentValue + ' winsp: ' + winSpEx + ' winbp: ' + winBpEx);
-                                        sheet.addRow({
-                                            'time': new Date().toString(),
-                                            'ticker': currentValue,
-                                            'bid': winBp,
-                                            'ask': winSp,
-                                            'arb': arb,
-                                            'bid ex': winBpEx,
-                                            'ask ex': winSpEx
-                                        }, function(err, row) {
-                                            console.log(err);
-                                        });
-                                        //HitBTC
-                                        if (askEx == "hit") { //sell eth buy token
-										console.log('hit ask');
-                                            var n = require('nonce')();
-											var uri = '/api/2/trading/balance';
-											 var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
-											 request({
-                                                            url: 'https://api.hitbtc.com' + uri, //
-                                                            method: 'GET',
-															headers : {
-																"Authorization" : auth
-															},
-                                                            json: true,
-                                                        }, (error, response, body) => {
-															//console.log(body);
-                                                            for (var currency in body){
-																if (body[currency]['currency'] == "ETH"){
-																	var qty = (parseFloat(body[currency]['available']) * .05).toFixed(precise);
-																	console.log('qty!');
-																}	
-															}
-											const orderObject = {
-                                                            clientOrderId: n().toString(),
-															symbol: currentValue + "ETH",
-															side: "buy",
-															price: parseFloat(winSp).toFixed(precise),
-															quantity: qty / parseFloat(winSp).toFixed(precise)
-                                                        };
-                                                        console.log(orderObject);
-											 var uri = '/api/2/order';
-																	 var options = {
-												url: 'https://api.hitbtc.com' + uri,
-												'json': true,
-												'method': 'POST',
-															headers : {
-																"Authorization" : auth
-															},
-												 'body': orderObject
-
-												};
-												 request(options, function (error, response, body)  {
-                                                            console.log(body);
-                                                        });
-                                                        });
-                                        } else if (bidEx == "hit") { 
-                                            var n = require('nonce')();
-										console.log('hit bid');//sell token get eth
-											var uri = '/api/2/trading/balance';
-											 var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
-											 request({
-                                                            url: 'https://api.hitbtc.com' + uri, //
-                                                            method: 'GET',
-															headers : {
-																"Authorization" : auth
-															},
-                                                            json: true,
-                                                        }, (error, response, body) => {
-															//console.log(body);
-                                                            for (var currency in body){
-																if (body[currency]['currency'] == currentValue){
-																	var qty = (parseFloat(body[currency]['available']) * .05).toFixed(precise);
-																	console.log('qty!');
-																}	
-															}
-                                            console.log('bidex hit');
-											const orderObject = {
-                                                            clientOrderId: n().toString(),
-															symbol: currentValue + "ETH",
-															side: "sell",
-															price: parseFloat(winSp).toFixed(precise),
-															quantity: qty
-                                                        };
-                                                        console.log(orderObject);
-											 var uri = '/api/2/order';
-																	 var options = {
-												url: 'https://api.hitbtc.com' + uri,
-												'json': true,
-												'method': 'POST',
-															headers : {
-																"Authorization" : auth
-															},
-												 'body': orderObject
-
-												};
-												 request(options, function (error, response, body)  {
-                                                            console.log(body);
-                                                        });
-                                                        });
-                                        }
-                                        //ED
-
-                                        if (askEx == "ed") { //sell eth buy token//don't kno if this works with qty...
-                                            console.log(tokenAddr);
-
-                                            console.log('askex ed');
-                                            try {
-
-                                                (eth.getBlock('latest')).then(function(data) {
-                                                    var block = data.number + 10000;
-                                                    console.log(block);
-
-
-                                                    var callData = contract.methods.balanceOf("0x0000000000000000000000000000000000000000", "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
-                                                        var tokenBal = data;
-                                                        console.log('eth: ' + tokenBal);
-                                                        var n = require('nonce')();
-                                                        const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
-                                                        const tokenGet = tokenAddr; // VERI is what I want to get -- this is a buy order for VERI/ETH
-                                                        const tokenGive = '0x0000000000000000000000000000000000000000'; // 0x0 address means ETH
-														tokenBal = tokenBal / 1000000000000000000;
-                                                        const amountGet = new BigNumber((tokenBal * .05) * winSp).times(new BigNumber(10 ** decimals)); // // 6.31 VERI 1 / 0.001623
-                                                        const amountGive = new BigNumber(tokenBal * .05).times(new BigNumber(10 ** 18)); // 0.01 ETH
-                                                        const expires = block; // this is a block number
-                                                        const orderNonce = n();
-                                                        const unpacked = [
-                                                            contractAddr,
-                                                            tokenGet,
-                                                            amountGet,
-                                                            tokenGive,
-                                                            amountGive,
-                                                            expires,
-                                                            orderNonce,
-                                                        ];
-
-                                                        const condensed = pack(
-                                                            unpacked, [160, 160, 256, 160, 256, 256, 256]);
-                                                        const hash = `0x${sha256(new Buffer(condensed, 'hex'))}`;
-                                                        const sig = sign(hash, privateKey);
-
-                                                        //console.log(unpacked);
-                                                        //console.log(condensed);
-                                                        //console.log(hash);
-                                                        //console.log(sig);
-                                                        //console.log(testSig(sig.msg, sig, user));
-                                                        const orderObject = {
-                                                            message: JSON.stringify({
-                                                                amountGet,
-                                                                amountGive,
-                                                                tokenGet,
-                                                                tokenGive,
-                                                                contractAddr,
-                                                                expires,
-                                                                nonce: orderNonce,
-                                                                user,
-                                                                v: sig.v,
-                                                                r: sig.r,
-                                                                s: sig.s,
-                                                            }),
-                                                        };
-                                                        console.log(orderObject);
-                                                        request({
-                                                            url: 'https://api.etherdelta.com/message',
-                                                            method: 'POST',
-                                                            json: true,
-                                                            body: orderObject,
-                                                        }, (error, response, body) => {
-                                                            console.log(body);
-                                                        });
-														
-
-                                                    });
-                                                });
-                                            } catch (err) {
-                                                console.log(err);
-                                            }
-                                        } else if (bidEx == "ed") { //sell token get eth
-
-                                                    var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
-														var tokenBal =  data;
-														console.log('token bal ed: ' + tokenBal);
-                                            
-                                            
-                                            var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
-                                                var tokenBal = data;
-                                                console.log(tokenBal);
-
-
-                                                (eth.getBlock('latest')).then(function(data) {
-                                                    var block = data.number + 10000;
-                                                    console.log(block);
-
-
-                                                    var n = require('nonce')();
-													tokenBal = tokenBal / Math.pow(10, decimals);
-													console.log('decimals? ' + decimals);
-													console.log('do I have ' + tokenBal);
-													const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
-													const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
-													const tokenGive = tokenAddr; // 0x0 address means ETH
-													const amountGet = new BigNumber((tokenBal * .05) * winBp).times(new BigNumber(10 ** 18)); // // 1 eth
-													const amountGive = new BigNumber((tokenBal * .05)).times(new BigNumber(10 ** decimals)); // 15 tokens rate 0.066
-													const expires = block; // this is a block number
-const orderNonce = n();                                                  
-												  const unpacked = [
-                                                        contractAddr,
-                                                        tokenGet,
-                                                        amountGet,
-                                                        tokenGive,
-                                                        amountGive,
-                                                        expires,
-                                                        orderNonce,
-                                                    ];
-
-                                                    const condensed = pack(
-                                                        unpacked, [160, 160, 256, 160, 256, 256, 256]);
-                                                    const hash = `0x${sha256(new Buffer(condensed, 'hex'))}`;
-                                                    const sig = sign(hash, privateKey);
-
-                                                    //console.log(unpacked);
-                                                    //console.log(condensed);
-                                                    //console.log(hash);
-                                                    //console.log(sig);
-                                                    //console.log(testSig(sig.msg, sig, user));
-                                                    const orderObject = {
-                                                        message: JSON.stringify({
-                                                            amountGet,
-                                                            amountGive,
-                                                            tokenGet,
-                                                            tokenGive,
-                                                            contractAddr,
-                                                            expires,
-                                                            nonce: orderNonce,
-                                                            user,
-                                                            v: sig.v,
-                                                            r: sig.r,
-                                                            s: sig.s,
-                                                        }),
-                                                    };
-                                                    console.log(orderObject);
-                                                    request({
-                                                        url: 'https://api.etherdelta.com/message',
-                                                        method: 'POST',
-                                                        json: true,
-                                                        body: orderObject,
-                                                    }, (error, response, body) => {
-                                                        console.log(body);
-                                                    });
-
-
-                                                });
-                                            });});
-									}
-									sleep(60000);
-                                    }
-                                }
                                 running = false;
                                 // oulala123(options['currentValue'], options['bid'], options['ask'], tokenAddr, sheet);;
                             } catch (err) {
