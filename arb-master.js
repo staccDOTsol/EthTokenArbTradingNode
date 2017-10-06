@@ -7,9 +7,9 @@ fs.readFile("private_keys.pem", function(err, data) {
 var isWin = /^win/.test(process.platform);
 var isLin = /^linux/.test(process.platform);
 if (isLin) {
-    var creds = require('/root/EthTokenArbTradingNodeGoogleSheets/googlesheet.json');
+    var creds = require('/root/EthTokenArbTradingNode/googlesheet.json');
 } else if (isWin) {
-    var creds = require('D:\\Projects\\EthTokenArbTradingNodeGoogleSheets\\googlesheet.json');
+    var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
 }
 var GoogleSpreadsheet = require('google-spreadsheet');
 var request = require("request");

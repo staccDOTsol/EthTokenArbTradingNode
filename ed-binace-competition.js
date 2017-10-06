@@ -165,9 +165,9 @@ var contractABI = require('./etherdelta.json');
 var contract =  new	eth.Contract(contractABI,"0x8d12a197cb00d4747a1fe03395095ce2a5cc6819");
 
 var threshold = .4;
-    var creds = require('/root/EthTokenArbTradingNodeGoogleSheets/googlesheet.json');
+    var creds = require('/root/EthTokenArbTradingNode/googlesheet.json');
 	
-	//var creds = require('D:\\Projects\\EthTokenArbTradingNodeGoogleSheets\\googlesheet.json');
+	//var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
 	const commandLineArgs = require('command-line-args')
 const optionDefinitions = [
   { name: 'cur', alias: 'c', type: String },

@@ -5,9 +5,9 @@ var doc = new GoogleSpreadsheet('1IIOlhYnF-5m2Wdqku0NWTdKi2f4-Ts6XC8_OlWmONbU');
 var sheet;
 
 var threshold = .4;
-    var creds = require('/root/EthTokenArbTradingNodeGoogleSheets/googlesheet.json');
+    var creds = require('/root/EthTokenArbTradingNode/googlesheet.json');
 	
-	//var creds = require('D:\\Projects\\EthTokenArbTradingNodeGoogleSheets\\googlesheet.json');
+	//var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
 	const commandLineArgs = require('command-line-args')
 const optionDefinitions = [
   { name: 'start', alias: 's', type: Number },
