@@ -9,7 +9,7 @@ max=5
    m=$(($awka+33))
    echo $s
    echo $m
-   node jare.js -s $s -m $m &>/dev/null &
+   node monitorarbs.js -s $s -m $m &>/dev/null &
 for i in `seq 0 $max`
 do
 
@@ -18,7 +18,7 @@ do
    m=$((($i*33)+33+$awka))
    echo $s
    echo $m
-   node jare.js -s $s -m $m &>/dev/null &
+   node monitorarbs.js -s $s -m $m &>/dev/null &
 done
 while :
 do
@@ -35,14 +35,14 @@ max=5
    m=$(($awka+33))
    echo $s
    echo $m
-   node jare.js -s $s -m $m &>/dev/null &
+   node monitorarbs.js -s $s -m $m &>/dev/null &
 for i in `seq 0 $max`
 do
    s=$((($i*33)+$awka))
    m=$((($i*33)+33+$awka))
    echo $s
    echo $m
-   node jare.js -s $s -m $m &>/dev/null &
+   node monitorarbs.js -s $s -m $m &>/dev/null &
 done
 
 sleep 20s
@@ -56,7 +56,7 @@ sleep 20s
 #node jare-arb.js -s 52 -m 82 &>/dev/null &
 #node jare-arb.js -s 22 -m 52 &>/dev/null &
 
-#node jare.js -s 2 -m 2 &>/dev/null 
+#node monitorarbs.js -s 2 -m 2 &>/dev/null 
 else
     echo "2 or more running"
 sleep 10s
