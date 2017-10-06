@@ -1,9 +1,34 @@
 const user = '0x5100DAdF11113B0730829d2047B9df4DA1d80e68';
 
 var fs = require('fs');
-fs.readFile("private_keys.pem", function(err, data) {
-    if (err) throw err;
-    const privateKey = data;
+var lineReader2 = require('readline').createInterface({
+  input: require('fs').createReadStream("private_keys.pem")
+});
+var linecount = 0;
+var privateKey = "";
+var hitKey = "";
+var hitSecret = "";
+var decimals = "";
+lineReader2.on('line', function (line) {
+			  console.log(line);
+			  if (linecount == 0){
+				  privateKey = line;
+			  }
+			  else if (linecount == 1){
+				  hitKey = line;
+			  }
+			  else if (linecount == 2){
+				  hitSecret = line;
+			  }
+			  linecount++;
+});
+	var lineReader = require('readline').createInterface({
+  input: require('fs').createReadStream('decimals.csv')
+});
+function getlength(number) {
+    return (number.toString().length - 2);
+}
+
 var isWin = /^win/.test(process.platform);
 var isLin = /^linux/.test(process.platform);
 if (isLin) {
@@ -198,10 +223,12 @@ const optionDefinitions = [{
         alias: 'a'
     }
 ]
+			var tokenAddr = "";
 const options = commandLineArgs(optionDefinitions)
 //console.log(options['start']);
 //console.log(options['max']);
-function oulala123(currentValue, bidEx, askEx, data, sheet) {
+function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
+	sleep(2000);
     var running = false;
     if (running == false) {
         running = true;
@@ -210,20 +237,30 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
         try {
             //console.log(x);
             sleep(2);
-
             //console.log(Object.keys(data)[y + options['start']]);
             var currentValue = options['cur'];
+			
             console.log(currentValue);
             var lalaurl = "https://api.hitbtc.com/api/1/public/symbols";
 			console.log(lalaurl);
             request.get(lalaurl, {
                 json: true,
-                timeout: 80000
-            }, function(error, response, lala) {
+                timeout: 41500
+            }, function(error, response, lala) {if (error){
+//sleep(5000);					
+					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+				}
+				//console.log(lala);
                 var doit = false;
                 for (symbol in lala['symbols']) {
                     if (currentValue + "ETH" == lala['symbols'][symbol]['symbol']) {
                         doit = true;
+						var lot =  lala['symbols'][symbol]['lot'];
+						console.log(lot);
+						var step = lala['symbols'][symbol]['step'];
+						console.log(step);
+						var precise = (step.toString().length - 2);
+						console.log(precise);
                     }
                 }
 
@@ -233,7 +270,7 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                 //console.log(currentValue);
                 //if (options['max'] == 2){
                 //currentValue = cells[0].value;
-                if (data.hasOwnProperty("ETH_" + currentValue)) {
+                if (true) {
 
 
                     //}
@@ -244,15 +281,13 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                     //}
                     if (currentValue.startsWith("0x")) {
                         running = false;
-                        oulala123(options['currentValue'], options['bid'], options['ask'], data, sheet);
+                        // oulala123(options['currentValue'], options['bid'], options['ask'], tokenAddr, sheet);;
                     } else {
                         //currentValue = "MCO";
                         if (currentValue != "CAT" && doit == true) {
                             //cells[19].value = "=if(R" + (y + options['start']) + "=0 ,-100, -1*(1-(S" + (y + options['start']).toString() + "/R" + (y + options['start']).toString() + ")))";				  cells[19].save();
                             ////console.log(currentValue);
                             try {
-                                var tokenAddr = data['ETH_' + currentValue]['tokenAddr'];
-
                                 if (bidEx == "hit" || askEx == "hit") {
                                     var url4 = 'https://api.hitbtc.com/api/1/public/' + currentValue + 'ETH/orderbook';
                                     //console.log(url4);
@@ -260,8 +295,11 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
 									console.log(url4);
                                     request.get(url4, {
                                         json: true,
-                                        timeout: 80000
-                                    }, function(error, response, data4) {
+                                        timeout: 41500
+                                    }, function(error, response, data4) {if (error){
+//sleep(5000);					
+					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+				}
                                         //console.log(data4);
                                         var buyDone = false;
                                         var sellDone = false;
@@ -348,8 +386,11 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                     console.log(url6);
                                     request.get(url6, {
                                         json: true,
-                                        timeout: 80000
-                                    }, function(error6, response6, data6) {
+                                        timeout: 41500
+                                    }, function(error6, response6, data6) {if (error){
+//sleep(5000);					
+					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+				}
 
                                         try {
                                             if (!error6 && response6.statusCode === 200) {
@@ -429,8 +470,11 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                     //sleep(1060)
                                     request.get(url2, {
                                         json: true,
-                                        timeout: 80000
-                                    }, function(error, response, data5) {
+                                        timeout: 41500
+                                    }, function(error, response, data5) {if (error){
+//sleep(5000);					
+					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+				}
                                         ////////console.log(data5);
                                         var buyDone = false;
                                         var sellDone = false;
@@ -509,8 +553,11 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                     //sleep(1060)
                                     request.get(url3, {
                                         json: true,
-                                        timeout: 80000
-                                    }, function(error, response, data3) {
+                                        timeout: 41500
+                                    }, function(error, response, data3) {if (error){
+//sleep(5000);					
+					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+				}
                                         //////console.log(data3);
                                         var buyDone = false;
                                         var sellDone = false;
@@ -599,8 +646,11 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                     sleep(1);
                                     request.get(url9, {
                                         json: true,
-                                        timeout: 80000
-                                    }, function(error, response, data9) {
+                                        timeout: 41500
+                                    }, function(error, response, data9) {if (error){
+//sleep(5000);					
+					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+				}
                                         ////////console.log(data5);
                                         var buyDone = false;
                                         var sellDone = false;
@@ -687,8 +737,11 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                     sleep(1);
                                     request.get(url8, {
                                         json: true,
-                                        timeout: 80000
-                                    }, function(error, response, data8) {
+                                        timeout: 41500
+                                    }, function(error, response, data8) {if (error){
+//sleep(5000);					
+					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+				}
                                         ////////console.log(data5);
                                         var buyDone = false;
                                         var sellDone = false;
@@ -773,8 +826,12 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                     sleep(1);
                                     request.get(url7, {
                                         json: true,
-                                        timeout: 80000
+                                        timeout: 41500
                                     }, function(error, response, data7) {
+				if (error){
+//sleep(5000);					
+					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+				}
                                         ////////console.log(data5);
                                         var buyDone = false;
                                         var sellDone = false;
@@ -851,7 +908,7 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                         }
                                     });
                                 }
-                                sleep(5000);
+                                //sleep(5000);
 
 
                                 var winBp = 0;
@@ -876,7 +933,7 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                 if (winSp != 10 && winBp != 0) {
                                     var arb = -1 * (1 - (winBp / winSp));
                                     console.log(arb);
-                                    if (arb > -20.01 && arb <= 10) {
+                                    if (arb > .01 && arb <= 10) {
                                         console.log('arb arb! ' + arb + ' ' + currentValue + ' winsp: ' + winSpEx + ' winbp: ' + winBpEx);
                                         sheet.addRow({
                                             'time': new Date().toString(),
@@ -891,16 +948,96 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                         });
                                         //HitBTC
                                         if (askEx == "hit") { //sell eth buy token
-                                            console.log(tokenAddr);
-
-                                        } else if (bidEx == "hit") { //sell token get eth
-                                            console.log('bidex hit');
+										console.log('hit ask');
                                             var n = require('nonce')();
-                                            
+											var uri = '/api/2/trading/balance';
+											 var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+											 request({
+                                                            url: 'https://api.hitbtc.com' + uri, //
+                                                            method: 'GET',
+															headers : {
+																"Authorization" : auth
+															},
+                                                            json: true,
+                                                        }, (error, response, body) => {
+															//console.log(body);
+                                                            for (var currency in body){
+																if (body[currency]['currency'] == "ETH"){
+																	var qty = (parseFloat(body[currency]['available']) * .05).toFixed(precise);
+																	console.log('qty!');
+																}	
+															}
+											const orderObject = {
+                                                            clientOrderId: n().toString(),
+															symbol: currentValue + "ETH",
+															side: "buy",
+															price: parseFloat(winSp).toFixed(precise),
+															quantity: qty / parseFloat(winSp).toFixed(precise)
+                                                        };
+                                                        console.log(orderObject);
+											 var uri = '/api/2/order';
+																	 var options = {
+												url: 'https://api.hitbtc.com' + uri,
+												'json': true,
+												'method': 'POST',
+															headers : {
+																"Authorization" : auth
+															},
+												 'body': orderObject
+
+												};
+												 request(options, function (error, response, body)  {
+                                                            console.log(body);
+                                                        });
+                                                        });
+                                        } else if (bidEx == "hit") { 
+                                            var n = require('nonce')();
+										console.log('hit bid');//sell token get eth
+											var uri = '/api/2/trading/balance';
+											 var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+											 request({
+                                                            url: 'https://api.hitbtc.com' + uri, //
+                                                            method: 'GET',
+															headers : {
+																"Authorization" : auth
+															},
+                                                            json: true,
+                                                        }, (error, response, body) => {
+															//console.log(body);
+                                                            for (var currency in body){
+																if (body[currency]['currency'] == currentValue){
+																	var qty = (parseFloat(body[currency]['available']) * .05).toFixed(precise);
+																	console.log('qty!');
+																}	
+															}
+                                            console.log('bidex hit');
+											const orderObject = {
+                                                            clientOrderId: n().toString(),
+															symbol: currentValue + "ETH",
+															side: "sell",
+															price: parseFloat(winSp).toFixed(precise),
+															quantity: qty
+                                                        };
+                                                        console.log(orderObject);
+											 var uri = '/api/2/order';
+																	 var options = {
+												url: 'https://api.hitbtc.com' + uri,
+												'json': true,
+												'method': 'POST',
+															headers : {
+																"Authorization" : auth
+															},
+												 'body': orderObject
+
+												};
+												 request(options, function (error, response, body)  {
+                                                            console.log(body);
+                                                        });
+                                                        });
                                         }
                                         //ED
 
-                                        if (askEx == "ed") { //sell eth buy token
+                                        if (askEx == "ed") { //sell eth buy token//don't kno if this works with qty...
                                             console.log(tokenAddr);
 
                                             console.log('askex ed');
@@ -918,8 +1055,9 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                                         const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
                                                         const tokenGet = tokenAddr; // VERI is what I want to get -- this is a buy order for VERI/ETH
                                                         const tokenGive = '0x0000000000000000000000000000000000000000'; // 0x0 address means ETH
-                                                        const amountGet = new BigNumber((tokenBal * .95) * winSp).times(new BigNumber(10 ** 8)); // // 6.31 VERI 1 / 0.001623
-                                                        const amountGive = new BigNumber(tokenBal * .95).times(new BigNumber(10 ** 18)); // 0.01 ETH
+														tokenBal = tokenBal / 1000000000000000000;
+                                                        const amountGet = new BigNumber((tokenBal * .05) * winSp).times(new BigNumber(10 ** decimals)); // // 6.31 VERI 1 / 0.001623
+                                                        const amountGive = new BigNumber(tokenBal * .05).times(new BigNumber(10 ** 18)); // 0.01 ETH
                                                         const expires = block; // this is a block number
                                                         const orderNonce = n();
                                                         const unpacked = [
@@ -958,7 +1096,7 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                                             }),
                                                         };
                                                         console.log(orderObject);
-                                                        /*request({
+                                                        request({
                                                             url: 'https://api.etherdelta.com/message',
                                                             method: 'POST',
                                                             json: true,
@@ -966,7 +1104,7 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                                         }, (error, response, body) => {
                                                             console.log(body);
                                                         });
-														*/
+														
 
                                                     });
                                                 });
@@ -978,13 +1116,7 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                                     var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
 														var tokenBal =  data;
 														console.log('token bal ed: ' + tokenBal);
-                                            var n = require('nonce')();
-                                            const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
-                                            const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
-                                            const tokenGive = tokenAddr; // 0x0 address means ETH
-											const amountGet = new BigNumber((tokenBal * .95) * winSp).times(new BigNumber(10 ** 8)); // // 6.31 VERI 1 / 0.001623
-											const amountGive = new BigNumber(tokenBal * .95).times(new BigNumber(10 ** 18)); // 0.01 ETH
-                                            const expires = block; // this is a block number
+                                            
                                             
                                             var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
                                                 var tokenBal = data;
@@ -997,14 +1129,17 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
 
 
                                                     var n = require('nonce')();
-                                                    var n = require('nonce')();
-                                                    const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
-                                                    const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
-                                                    const tokenGive = tokenAddr; // 0x0 address means ETH
-                                                    const amountGet = new BigNumber(0.01).times(new BigNumber(10 ** 8)); // // 6.31 VERI
-                                                    const amountGive = new BigNumber(6.31).times(new BigNumber(10 ** 18)); // 0.01 ETH
-                                                    const expires = block; // this is a block number
-                                                   const unpacked = [
+													tokenBal = tokenBal / Math.pow(10, decimals);
+													console.log('decimals? ' + decimals);
+													console.log('do I have ' + tokenBal);
+													const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
+													const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
+													const tokenGive = tokenAddr; // 0x0 address means ETH
+													const amountGet = new BigNumber((tokenBal * .05) * winBp).times(new BigNumber(10 ** 18)); // // 1 eth
+													const amountGive = new BigNumber((tokenBal * .05)).times(new BigNumber(10 ** decimals)); // 15 tokens rate 0.066
+													const expires = block; // this is a block number
+const orderNonce = n();                                                  
+												  const unpacked = [
                                                         contractAddr,
                                                         tokenGet,
                                                         amountGet,
@@ -1053,10 +1188,11 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                                                 });
                                             });});
 									}
+									sleep(60000);
                                     }
                                 }
                                 running = false;
-                                oulala123(options['currentValue'], options['bid'], options['ask'], data, sheet);
+                                // oulala123(options['currentValue'], options['bid'], options['ask'], tokenAddr, sheet);;
                             } catch (err) {
                                 console.log(err);
                             }
@@ -1072,7 +1208,7 @@ function oulala123(currentValue, bidEx, askEx, data, sheet) {
                     }
                 } else {
                     running = false;
-                    oulala123(options['currentValue'], options['bid'], options['ask'], data, sheet);
+                    // oulala123(options['currentValue'], options['bid'], options['ask'], tokenAddr, sheet);;
                 }
             });
         } catch (err) {}
@@ -1083,28 +1219,25 @@ function oulala() {
     // spreadsheet key is the long id in the sheets URL 
     doc.useServiceAccountAuth(creds, function lala() {
         doc.getInfo(function(err, info) {
+			sleep(2000);
             ////console.log('Loaded doc: '+info.title+' by '+info.author.email);
             sheet = info.worksheets[0];
             ////console.log('sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
-            var url = 'https://api.etherdelta.com/returnTicker';
-            console.log(url);//sleep(1060)
-            request.get(url, {
-                json: true,
-                timeout: 80000
-            }, function(error, response, data) {
-
-                if (!error && response.statusCode === 200) {
-                    //console.log(Object.keys(data).length);
-
-                    oulala123(options['currentValue'], options['bid'], options['ask'], data, sheet);
-                }
-
-                sleep(4460);
-
-            });
+            
+                     oulala123(options['currentValue'], options['bid'], options['ask'], tokenAddr, sheet);;
+                
         });
     });
-
+lineReader.on('line', function (line) {
+			  if(line.startsWith(options['cur'])){
+				  decimals = line.split(',')[2];
+				  if (line.split(',')[0] == options['cur']){
+					  
+					  tokenAddr = line.split(',')[1];
+					  
+				  }
+			  }
+			});
     /*	
 			 
 			// 1st request
@@ -1136,4 +1269,3 @@ function oulala() {
 	});});*/
 }
 oulala();
-});
