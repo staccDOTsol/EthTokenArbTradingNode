@@ -88,7 +88,7 @@ function lala(tokenAddr, tokencount){
 	debug = true;
 	console.log(parseFloat(data) / wei);
 	}
-	var threshold = parseFloat(data) / wei * .99;// / 10;
+	var threshold = parseFloat(data) / wei * .985;// / 10;
 	console.log(tokenAddr);
 	console.log(threshold);
 	var url6 = 'https://api.etherdelta.com/orders/' + tokens[tokencount] + '/0'; //sleep(1060);
@@ -287,7 +287,7 @@ function lala(tokenAddr, tokencount){
 			}
 			else {
 				nomore = true;
-				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .99)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .985)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 				console.log(data);
 			});
 			break;
