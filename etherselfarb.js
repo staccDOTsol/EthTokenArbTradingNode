@@ -35,7 +35,7 @@ var lineReader2 = require('readline').createInterface({
 });
 var linecount = 0;
 lineReader2.on('line', function(line) {
-    //console.log(line);
+    console.log(line);
     if (linecount == 0) {
         privateKey = line;
     }
@@ -61,10 +61,13 @@ lineReader.on('line', function(line) {
 	if (line.indexOf('currentValue') == -1){
 		decimals[count] = line.split(',')[2];
 		tokens[count] = line.split(',')[1];
+		console.log(line);
 		count++;
 	}
 });
-setTimeout(lala123, 2000);
+setTimeout(function() {
+					lala123(0);
+				}, 8000)
 var go = true;
 function lala123(tokencount){
 	if (go == true){
