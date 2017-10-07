@@ -7,6 +7,7 @@
     "start": "node arb-master.js -a \"ed\" -b \"hit\" -c \"COSS\""
   },
   "dependencies": {
+    "mathjs": "latest",
     "nonce": "latest",
     "command-line-args": "latest",
     "google-spreadsheet": "latest",

@@ -35,7 +35,7 @@ function decimalWrite(x, data) {
                         return console.log(err);
                     }
                     x++; //1
-                    if (x == Object.keys(data).length) {
+                    if (x == (Object.keys(data).length - 1)) {
                         console.log('done!');
                     } else {
                         decimalWrite(x + 1, data);
@@ -44,7 +44,7 @@ function decimalWrite(x, data) {
             });
         } else {
             x++; //1
-            if (x == Object.keys(data).length) {
+            if (x == (Object.keys(data).length - 1)) {
                 console.log('done!');
             } else {
                 decimalWrite(x + 1, data);
