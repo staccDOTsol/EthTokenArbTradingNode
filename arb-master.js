@@ -52,7 +52,7 @@ web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w
 var Eth = require('web3-eth');
 const wei = 1000000000000000000;
 const tokwei = wei / 100000000000;
-var SOME_EXIT_CONDITION == false;
+var SOME_EXIT_CONDITION = false;
 (function wait () {
    if (!SOME_EXIT_CONDITION) setTimeout(wait, 1000);
 })();
