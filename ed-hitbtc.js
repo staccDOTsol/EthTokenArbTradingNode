@@ -308,8 +308,8 @@ function lala321(tokenAddr, tokencount) {
 }
 
 function depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty) {
-	if (depositDat == true){
-		depositDat = false;
+	if (dodeposit == true){
+		dodeposit = false;
 		var uri = '/api/2/account/balance';
 		var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
 		console.log(uri);
