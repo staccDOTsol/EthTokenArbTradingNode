@@ -88,7 +88,7 @@ function lala(tokenAddr, tokencount){
 	debug = true;
 	console.log(parseFloat(data) / wei);
 	}
-	var threshold = parseFloat(data) / wei * .97;// / 10;
+	var threshold = parseFloat(data) / wei * .99;// / 10;
 	console.log(tokenAddr);
 	console.log(threshold);
 	var url6 = 'https://api.etherdelta.com/orders/' + tokens[tokencount] + '/0'; //sleep(1060);
@@ -176,7 +176,7 @@ function lala(tokenAddr, tokencount){
 					var winSp = sps;
 					var winBp = bps;	
 					console.log(arb);
-					if ((arb > .004 && arb <= 10)){//|| debug == true) {
+					if ((arb > .045 && arb <= 10)){//|| debug == true) {
 						console.log('ed arb!');
 						
 						try {
