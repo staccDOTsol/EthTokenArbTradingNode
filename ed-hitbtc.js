@@ -265,7 +265,7 @@ function lala321(tokenAddr, tokencount) {
                                         try {
                                             if (threshold > .01 || debug == true) {
                                                 buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
-                                                sleep(220000);
+                                                //sleep(220000);
                                             }
                                         } catch (err) {
                                             console.log(err);
