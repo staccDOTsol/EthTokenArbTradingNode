@@ -4,7 +4,7 @@ var sleep = require('system-sleep');
 var doc = new GoogleSpreadsheet('1IIOlhYnF-5m2Wdqku0NWTdKi2f4-Ts6XC8_OlWmONbU');
 var sheet;
 var math = require("mathjs");
-var BigNumber = require("BigNumber.js");
+var BigNumber = require("bignumber.js");
 
 const user = '0x5100DAdF11113B0730829d2047B9df4DA1d80e68';
 var request = require("request");
