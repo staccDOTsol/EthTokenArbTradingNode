@@ -631,10 +631,10 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr) {
                                                         const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
                                                         const tokenGet = tokenAddr; // VERI is what I want to get -- this is a buy order for VERI/ETH
                                                         const tokenGive = '0x0000000000000000000000000000000000000000'; // 0x0 address means ETH
-														tokenBal = (tokenBal / 1000000000000000000);
+														//tokenBal = (tokenBal / 1000000000000000000);
 														
-                                                        const amountGet = new BigNumber(Math.floor((tokenBal * .05) * winSp)).times(new BigNumber(10 * decimals)); // // 6.31 VERI 1 / 0.001623
-                                                        const amountGive = new BigNumber(Math.floor(tokenBal * .05)).times(new BigNumber(10 * 18)); // 0.01 ETH
+                                                        const amountGet = new BigNumber(Math.floor((tokenBal * .05) * winSp)).dividedBy(new BigNumber(10 * 18)).times(new BigNumber(10*18)); // // 6.31 VERI 1 / 0.001623
+                                                        const amountGive = new BigNumber(Math.floor(tokenBal * .05)).dividedBy(new BigNumber(10 * 18)).times(new BigNumber(10 * 18)); // 0.01 ETH
 														console.log('amountGive: ' + amountGive);
 														console.log('amountGet: ' + amountGet);
                                                         const expires = block; // this is a block number
@@ -691,14 +691,14 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr) {
                                                     console.log(block);
 
 
-													tokenBal = (tokenBal / Math.pow(10, decimals));
+													//tokenBal = (tokenBal / Math.pow(10, decimals));
 													console.log('decimals? ' + decimals);
 													console.log('do I have ' + tokenBal);
 													const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
 													const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
 													const tokenGive = tokenAddr; // 0x0 address means ETH
-													const amountGet = new BigNumber(Math.floor((tokenBal * .05) * winBp)).times(new BigNumber(10 * 18)); // // 1 eth
-													const amountGive = new BigNumber(Math.floor((tokenBal * .05))).times(new BigNumber(10 * decimals)); // 15 tokens rate 0.066
+													const amountGet = new BigNumber(Math.floor((tokenBal * .05) * winBp)).dividedBy(new BigNumber(10 * decimals)).times(new BigNumber(10 * 18)); // // 1 eth
+													const amountGive = new BigNumber(Math.floor((tokenBal * .05))).dividedBy(new BigNumber(10 * decimals)).times(new BigNumber(10 * decimals)); // 15 tokens rate 0.066
 													const expires = block; // this is a block number
 														console.log('amountGive: ' + new BigNumber(Math.floor(amountGive)).dividedBy(new BigNumber(10 * 18)));
 													web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
