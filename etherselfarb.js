@@ -88,7 +88,7 @@ function lala(tokenAddr, tokencount){
 	debug = true;
 	console.log(parseFloat(data) / wei);
 	}
-	var threshold = parseFloat(data) / wei * .99;// / 10;
+	var threshold = parseFloat(data) / wei * .997;// / 10;
 	console.log(tokenAddr);
 	console.log(threshold);
 	var url6 = 'https://api.etherdelta.com/orders/' + tokens[tokencount] + '/0'; //sleep(1060);
@@ -110,8 +110,8 @@ function lala(tokenAddr, tokencount){
 				var sellDone = false;
 				var buyTotal = 0;
 				var sellTotal = 0;
-				var edBuys = {};
-				var edSells = {};
+				var edBuys = [];
+				var edSells = [];
 				while (buyDone == false) {
 					for (var buys in data6['buys']) {
 							edBuys[buys] = {};
@@ -176,7 +176,7 @@ function lala(tokenAddr, tokencount){
 					var winSp = sps;
 					var winBp = bps;	
 					console.log(arb);
-					if ((arb > .045 && arb <= 10)){//|| debug == true) {
+					if ((arb > .01 && arb <= 10)){//|| debug == true) {
 						console.log('ed arb!');
 						
 						try {
@@ -230,7 +230,7 @@ function lala(tokenAddr, tokencount){
 								console.log(edSells.length);
 								var nomore = false;
 								if (nomore == false){
-								if (sell < (edSells.length - 1) || parseFloat((selltotal + edSells[sell]['amountGet']) ) <= parseFloat(threshold)){
+								if (sell < (edSells.length) || parseFloat((selltotal + edSells[sell]['amountGet']) ) <= parseFloat(threshold)){
 								selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
 								console.log('selltotal: ' + selltotal);
 								contract.methods.trade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
@@ -277,17 +277,23 @@ function lala(tokenAddr, tokencount){
 			var buytotal = 0;
 			var nomore = false;
 			for (var buy in edBuys){
+				console.log(edBuys.length);
 			if (nomore == false){
-			if (buy < (edBuys.length - 1) || parseFloat((buytotal + edBuys[buy]['amountGet'])) <= parseFloat(threshold)){
+			if (buy < (edBuys.length) || parseFloat((buytotal + edBuys[buy]['amountGet'])) <= parseFloat(tokenBal)){
 			buytotal = buytotal + Number(edBuys[buy]['amountGet']);
-			console.log('buytotal: ' + math.bignumber(Math.floor(buytotal)).dividedBy(math.bignumber(10 * 18)));
+			console.log('buytotal +1: ' + buytotal);
 			contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 				console.log(data);
+				
 			});
+			setTimeout(function() {
+					lala(tokenAddr, tokencount);
+				}, 180000)
 			}
 			else {
+				sleep(2200);
 				nomore = true;
-				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .97)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
+				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 				console.log(data);
 			});
 			break;
