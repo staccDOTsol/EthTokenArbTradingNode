@@ -515,6 +515,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr) {
 														}
 														else {
 															console.log('hit max selltotal: ' + selltotal);
+															console.log(tokenGet, new BigNumber( amountGet ), tokenGive,  new BigNumber(amountGive), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(parseFloat(amountGive) - sellTotal));
 															contract.methods.trade(tokenGet, new BigNumber( amountGet ), tokenGive,  new BigNumber(amountGive), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(parseFloat(amountGive) - sellTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"},function(data) {
 															console.log(data);
 															SOME_EXIT_CONDITION = true;
