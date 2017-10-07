@@ -254,7 +254,7 @@ function lala(tokenAddr, tokencount){
 	function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp){
 		 var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
 			var tokenBal =  data;
-			if (tokenBal < 0){
+			if (tokenBal <= 0){
 				setTimeout(function() {
 					sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
 				}, 8000)
