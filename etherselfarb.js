@@ -230,7 +230,7 @@ function lala(tokenAddr, tokencount){
 								console.log(edSells.length);
 								var nomore = false;
 								if (nomore == false){
-								if (sell < (edSells.length) || parseFloat((selltotal + edSells[sell]['amountGet']) ) <= parseFloat(threshold)){
+								if (sell != (edSells.length) && parseFloat((selltotal + Number(edSells[sell]['amountGet'])) ) <= parseFloat(threshold)){
 								selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
 								console.log('selltotal: ' + selltotal);
 								contract.methods.trade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
@@ -279,7 +279,7 @@ function lala(tokenAddr, tokencount){
 			for (var buy in edBuys){
 				console.log(edBuys.length);
 			if (nomore == false){
-			if (buy < (edBuys.length) || parseFloat((buytotal + edBuys[buy]['amountGet'])) <= parseFloat(tokenBal)){
+			if (buy != (edBuys.length) && parseFloat((buytotal + Number([buy]['amountGet']))) <= parseFloat(tokenBal)){
 			buytotal = buytotal + Number(edBuys[buy]['amountGet']);
 			console.log('buytotal +1: ' + buytotal);
 			contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
