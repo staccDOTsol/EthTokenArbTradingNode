@@ -139,7 +139,7 @@ function lala321(tokenAddr, tokencount) {
         console.log(url6);
         request.get(url6, {
             json: true,
-            timeout: 80000
+            timeout: Math.floor((Math.random() * 120000) + 8000)
         }, function(error6, response6, data6) {
             if (error6 || response6.statusCode != 200) {
                 sleep(1000);
@@ -351,7 +351,7 @@ function depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, current
 				} else {
 					setTimeout(function() {
 						depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty);
-					}, 8000)
+					}, Math.floor((Math.random() * 120000) + 8000))
 				}
 			}
 		});
@@ -475,7 +475,7 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                             if (tokenBal <= tokenThreshold) {
                                 setTimeout(function() {
                                     depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-                                }, 8000)
+                                }, Math.floor((Math.random() * 120000) + 8000))
                             } else {
                                 web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
                                 console.log('depositToken: ' + tokenBal);
@@ -503,7 +503,7 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
     } else {
         setTimeout(function() {
             depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-        }, 8000)
+        }, Math.floor((Math.random() * 120000) + 8000))
     }
 
 }
@@ -519,7 +519,7 @@ function senditback(tokenAddr, tokencount, threshold, edBuys, winBp) {
                 console.log('eth less than 0.04');
                 setTimeout(function() {
                     senditback(tokenAddr, tokencount, threshold, edBuys, winBp);
-                }, 8000)
+                }, Math.floor((Math.random() * 120000) + 8000))
             } else {
                 dosenditback = false;
                 dowithdraw = true;
@@ -555,7 +555,7 @@ function withdraw(tokenAddr, tokencount, threshold, edBuys, winBp) {
         if (tokenBal <= (.04 * Math.pow(10, 18))) {
             setTimeout(function() {
                 withdraw(tokenAddr, tokencount, threshold, edBuys, winBp);
-            }, 8000)
+            }, Math.floor((Math.random() * 120000) + 8000))
         } else {
             if (dowithdraw == true) {
                 dowithdraw = false;
@@ -569,7 +569,7 @@ function withdraw(tokenAddr, tokencount, threshold, edBuys, winBp) {
             } else {
                 setTimeout(function() {
                     withdraw(tokenAddr, tokencount, threshold, edBuys, winBp);
-                }, 8000)
+                }, Math.floor((Math.random() * 120000) + 8000))
             }
         }
     });
@@ -581,7 +581,7 @@ function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp) {
         if (tokenBal <= (1.1 * Math.pow(10, decimals[tokencount]))) {
             setTimeout(function() {
                 sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
-            }, 8000)
+            }, Math.floor((Math.random() * 120000) + 8000))
         } else {
             dodeposit = true;
             console.log('token bal ed: ' + tokenBal);
