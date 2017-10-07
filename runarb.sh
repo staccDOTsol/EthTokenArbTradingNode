@@ -10,7 +10,6 @@ do
 if [ $(ps -ef | grep -v grep | grep CDT | wc -l) -lt 1 ]; then
 
     echo "less than 1 running"
-killall node
 	sleep 5s
 
    node etherselfarb.js &>/dev/null &
