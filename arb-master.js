@@ -651,14 +651,14 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr) {
 														if (sell < edSells.length && parseFloat((selltotal + edSells[sell]['amountGet'])) <= parseFloat(amountGive)){
 														selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
 														console.log('selltotal: ' + selltotal);
-														var callData2 = contract.methods.trade(tokenGet, new BigNumber( edSells[sell]['amountGive']), tokenGive,  new BigNumber(edSells[sell]['amountGet']), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(edSells[sell]['amountGet'])).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+														contract.methods.trade(tokenGet, new BigNumber( edSells[sell]['amountGive']), tokenGive,  new BigNumber(edSells[sell]['amountGet']), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(edSells[sell]['amountGet'])).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"},function(data) {
 															console.log(data);
 														});
 														n2++;
 														}
 														else {
 															console.log('hit max selltotal: ' + selltotal);
-															var callData2 = contract.methods.trade(tokenGet, new BigNumber( amountGet ), tokenGive,  new BigNumber(amountGive), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(parseFloat(amountGive) - sellTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+															contract.methods.trade(tokenGet, new BigNumber( amountGet ), tokenGive,  new BigNumber(amountGive), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(parseFloat(amountGive) - sellTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"},function(data) {
 															console.log(data);
 															});
 															nomore=true;
@@ -681,9 +681,6 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr) {
 														console.log('token bal ed: ' + tokenBal);
                                             
                                             
-                                            var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
-                                                var tokenBal = data;
-                                                console.log(tokenBal);
 
 
                                                 (eth.getBlock('latest')).then(function(data) {
@@ -713,14 +710,14 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr) {
 														if (buy < edBuys.length && parseFloat((buytotal + edBuys[buy]['amountGet'])) <= parseFloat(amountGive)){
 														buytotal = buytotal + parseFloat(edBuys[buy]['amountGet']);
 														console.log('buytotal: ' + new BigNumber(Math.floor(buytotal)).dividedBy(new BigNumber(10 * 18)));
-														var callData2 = contract.methods.trade(tokenGet,  edBuys[buy]['amountGive'], tokenGive,  edBuys[buy]['amountGet'], expires, n2, edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],edBuys[buy]['amountGet']).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+														contract.methods.trade(tokenGet,  edBuys[buy]['amountGive'], tokenGive,  edBuys[buy]['amountGet'], expires, n2, edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],edBuys[buy]['amountGet']).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"},function(data) {
 															console.log(data);
 														});
 														n2++;
 														}
 														else {
 															nomore = true;
-															var callData2 = contract.methods.trade(tokenGet,  amountGet, tokenGive,  amountGive, expires, n2, edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(parseFloat(amountGive) - buyTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+															contract.methods.trade(tokenGet,  amountGet, tokenGive,  amountGive, expires, n2, edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(parseFloat(amountGive) - buyTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"},function(data) {
 															console.log(data);
 														});
 														n2++;
@@ -730,7 +727,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr) {
 														});
 
                                                 });
-                                            });});
+                                            });
 									}
                                     }
                                 }
