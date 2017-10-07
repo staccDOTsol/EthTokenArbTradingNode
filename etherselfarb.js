@@ -180,8 +180,10 @@ function lala(tokenAddr, tokencount){
 						console.log('ed arb!');
 						
 						try {
+							if (threshold > .12){
 							buyit(tokenAddr, tokencount, threshold, edSells, winSp);
-							sleep(120000);
+							sleep(80000);
+							}
 					} catch (err) {
 						console.log(err);
 					}
@@ -254,7 +256,7 @@ function lala(tokenAddr, tokencount){
 	function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp){
 		 var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) {
 			var tokenBal =  data;
-			if (tokenBal <= 0){
+			if (tokenBal <= (5 * Math.pow(10, decimals[tokencount]))){
 				setTimeout(function() {
 					sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
 				}, 8000)
@@ -285,7 +287,7 @@ function lala(tokenAddr, tokencount){
 			}
 			else {
 				nomore = true;
-				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],tokenBal).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "23000000000"}).then(function(data) {
+				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .99)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "23000000000"}).then(function(data) {
 				console.log(data);
 			});
 			break;
