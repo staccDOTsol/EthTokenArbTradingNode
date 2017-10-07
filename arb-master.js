@@ -229,7 +229,8 @@ const optionDefinitions = [{
 const options = commandLineArgs(optionDefinitions)
 //console.log(options['start']);
 //console.log(options['max']);
-function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
+function oulala123(currentValue, bidEx, askEx, tokenAddr) {
+	console.log('oulala123');
 	sleep(2000);
 													var edBuys = [];
 														var edSells = [];
@@ -252,7 +253,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                 timeout: 41500
             }, function(error, response, lala) {if (error){
 //sleep(5000);					
-					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+					//oulala123(currentValue, bidEx, askEx, tokenAddr);
 				}
 				//console.log(lala);
                 var doit = false;
@@ -285,7 +286,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                     //}
                     if (currentValue.startsWith("0x")) {
                         running = false;
-                        // oulala123(options['currentValue'], options['bid'], options['ask'], tokenAddr, sheet);;
+                        // oulala123(options['cur'], options['bid'], options['ask'], tokenAddr);;
                     } else {
                         //currentValue = "MCO";
                         if (currentValue != "CAT" && doit == true) {
@@ -302,7 +303,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                         timeout: 41500
                                     }, function(error, response, data4) {if (error){
 //sleep(5000);					
-					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+					//oulala123(currentValue, bidEx, askEx, tokenAddr);
 				}
                                         //console.log(data4);
                                         var buyDone = false;
@@ -391,10 +392,10 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                     request.get(url6, {
                                         json: true,
                                         timeout: 41500
-                                    }, function(error6, response6, data6) {if (error){
-//sleep(5000);					
-					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
-				}
+                                    }, function(error6, response6, data6) {if (error6){
+					
+							oulala123(currentValue, bidEx, askEx, tokenAddr);
+									}
 
                                         try {
                                             if (!error6 && response6.statusCode === 200) {
@@ -451,7 +452,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
 															edSells[sells]['user'] = data6['sells'][sells]['user'];
 															edSells[sells]['amountGet'] = data6['sells'][sells]['amountGet']; //tokens
 															edSells[sells]['amountGive'] = data6['sells'][sells]['amountGive']; //eth
-															console.log(edSells[sells]['amountGive']);
+															//console.log(edSells[sells]['amountGive']);
 															
                                                             if (sells == data6['sells'].length) {
                                                                 sellDone = true;
@@ -510,7 +511,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                     console.log(arb);
                                     if (arb > -20.01 && arb <= 10) {
                                         console.log('arb arb! ' + arb + ' ' + currentValue + ' winsp: ' + winSpEx + ' winbp: ' + winBpEx);
-                                        sheet.addRow({
+                                        /*sheet.addRow({
                                             'time': new Date().toString(),
                                             'ticker': currentValue,
                                             'bid': winBp,
@@ -520,7 +521,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                             'ask ex': winSpEx
                                         }, function(err, row) {
                                             console.log(err);
-                                        });
+                                        });*/
                                         //HitBTC
                                         if (askEx == "hit") { //sell eth buy token
 										console.log('hit ask');
@@ -632,30 +633,35 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                                         const tokenGive = '0x0000000000000000000000000000000000000000'; // 0x0 address means ETH
 														tokenBal = (tokenBal / 1000000000000000000);
 														
-                                                        const amountGet = new BigNumber((tokenBal * .05) * winSp).times(new BigNumber(10 ** decimals)); // // 6.31 VERI 1 / 0.001623
-                                                        const amountGive = new BigNumber(tokenBal * .05).times(new BigNumber(10 ** 18)); // 0.01 ETH
+                                                        const amountGet = new BigNumber(Math.floor((tokenBal * .05) * winSp)).times(new BigNumber(10 * decimals)); // // 6.31 VERI 1 / 0.001623
+                                                        const amountGive = new BigNumber(Math.floor(tokenBal * .05)).times(new BigNumber(10 * 18)); // 0.01 ETH
+														console.log('amountGive: ' + amountGive);
+														console.log('amountGet: ' + amountGet);
                                                         const expires = block; // this is a block number
 														var selltotal = 0;
-														console.log(edSells);
+														//console.log(edSells);
 														web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
 														web3.eth.getTransactionCount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", function (data){
 															var n2 = data + 1;
 															for (var sell in edSells){
                                                         var n = require('nonce')();
                                                         var orderNonce = n();
-														console.log(edSells);
-														if (edSells[sell]['amountGet'] > 0){
-														if (sell < edSells.length && (selltotal + edSells[sell]['amountGet']) <= amountGive){
-														selltotal = selltotal + edSells[sell]['amountGet'];
+														var nomore = false;
+														if (nomore == false){
+														if (sell < edSells.length && parseFloat((selltotal + edSells[sell]['amountGet'])) <= parseFloat(amountGive)){
+														selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
+														console.log('selltotal: ' + selltotal);
 														var callData2 = contract.methods.trade(tokenGet, new BigNumber( edSells[sell]['amountGive']), tokenGive,  new BigNumber(edSells[sell]['amountGet']), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(edSells[sell]['amountGet'])).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
 															console.log(data);
 														});
 														n2++;
 														}
 														else {
-															var callData2 = contract.methods.trade(tokenGet, new BigNumber( edSells[sell]['amountGive'] ), tokenGive,  new BigNumber(edSells[sell]['amountGet']), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(amountGive - sellTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+															console.log('hit max selltotal: ' + selltotal);
+															var callData2 = contract.methods.trade(tokenGet, new BigNumber( amountGet ), tokenGive,  new BigNumber(amountGive), expires, n2, edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],new BigNumber(parseFloat(amountGive) - sellTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
 															console.log(data);
 															});
+															nomore=true;
 														n2++;
 															}
 														}
@@ -691,28 +697,34 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
 													const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
 													const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
 													const tokenGive = tokenAddr; // 0x0 address means ETH
-													const amountGet = new BigNumber((tokenBal * .05) * winBp).times(new BigNumber(10 ** 18)); // // 1 eth
-													const amountGive = new BigNumber((tokenBal * .05)).times(new BigNumber(10 ** decimals)); // 15 tokens rate 0.066
+													const amountGet = new BigNumber(Math.floor((tokenBal * .05) * winBp)).times(new BigNumber(10 * 18)); // // 1 eth
+													const amountGive = new BigNumber(Math.floor((tokenBal * .05))).times(new BigNumber(10 * decimals)); // 15 tokens rate 0.066
 													const expires = block; // this is a block number
+														console.log('amountGive: ' + new BigNumber(Math.floor(amountGive)).dividedBy(new BigNumber(10 * 18)));
 													web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
 														var buytotal = 0;
 														web3.eth.getTransactionCount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", function (data){
 																var n2 = data + 1;
+																var nomore = false;
 														for (var buy in edBuys){
                                                         var n = require('nonce')();
                                                         var orderNonce = n();
-														if (buy != edBuys.length && (selltotal + edBuys[buy]['amountGet']) < amountGive){
-														selltotal = selltotal + edBuys[buy]['amountGet'];
+														if (nomore == false){
+														if (buy < edBuys.length && parseFloat((buytotal + edBuys[buy]['amountGet'])) <= parseFloat(amountGive)){
+														buytotal = buytotal + parseFloat(edBuys[buy]['amountGet']);
+														console.log('buytotal: ' + new BigNumber(Math.floor(buytotal)).dividedBy(new BigNumber(10 * 18)));
 														var callData2 = contract.methods.trade(tokenGet,  edBuys[buy]['amountGive'], tokenGive,  edBuys[buy]['amountGet'], expires, n2, edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],edBuys[buy]['amountGet']).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
 															console.log(data);
 														});
 														n2++;
 														}
 														else {
-															var callData2 = contract.methods.trade(tokenGet,  edBuys[buy]['amountGive'], tokenGive,  edBuys[buy]['amountGet'], expires, n2, edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(amountGive - buyTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
+															nomore = true;
+															var callData2 = contract.methods.trade(tokenGet,  amountGet, tokenGive,  amountGive, expires, n2, edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(parseFloat(amountGive) - buyTotal)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gasPrice: "23000000000"}).then(function(data) {
 															console.log(data);
 														});
 														n2++;
+														}
 														}
 														}
 														});
@@ -733,7 +745,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                         timeout: 41500
                                     }, function(error, response, data5) {if (error){
 //sleep(5000);					
-					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+					//oulala123(currentValue, bidEx, askEx, tokenAddr);
 				}
                                         ////////console.log(data5);
                                         var buyDone = false;
@@ -816,7 +828,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                         timeout: 41500
                                     }, function(error, response, data3) {if (error){
 //sleep(5000);					
-					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+					//oulala123(currentValue, bidEx, askEx, tokenAddr);
 				}
                                         //////console.log(data3);
                                         var buyDone = false;
@@ -909,7 +921,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                         timeout: 41500
                                     }, function(error, response, data9) {if (error){
 //sleep(5000);					
-					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+					//oulala123(currentValue, bidEx, askEx, tokenAddr);
 				}
                                         ////////console.log(data5);
                                         var buyDone = false;
@@ -1000,7 +1012,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                         timeout: 41500
                                     }, function(error, response, data8) {if (error){
 //sleep(5000);					
-					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+					//oulala123(currentValue, bidEx, askEx, tokenAddr);
 				}
                                         ////////console.log(data5);
                                         var buyDone = false;
@@ -1090,7 +1102,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                                     }, function(error, response, data7) {
 				if (error){
 //sleep(5000);					
-					//oulala123(currentValue, bidEx, askEx, tokenAddr, sheet);
+					//oulala123(currentValue, bidEx, askEx, tokenAddr);
 				}
                                         ////////console.log(data5);
                                         var buyDone = false;
@@ -1172,7 +1184,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
 
 
                                 running = false;
-                                // oulala123(options['currentValue'], options['bid'], options['ask'], tokenAddr, sheet);;
+                                // oulala123(options['cur'], options['bid'], options['ask'], tokenAddr);;
                             } catch (err) {
                                 console.log(err);
                             }
@@ -1188,7 +1200,7 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
                     }
                 } else {
                     running = false;
-                    // oulala123(options['currentValue'], options['bid'], options['ask'], tokenAddr, sheet);;
+                    // oulala123(options['cur'], options['bid'], options['ask'], tokenAddr);;
                 }
             });
         } catch (err) {}
@@ -1197,24 +1209,20 @@ function oulala123(currentValue, bidEx, askEx, tokenAddr, sheet) {
 
 function oulala() {
     // spreadsheet key is the long id in the sheets URL 
-    doc.useServiceAccountAuth(creds, function lala() {
-        doc.getInfo(function(err, info) {
-			sleep(2000);
-            ////console.log('Loaded doc: '+info.title+' by '+info.author.email);
-            sheet = info.worksheets[0];
-            ////console.log('sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
-            
-                     oulala123(options['currentValue'], options['bid'], options['ask'], tokenAddr, sheet);;
-                
-        });
-    });
+    
+}
 lineReader.on('line', function (line) {
+	//console.log(line);
 			  if(line.startsWith(options['cur'])){
 				  decimals = line.split(',')[2];
 				  if (line.split(',')[0] == options['cur']){
 					  
 					  tokenAddr = line.split(',')[1];
-					  
+					 
+            ////console.log('sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
+            
+                     oulala123(options['cur'], options['bid'], options['ask'], tokenAddr);
+                
 				  }
 			  }
 			});
@@ -1247,5 +1255,4 @@ lineReader.on('line', function (line) {
 					});
 	  
 	});});*/
-}
 oulala();
