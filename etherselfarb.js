@@ -176,7 +176,7 @@ function lala(tokenAddr, tokencount){
 					var winSp = sps;
 					var winBp = bps;	
 					console.log(arb);
-					if ((arb > .02 && arb <= 10)){//|| debug == true) {
+					if ((arb > .004 && arb <= 10)){//|| debug == true) {
 						console.log('ed arb!');
 						
 						try {
