@@ -139,7 +139,7 @@ function lala321(tokenAddr, tokencount) {
         console.log(url6);
         request.get(url6, {
             json: true,
-            timeout: Math.floor((Math.random() * 120000) + 8000)
+            timeout: 8000
         }, function(error6, response6, data6) {
             if (error6 || response6.statusCode != 200) {
                 sleep(1000);
@@ -263,7 +263,7 @@ function lala321(tokenAddr, tokencount) {
                                         console.log('ed arb!');
 
                                         try {
-                                            if (threshold > .06 || debug == true) {
+                                            if (threshold > .01 || debug == true) {
                                                 buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
                                                 sleep(220000);
                                             }
