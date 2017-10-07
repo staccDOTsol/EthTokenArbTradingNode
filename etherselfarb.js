@@ -139,7 +139,6 @@ function lala(tokenAddr, tokencount){
 						}
 					}
 				}
-				sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
 				while (sellDone == false) {
 					for (var sells in data6['sells']) {
 							edSells[sells] = {};
@@ -191,6 +190,7 @@ function lala(tokenAddr, tokencount){
 					
 					}
 					
+				sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
 				}
 				go = true;
 				lala123(tokencount + 1);
