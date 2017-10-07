@@ -233,14 +233,14 @@ function lala(tokenAddr, tokencount){
 								if (sell < (edSells.length - 1) || parseFloat((selltotal + edSells[sell]['amountGet']) ) <= parseFloat(threshold)){
 								selltotal = selltotal + parseFloat(edSells[sell]['amountGet']);
 								console.log('selltotal: ' + selltotal);
-								contract.methods.trade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "23000000000"}).then(function(data) {
+								contract.methods.trade( tokenGive,  ((edSells[sell]['amountGet'])),tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],((edSells[sell]['amountGet']))).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 									console.log(data);
 								});
 								}
 								else {
 									console.log(threshold);
 									console.log('hit max selltotal: ' + selltotal);
-									contract.methods.trade(tokenGive,  ((edSells[sell]['amountGet'])), tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],(threshold * wei)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "23000000000"}).then(function(data) {
+									contract.methods.trade(tokenGive,  ((edSells[sell]['amountGet'])), tokenGet, ( (edSells[sell]['amountGive'])), edSells[sell]['expires'], edSells[sell]['nonce'], edSells[sell]['user'], edSells[sell]['v'],edSells[sell]['r'],edSells[sell]['s'],(threshold * wei)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 									console.log(data);
 									});
 									nomore=true;
@@ -281,13 +281,13 @@ function lala(tokenAddr, tokencount){
 			if (buy < (edBuys.length - 1) || parseFloat((buytotal + edBuys[buy]['amountGet'])) <= parseFloat(threshold)){
 			buytotal = buytotal + Number(edBuys[buy]['amountGet']);
 			console.log('buytotal: ' + math.bignumber(Math.floor(buytotal)).dividedBy(math.bignumber(10 * 18)));
-			contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "23000000000"}).then(function(data) {
+			contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet,  (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(edBuys[buy]['amountGet'])).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 				console.log(data);
 			});
 			}
 			else {
 				nomore = true;
-				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .99)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "23000000000"}).then(function(data) {
+				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .99)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 				console.log(data);
 			});
 			break;
