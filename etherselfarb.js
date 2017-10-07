@@ -182,7 +182,7 @@ function lala(tokenAddr, tokencount){
 						try {
 							if (threshold > .12){
 							buyit(tokenAddr, tokencount, threshold, edSells, winSp);
-							sleep(180000);
+							sleep(220000);
 							}
 					} catch (err) {
 						console.log(err);
