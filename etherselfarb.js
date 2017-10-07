@@ -66,7 +66,7 @@ lineReader.on('line', function(line) {
 });
 setTimeout(lala123, 2000);
 var go = true;
-function lala123(tokencount = 0){
+function lala123(tokencount){
 	if (go == true){
 		console.log(tokencount);
 		go = false;
