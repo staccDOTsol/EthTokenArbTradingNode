@@ -6,6 +6,7 @@ var cheerio = require('cheerio');
 var doc = new GoogleSpreadsheet('1IIOlhYnF-5m2Wdqku0NWTdKi2f4-Ts6XC8_OlWmONbU');
 var sheet;
 var math = require("mathjs");
+var dodeposit = true;
 var BigNumber = require("bignumber.js");
 var dowithdraw = true;
 var dosenditback = true;
@@ -180,6 +181,7 @@ function lala321(tokenAddr, tokencount) {
                                     var qty = (parseFloat(body[currency]['available']) * .99).toFixed(precises[tokencount]); // TODO Fix to .99
                                     console.log('qty! ' + qty);
                                     if (qty >= 0.001) {
+										dodeposit = true;
                                         dosenditback = true;
                                     }
                                     var threshold = parseFloat(qty); // / 10;
@@ -278,7 +280,7 @@ function lala321(tokenAddr, tokencount) {
                                 sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
                                 withdraw(tokenAddr, tokencount, threshold, edBuys, winBp);
                                 senditback(tokenAddr, tokencount, threshold, edBuys, winBp);
-                                depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty);
+                                depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, decimals[tokencount], qty);
                                 if (tokencount == tokens.length) {
                                     lala321(tokens[0], 0);
                                 } else {
@@ -306,52 +308,54 @@ function lala321(tokenAddr, tokencount) {
 }
 
 function depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty) {
-    var uri = '/api/2/account/balance';
-    var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
-    console.log(uri);
-    request({
-        url: 'https://api.hitbtc.com' + uri, //
-        method: 'GET',
-        headers: {
-            "Authorization": auth
-        },
-        json: true,
-    }, (error, response, bodycurrency) => {
-        //console.log(body);
-        for (var currency in bodycurrency) {
-            if (bodycurrency[currency]['currency'] == "ETH") {
+	if (depositDat == true){
+		depositDat = false;
+		var uri = '/api/2/account/balance';
+		var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+		console.log(uri);
+		request({
+			url: 'https://api.hitbtc.com' + uri, //
+			method: 'GET',
+			headers: {
+				"Authorization": auth
+			},
+			json: true,
+		}, (error, response, bodycurrency) => {
+			//console.log(body);
+			for (var currency in bodycurrency) {
+				if (bodycurrency[currency]['currency'] == "ETH") {
 
-                qty = (parseFloat(bodycurrency[currency]['available'])).toFixed(precise);
-                if (qty > 0.01) {
-                    var txObject1 = {
-                        currency: "ETH",
-                        amount: qty,
-                        type: "bankToExchange"
-                    };
-                    console.log(txObject1);
-                    var uri = '/api/2/account/transfer';
-                    var options = {
-                        url: 'https://api.hitbtc.com' + uri,
-                        'json': true,
-                        'method': 'POST',
-                        headers: {
-                            "Authorization": auth
-                        },
-                        'body': txObject1
+					qty = (parseFloat(bodycurrency[currency]['available'])).toFixed(precise);
+					if (qty > 0.01) {
+						var txObject1 = {
+							currency: "ETH",
+							amount: qty,
+							type: "bankToExchange"
+						};
+						console.log(txObject1);
+						var uri = '/api/2/account/transfer';
+						var options = {
+							url: 'https://api.hitbtc.com' + uri,
+							'json': true,
+							'method': 'POST',
+							headers: {
+								"Authorization": auth
+							},
+							'body': txObject1
 
-                    };
-                    request(options, function(error, response, body) {
-
-                    });
-                }
-            } else {
-                setTimeout(function() {
-                    depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty);
-                }, 8000)
-            }
-        }
-    });
-
+						};
+						request(options, function(error, response, body) {
+	depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty);
+						});
+					}
+				} else {
+					setTimeout(function() {
+						depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty);
+					}, 8000)
+				}
+			}
+		});
+	}
 }
 
 
