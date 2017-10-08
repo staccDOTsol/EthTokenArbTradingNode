@@ -18,8 +18,6 @@ if [ $(ps -ef | grep -v grep | grep ed-hitbtc | wc -l) -lt 1 ]; then
 sleep 20s
 
 
-   node ed-hitbtc.js &>/dev/null &
-
 
 #node jare-arb.js -s 3 -m 22 &>/dev/null &
 #node jare-arb.js -s 162 -m 190 &>/dev/null &
