@@ -323,7 +323,7 @@ function lala321(tokenAddr, tokencount, checker) {
 							} else {
 								console.log('done');
 								if (debug == true){
-								lala321(tokens[0], 0, ((Math.random() * 20) + .25));
+								lala321(tokens[0], 0, ((Math.random() * 40) + .25));
 								}
 								else if (debug == false){
 								lala321(tokens[0], 0, 1);
