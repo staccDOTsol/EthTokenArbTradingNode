@@ -1,12 +1,9 @@
 var debug = true; // false for production
 
-var GoogleSpreadsheet = require('google-spreadsheet');
 var request = require("request")
 var sleep = require('system-sleep');
 var cheerio = require('cheerio');
 
-var doc = new GoogleSpreadsheet('1IIOlhYnF-5m2Wdqku0NWTdKi2f4-Ts6XC8_OlWmONbU');
-var sheet;
 var math = require("mathjs");
 var dodeposit2 = true;
 var BigNumber = require("bignumber.js");
@@ -16,8 +13,6 @@ var request = require("request");
 const sha256 = require('js-sha256').sha256;
 const ethUtil = require('ethereumjs-util');
 var sleep = require('system-sleep');
-var doc = new GoogleSpreadsheet('17TC-P08FYWLbgmDsPbtvexGG6mO--SbIeAOZgldH3Ng');
-var sheet;
 var crypto = require("crypto");
 var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
@@ -58,15 +53,6 @@ lineReader2.on('line', function(line) {
 	}
     linecount++;
 });
-var isWin = /^win/.test(process.platform);
-var isLin = /^linux/.test(process.platform);
-if (isLin) {
-    var creds = require('/root/EthTokenArbTradingNode/googlesheet.json');
-} else if (isWin) {
-    var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
-}
-const commandLineArgs = require('command-line-args');
-const optionDefinitions = []
 //const options = commandLineArgs(optionDefinitions)
 var lineReader = require('readline').createInterface({
     input: require('fs').createReadStream('decimals.csv')
