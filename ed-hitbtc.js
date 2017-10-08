@@ -121,7 +121,7 @@ function lala123(tokencount) {
         console.log(count);
         go = false;
         console.log(tokens[count]);
-        lala321(tokens[0], 0, Math.floor((Math.random() * 5) + .25));
+        lala321(tokens[0], 0, ((Math.random() * 5) + .25));
       //  withdraw();
       //  senditback();
       //  depositDatEth();
@@ -149,7 +149,7 @@ function lala321(tokenAddr, tokencount, checker) {
                 sleep(1000);
                 console.log(error6);
                 console.log(tokenAddr + ' again');
-                lala321(tokenAddr, tokencount);
+                lala321(tokenAddr, tokencount, checker);
             }
             try {
                 if (!error6 && response6.statusCode === 200) {
@@ -318,7 +318,7 @@ function lala321(tokenAddr, tokencount, checker) {
 							} else {
 								console.log('done');
 								if (debug == true){
-								lala321(tokens[0], 0, Math.floor((Math.random() * 20) + .25));
+								lala321(tokens[0], 0, ((Math.random() * 20) + .25));
 								}
 								else if (debug == false){
 								lala321(tokens[0], 0, 1);
