@@ -15,7 +15,7 @@ if [ $(ps -ef | grep -v grep | grep ed-hitbtc | wc -l) -lt 1 ]; then
    node ed-hitbtc.js &>/dev/null &
 
 
-sleep 5m
+sleep 20s
 
 
    node ed-hitbtc.js &>/dev/null &
