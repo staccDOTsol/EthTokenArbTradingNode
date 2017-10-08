@@ -281,6 +281,15 @@ function lala321(tokenAddr, tokencount) {
 								
 							if ((arb > .025 && arb <= 10)){// || debug == true) {
 									console.log('ed arb!');
+									console.log('');
+									console.log('ed arb!');
+									console.log('');
+									console.log('ed arb!');
+									console.log('');
+									console.log('ed arb!');
+									console.log('');			
+									console.log('ed arb!');
+
 									fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "," + threshold + "\n", function(err) {
 										console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
 										if (err) {
