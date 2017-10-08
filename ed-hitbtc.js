@@ -121,7 +121,7 @@ function lala123(tokencount) {
         console.log(count);
         go = false;
         console.log(tokens[count]);
-        lala321(tokens[0], 0);
+        lala321(tokens[0], 0, 0);
       //  withdraw();
       //  senditback();
       //  depositDatEth();
@@ -129,7 +129,7 @@ function lala123(tokencount) {
     });
 }
 
-function lala321(tokenAddr, tokencount) {
+function lala321(tokenAddr, tokencount, checker) {
 
     console.log(currentValue[tokencount]);
 
@@ -191,8 +191,8 @@ function lala321(tokenAddr, tokencount) {
                                     }
                                     var threshold = parseFloat(qty); // / 10;
 									if (debug == true){
-										threshold = 1;
-										console.log('debug threshold: ' + threshold);
+										threshold = .1 * checker;
+										console.log('debug threshold: ' + threshold + ', modifier: ' + checker);
 									}
                                     console.log(tokenAddr);
                                     console.log(threshold);
@@ -314,10 +314,19 @@ function lala321(tokenAddr, tokencount) {
 							go = true;
 							if (tokencount < (tokens.length - 1)) {
 								console.log('do more');
-								lala321(tokens[tokencount + 1], tokencount + 1);
+								lala321(tokens[tokencount + 1], tokencount + 1, checker);
 							} else {
 								console.log('done');
-								lala321(tokens[0], 0);
+								if (debug == true && checker <= 10){
+								lala321(tokens[0], 0, checker + 1);
+								}
+								else if (debug == true && checker > 10){
+								lala321(tokens[0], 0, 0);
+									
+								}
+								else if (debug == false){
+								lala321(tokens[0], 0, 0);
+								}
 							}
                         });
                     });
@@ -330,9 +339,9 @@ function lala321(tokenAddr, tokencount) {
             } catch (err) {
                 go = true;
                 if (tokencount < tokens.length) {
-                    lala321(tokens[tokencount + 1], tokencount + 1);
+                    lala321(tokens[tokencount + 1], tokencount + 1, checker);
                 } else {
-                    lala321(tokens[0], 0);
+                    lala321(tokens[0], 0, checker);
                 }
                 console.log(err);
             }
@@ -340,7 +349,7 @@ function lala321(tokenAddr, tokencount) {
     } catch (err) {
         console.log(err);
         setTimeout(function() {
-            lala321(tokenAddr, tokencount);
+            lala321(tokenAddr, tokencount, checker);
         }, Math.floor((Math.random() * 120000) + 8000))
         go = true;
 
