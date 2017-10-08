@@ -121,7 +121,7 @@ function lala123(tokencount) {
         console.log(count);
         go = false;
         console.log(tokens[count]);
-        lala321(tokens[0], 0, 0);
+        lala321(tokens[0], 0, 1);
       //  withdraw();
       //  senditback();
       //  depositDatEth();
@@ -321,11 +321,11 @@ function lala321(tokenAddr, tokencount, checker) {
 								lala321(tokens[0], 0, checker + 1);
 								}
 								else if (debug == true && checker > 10){
-								lala321(tokens[0], 0, 0);
+								lala321(tokens[0], 0, 1);
 									
 								}
 								else if (debug == false){
-								lala321(tokens[0], 0, 0);
+								lala321(tokens[0], 0, 1);
 								}
 							}
                         });
