@@ -286,7 +286,9 @@ function lala321(tokenAddr, tokencount) {
 										});
                                         try {
                                             if (threshold > .01){// || debug == true) {
+												if (debug == false){
                                                 buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
+												}
                                                 //sleep(220000);
                                             }
                                         } catch (err) {
