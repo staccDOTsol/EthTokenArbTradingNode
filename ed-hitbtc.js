@@ -210,7 +210,7 @@ function lala321(tokenAddr, tokencount) {
                                         sellTotal = sellTotal + (data4['asks'][sells][1] * data4['asks'][sells][0]);
 
                                         ////console.log(sellTotal);
-                                        if (sellTotal >= qty) {
+                                        if (sellTotal >= threshold) {
                                             sellDone = true;
                                             sellPrice = data4['asks'][sells][0];
                                             /*//console.log(sellPrice);
