@@ -203,14 +203,16 @@ function lala321(tokenAddr, tokencount) {
                                     for (var sells in data4['asks']) {
                                         if (sells == (data4['asks'].length - 1)) {
                                             sellDone = true;
-                                            break;
+                                            console.log('sells length');
                                             sellPrice = 1000000;
-
+											break;
+											
                                         }
                                         sellTotal = sellTotal + (data4['asks'][sells][1] * data4['asks'][sells][0]);
 
-                                        ////console.log(sellTotal);
+                                        console.log(sellTotal);
                                         if (sellTotal >= threshold) {
+                                            console.log('threshold');
                                             sellDone = true;
                                             sellPrice = data4['asks'][sells][0];
                                             /*//console.log(sellPrice);
