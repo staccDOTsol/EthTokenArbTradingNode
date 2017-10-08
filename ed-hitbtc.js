@@ -41,10 +41,12 @@ var lineReader2 = require('readline').createInterface({
 var hitKey = "";
 var hitSecret = "";
 var linecount = 0;
+var user = "";
+var pass = "";
 lineReader2.on('line', function(line) {
     console.log(line);
     if (linecount == 0) {
-        var user = line;
+        user = line;
     } else if (linecount == 1) {
         privateKey = line;
     } else if (linecount == 2) {
@@ -52,7 +54,7 @@ lineReader2.on('line', function(line) {
     } else if (linecount == 3) {
         hitSecret = line;
     } else if (linecount == 4){
-		var pass = line;
+		pass = line;
 	}
     linecount++;
 });
