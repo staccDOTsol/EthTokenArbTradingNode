@@ -6,7 +6,7 @@ var cheerio = require('cheerio');
 var doc = new GoogleSpreadsheet('1IIOlhYnF-5m2Wdqku0NWTdKi2f4-Ts6XC8_OlWmONbU');
 var sheet;
 var math = require("mathjs");
-var dodeposit = true;
+var dodeposit2 = true;
 var BigNumber = require("bignumber.js");
 var dowithdraw = true;
 var dosenditback = true;
@@ -182,6 +182,7 @@ function lala321(tokenAddr, tokencount) {
                                     console.log('qty! ' + qty);
                                     if (qty >= 0.001) {
 										dodeposit = true;
+										dodeposit2 = true;
                                         dosenditback = true;
                                     }
                                     var threshold = parseFloat(qty); // / 10;
@@ -223,7 +224,7 @@ function lala321(tokenAddr, tokencount) {
                                             //console.log(data6['buys'][buys]);
                                             console.log(buyTotal);
                                             edBuys[buys] = {};
-                                            edBuys[buys]['available'] = data6['buys'][buys]['availableVolumeBase'];
+                                            edBuys[buys]['available'] = data6['buys'][buys]['availableVolume'];
                                             edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
                                             edBuys[buys]['v'] = data6['buys'][buys]['v'];
                                             edBuys[buys]['r'] = data6['buys'][buys]['r'];
@@ -239,7 +240,7 @@ function lala321(tokenAddr, tokencount) {
                                                 buyPrice = 0;
 
                                             }
-                                            buyTotal = buyTotal + parseFloat(data6['buys'][buys]['availableVolumeBase']);
+                                            buyTotal = buyTotal + parseFloat(data6['buys'][buys]['availableVolume']);
                                             if (buyTotal >= tokenBal) {
                                                 buyDone = true;
                                                 buyPrice = data6['buys'][buys]['price'];
@@ -248,8 +249,8 @@ function lala321(tokenAddr, tokencount) {
                                             }
                                         }
                                     }
-                                    break;
 
+                                    break;
                                 }
                                 console.log(bps);
                                 console.log(sps);
@@ -281,10 +282,12 @@ function lala321(tokenAddr, tokencount) {
                                 withdraw(tokenAddr, tokencount, threshold, edBuys, winBp);
                                 senditback(tokenAddr, tokencount, threshold, edBuys, winBp);
                                 depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, decimals[tokencount], qty);
-                                if (tokencount == tokens.length) {
-                                    lala321(tokens[0], 0);
-                                } else {
+                                if (tokencount < (tokens.length - 1)) {
+									console.log('do more');
                                     lala321(tokens[tokencount + 1], tokencount + 1);
+                                } else {
+									console.log('done');
+                                    lala321(tokens[0], 0);
                                 }
                             });
                         });
@@ -292,11 +295,11 @@ function lala321(tokenAddr, tokencount) {
                 }
             } catch (err) {
                 go = true;
-                if (tokencount == tokens.length) {
-                    lala321(tokens[0], 0);
-                } else {
-                    lala321(tokens[tokencount + 1], tokencount + 1);
-                }
+                if (tokencount < tokens.length) {
+                                    lala321(tokens[tokencount + 1], tokencount + 1);
+                                } else {
+                                    lala321(tokens[0], 0);
+                                }
                 console.log(err);
             }
         });
@@ -308,8 +311,8 @@ function lala321(tokenAddr, tokencount) {
 }
 
 function depositDatEth(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty) {
-	if (dodeposit == true){
-		dodeposit = false;
+	if (dodeposit2 == true){
+		dodeposit2 = false;
 		var uri = '/api/2/account/balance';
 		var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
 		console.log(uri);
@@ -452,8 +455,11 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
 
 function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
     if (dodeposit == true) {
+		console.log('depositit = true');
         dodeposit = false;
         request('https://etherscan.io/address/' + tokenAddr + '#code', function(error, response, html) {
+			if (error)
+				console.log(error);
             if (!error && response.statusCode == 200) {
                 if (!error && response.statusCode == 200) {
                     var $ = cheerio.load(html);
@@ -468,9 +474,6 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                             var tokenBal = data['result'];
                             console.log(decimals);
                             var tokenThreshold = (1 * Math.pow(10, decimals));
-                            var tokenWhole = tokenBal / Math.pow(10, decimals);
-                            var token1 = (tokenWhole * 1).toFixed(3);
-                            tokenBal = token1 * Math.pow(10, decimals);
                             console.log('deposit bal: ' + tokenBal + ' threshold: ' + tokenThreshold);
                             if (tokenBal <= tokenThreshold) {
                                 setTimeout(function() {
@@ -552,7 +555,8 @@ function senditback(tokenAddr, tokencount, threshold, edBuys, winBp) {
 function withdraw(tokenAddr, tokencount, threshold, edBuys, winBp) {
     var callData = contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
         var tokenBal = data;
-        if (tokenBal <= (.04 * Math.pow(10, 18))) {
+		console.log('withdraw withdraw');
+        if (tokenBal <= (.01 * Math.pow(10, 18))) {
             setTimeout(function() {
                 withdraw(tokenAddr, tokencount, threshold, edBuys, winBp);
             }, Math.floor((Math.random() * 120000) + 8000))
@@ -578,7 +582,7 @@ function withdraw(tokenAddr, tokencount, threshold, edBuys, winBp) {
 function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp) {
     var callData = contract.methods.balanceOf(tokenAddr, user).call().then(function(data) {
         var tokenBal = data;
-        if (tokenBal <= (1.1 * Math.pow(10, decimals[tokencount]))) {
+        if (tokenBal <= (.09 * Math.pow(10, decimals[tokencount]))) {
             setTimeout(function() {
                 sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
             }, Math.floor((Math.random() * 120000) + 8000))
@@ -599,11 +603,12 @@ function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp) {
             var buytotal = 0;
             var buy = 0;
             console.log('edbuys length' + edBuys.length);
-            console.log('available: ' + new BigNumber(edBuys[buy]['available']) / winBp);
+			console.log(edBuys);
+            console.log('available: ' + new BigNumber(edBuys[buy]['available']));
             while (buy < edBuys.length) {
                 console.log(edBuys[buy]);
                 console.log('tokenbal: ' + Number(tokenBal));
-                if ((new BigNumber(edBuys[buy]['available']) / winBp) >= parseFloat(tokenBal)) {
+                if ((new BigNumber(edBuys[buy]['available'])) >= parseFloat(tokenBal)) {
                     buytotal = buytotal + new BigNumber(edBuys[buy]['available']);
 
 
