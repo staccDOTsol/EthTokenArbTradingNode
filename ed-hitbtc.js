@@ -198,7 +198,8 @@ function lala321(tokenAddr, tokencount) {
                                     console.log(threshold);
                                 }
                             }
-							console.log('lala?');
+							sellDone = false;
+							buyDone = false;
                             try {
                                 while (sellDone == false) {
                                     for (var sells in data4['asks']) {
@@ -225,6 +226,8 @@ function lala321(tokenAddr, tokencount) {
                                             break;
                                         }
                                     }
+									sellDone = true;
+									break;
                                 }
                             } catch (err) {console.log(err);}
 							try {
@@ -263,6 +266,7 @@ function lala321(tokenAddr, tokencount) {
 											}
 										}
 									}
+									buyDone = true;
 
 									break;
 								}
