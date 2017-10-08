@@ -190,6 +190,7 @@ function lala321(tokenAddr, tokencount) {
                                     console.log(threshold);
                                 }
                             }
+								try{
                             while (sellDone == false) {
                                 for (var sells in data4['asks']) {
                                     if (sells == data4['asks'].length) {
@@ -213,9 +214,12 @@ function lala321(tokenAddr, tokencount) {
                                         break;
                                     }
                                 }
+								}
                             }
+								catch (err){}
                             var callData = contract.methods.balanceOf(tokenAddr, user).call().then(function(data) {
                                 var tokenBal = data;
+								try{
                                 while (buyDone == false) {
                                     for (var buys in data6['buys']) {
                                         if (data6['buys'][buys]['ethAvailableVolume'] <= 0.05) {
@@ -252,6 +256,8 @@ function lala321(tokenAddr, tokencount) {
 
                                     break;
                                 }
+								}
+								catch (err){}
                                 console.log(bps);
                                 console.log(sps);
                                 if (sps != 10 && bps != 0) {
@@ -260,7 +266,7 @@ function lala321(tokenAddr, tokencount) {
                                     var winBp = bps;
                                     console.log(arb);
                                     debug = false;
-                                    if ((arb > .004 && arb <= 10) || debug == true) {
+                                    if ((arb > .01 && arb <= 10) || debug == true) {
                                         console.log('ed arb!');
 
                                         try {
@@ -458,8 +464,11 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
 		console.log('depositit = true');
         dodeposit = false;
         request('https://etherscan.io/address/' + tokenAddr + '#code', function(error, response, html) {
-			if (error)
-				console.log(error);
+			if (error){
+				                                setTimeout(function() {
+                                    depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
+                                }, Math.floor((Math.random() * 120000) + 8000))
+			}
             if (!error && response.statusCode == 200) {
                 if (!error && response.statusCode == 200) {
                     var $ = cheerio.load(html);
@@ -471,6 +480,11 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                             method: 'GET',
                             json: true,
                         }, (error, response, data) => {
+							if (error){
+								                                setTimeout(function() {
+                                    depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
+                                }, Math.floor((Math.random() * 120000) + 8000))
+							}
                             var tokenBal = data['result'];
                             console.log(decimals);
                             var tokenThreshold = (1 * Math.pow(10, decimals));
