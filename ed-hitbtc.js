@@ -3,41 +3,36 @@ var debug = true; // false for production
 var request = require("request")
 var sleep = require('system-sleep');
 var cheerio = require('cheerio');
-
 var math = require("mathjs");
-var dodeposit2 = true;
 var BigNumber = require("bignumber.js");
-var dowithdraw = true;
-var dosenditback = true;
 var request = require("request");
-const sha256 = require('js-sha256').sha256;
-const ethUtil = require('ethereumjs-util');
 var sleep = require('system-sleep');
 var crypto = require("crypto");
 var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var Eth = require('web3-eth');
-const wei = 1000000000000000000;
-var SOME_EXIT_CONDITION = false;
-(function wait() {
-    //if (!SOME_EXIT_CONDITION) setTimeout(wait, 1000);
-})();
-// "Eth.providers.givenProvider" will be set if in an Ethereum supported browser.
 var eth = new Eth(Eth.givenProvider || 'http://localhost:8545');
 
+var dodeposit = true;
+var dodeposit2 = true;
+var dowithdraw = true;
+var dosenditback = true;
+const wei = 1000000000000000000;
 var contractABI = require('./etherdelta.json');
 var dosenditback = true;
 var contract = new eth.Contract(contractABI, "0x8d12a197cb00d4747a1fe03395095ce2a5cc6819");
 
-var fs = require('fs');
-var lineReader2 = require('readline').createInterface({
-    input: require('fs').createReadStream("private_keys.pem")
-});
 var hitKey = "";
 var hitSecret = "";
 var linecount = 0;
 var user = "";
 var pass = "";
+var fs = require('fs');
+var go = true;
+
+var lineReader2 = require('readline').createInterface({
+    input: require('fs').createReadStream("private_keys.pem")
+});
 lineReader2.on('line', function(line) {
     console.log(line);
     if (linecount == 0) {
@@ -53,11 +48,6 @@ lineReader2.on('line', function(line) {
 	}
     linecount++;
 });
-//const options = commandLineArgs(optionDefinitions)
-var lineReader = require('readline').createInterface({
-    input: require('fs').createReadStream('decimals.csv')
-});
-var dodeposit = true;
 var tokens2 = [];
 var decimals2 = [];
 var currentValue2 = [];
@@ -69,6 +59,9 @@ var count2 = 0;
 var lots = [];
 var steps = [];
 var precises = [];
+var lineReader = require('readline').createInterface({
+    input: require('fs').createReadStream('decimals.csv')
+});
 lineReader.on('line', function(line) {
     if (line.indexOf('currentValue') == -1) {
         currentValue2[count2] = line.split(',')[0];
@@ -81,7 +74,6 @@ lineReader.on('line', function(line) {
 setTimeout(function() {
     lala123(0);
 }, 1500)
-var go = true;
 
 function lala123(tokencount) {
     var lalaurl = "https://api.hitbtc.com/api/1/public/symbols";
