@@ -275,7 +275,6 @@ function lala321(tokenAddr, tokencount) {
                                     var winSp = sps;
                                     var winBp = bps;
                                     console.log(arb);
-                                    debug = false;
 									
                                     if ((arb > .025 && arb <= 10) || debug == true) {
                                         console.log('ed arb!');
