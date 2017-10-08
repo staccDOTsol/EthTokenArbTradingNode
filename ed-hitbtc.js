@@ -224,97 +224,93 @@ function lala321(tokenAddr, tokencount) {
                                     }
                                 }
                             } catch (err) {}
-                            var callData = contract.methods.balanceOf(tokenAddr, user).call().then(function(data) {
-                                var tokenBal = data;
-                                try {
-                                    while (buyDone == false) {
-                                        for (var buys in data6['buys']) {
-                                            if (data6['buys'][buys]['ethAvailableVolume'] <= 0.05) {
-                                                console.log('useless....');
-                                            } else {
-                                                //console.log(data6['buys'][buys]);
-                                                console.log(buyTotal);
-                                                edBuys[buys] = {};
-                                                edBuys[buys]['available'] = data6['buys'][buys]['availableVolume'];
-                                                edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
-                                                edBuys[buys]['v'] = data6['buys'][buys]['v'];
-                                                edBuys[buys]['r'] = data6['buys'][buys]['r'];
-                                                edBuys[buys]['expires'] = data6['buys'][buys]['expires'];
-                                                edBuys[buys]['s'] = data6['buys'][buys]['s'];
-                                                edBuys[buys]['user'] = data6['buys'][buys]['user'];
-                                                edBuys[buys]['amountGet'] = math.bignumber(Number(data6['buys'][buys]['amountGet'])).toFixed(); //tokens
-                                                edBuys[buys]['amountGive'] = math.bignumber(Number(data6['buys'][buys]['amountGive'])).toFixed(); //eth
-                                                //console.log(edBuys);
-												if (debug == true){
-													tokenBal = 1 / data6['buys'][buys]['price'];
-													console.log('debug tokenbal: ' + tokenBal);
-												}
-                                                if (buys == data6['buys'].length) {
-                                                    buyDone = true;
-                                                    break;
-                                                    buyPrice = 0;
+							try {
+								while (buyDone == false) {
+									for (var buys in data6['buys']) {
+										if (data6['buys'][buys]['ethAvailableVolume'] <= 0.05) {
+											console.log('useless....');
+										} else {
+											//console.log(data6['buys'][buys]);
+											console.log(buyTotal);
+											edBuys[buys] = {};
+											edBuys[buys]['available'] = data6['buys'][buys]['availableVolume'];
+											edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
+											edBuys[buys]['v'] = data6['buys'][buys]['v'];
+											edBuys[buys]['r'] = data6['buys'][buys]['r'];
+											edBuys[buys]['expires'] = data6['buys'][buys]['expires'];
+											edBuys[buys]['s'] = data6['buys'][buys]['s'];
+											edBuys[buys]['user'] = data6['buys'][buys]['user'];
+											edBuys[buys]['amountGet'] = math.bignumber(Number(data6['buys'][buys]['amountGet'])).toFixed(); //tokens
+											edBuys[buys]['amountGive'] = math.bignumber(Number(data6['buys'][buys]['amountGive'])).toFixed(); //eth
+											//console.log(edBuys);
+											var tokenBal = threshold / data6['buys'][buys]['price'];
+											console.log('the tokenbal: ' + tokenBal);
+											if (buys == data6['buys'].length) {
+												buyDone = true;
+												break;
+												buyPrice = 0;
 
-                                                }
-                                                buyTotal = buyTotal + parseFloat(data6['buys'][buys]['availableVolume']);
-                                                if (buyTotal >= tokenBal) {
-                                                    buyDone = true;
-                                                    buyPrice = data6['buys'][buys]['price'];
-                                                    var bps = buyPrice;
-                                                    break;
-                                                }
-                                            }
-                                        }
-
-                                        break;
-                                    }
-                                } catch (err) {}
-                                console.log(bps);
-                                console.log(sps);
-                                if (sps != 10 && bps != 0) {
-                                    var arb = -1 * (1 - (bps / sps));
-                                    var winSp = sps;
-                                    var winBp = bps;
-                                    console.log(arb);
-									
-								if ((arb > .025 && arb <= 10)){// || debug == true) {
-                                        console.log('ed arb!');
-										fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "\n", function(err) {
-											console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
-											if (err) {
-												return console.log(err);
 											}
-										});
-                                        try {
-                                            if (threshold > .01){// || debug == true) {
-												if (debug == false){
-                                                buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
-												}
-                                                //sleep(220000);
-                                            }
-                                        } catch (err) {
-                                            console.log(err);
-                                        }
+											buyTotal = buyTotal + parseFloat(data6['buys'][buys]['availableVolume']);
+											if (buyTotal >= tokenBal) {
+												buyDone = true;
+												buyPrice = data6['buys'][buys]['price'];
+												var bps = buyPrice;
+												break;
+											}
+										}
+									}
 
-
-                                    }
-
-                                }
-                                go = true;
-								if (debug != true){
-									depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
-									sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+									break;
 								}
-                                if (tokencount < (tokens.length - 1)) {
-                                    console.log('do more');
-                                    lala321(tokens[tokencount + 1], tokencount + 1);
-                                } else {
-                                    console.log('done');
-                                    lala321(tokens[0], 0);
-                                }
-                            });
+							} catch (err) {}
+							console.log(bps);
+							console.log(sps);
+							if (sps != 10 && bps != 0) {
+								var arb = -1 * (1 - (bps / sps));
+								var winSp = sps;
+								var winBp = bps;
+								console.log(arb);
+								
+							if ((arb > .025 && arb <= 10)){// || debug == true) {
+									console.log('ed arb!');
+									fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "\n", function(err) {
+										console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
+										if (err) {
+											return console.log(err);
+										}
+									});
+									try {
+										if (threshold > .01){// || debug == true) {
+											if (debug == false){
+											buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
+											}
+											//sleep(220000);
+										}
+									} catch (err) {
+										console.log(err);
+									}
+
+
+								}
+
+							}
+							go = true;
+							if (tokencount < (tokens.length - 1)) {
+								console.log('do more');
+								lala321(tokens[tokencount + 1], tokencount + 1);
+							} else {
+								console.log('done');
+								lala321(tokens[0], 0);
+							}
                         });
                     });
                 }
+				
+				if (debug != true){
+					depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
+					sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+				}
             } catch (err) {
                 go = true;
                 if (tokencount < tokens.length) {
