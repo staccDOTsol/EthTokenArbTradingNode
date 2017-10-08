@@ -201,7 +201,7 @@ function lala321(tokenAddr, tokencount) {
                             try {
                                 while (sellDone == false) {
                                     for (var sells in data4['asks']) {
-                                        if (sells == data4['asks'].length) {
+                                        if (sells == (data4['asks'].length - 1)) {
                                             sellDone = true;
                                             break;
                                             sellPrice = 1000000;
@@ -245,7 +245,7 @@ function lala321(tokenAddr, tokencount) {
 											//console.log(edBuys);
 											var tokenBal = threshold / data6['buys'][buys]['price'];
 											console.log('the tokenbal: ' + tokenBal);
-											if (buys == data6['buys'].length) {
+											if (buys == (data6['buys'].length - 1)) {
 												buyDone = true;
 												break;
 												buyPrice = 0;
