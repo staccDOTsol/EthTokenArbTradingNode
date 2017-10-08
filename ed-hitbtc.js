@@ -12,7 +12,6 @@ var dodeposit2 = true;
 var BigNumber = require("bignumber.js");
 var dowithdraw = true;
 var dosenditback = true;
-const user = '0x5100DAdF11113B0730829d2047B9df4DA1d80e68';
 var request = require("request");
 const sha256 = require('js-sha256').sha256;
 const ethUtil = require('ethereumjs-util');
@@ -45,12 +44,16 @@ var linecount = 0;
 lineReader2.on('line', function(line) {
     console.log(line);
     if (linecount == 0) {
-        privateKey = line;
+        var user = line;
     } else if (linecount == 1) {
-        hitKey = line;
+        privateKey = line;
     } else if (linecount == 2) {
+        hitKey = line;
+    } else if (linecount == 3) {
         hitSecret = line;
-    }
+    } else if (linecount == 4){
+		var pass = line;
+	}
     linecount++;
 });
 var isWin = /^win/.test(process.platform);
@@ -135,7 +138,7 @@ function lala321(tokenAddr, tokencount, checker) {
 
     //console.log(tokens);
     try {
-        web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
+        web3.eth.personal.unlockAccount(user, pass, 120000);
         //console.log(err);
         
         
@@ -547,18 +550,18 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                                         depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
                                     }, Math.floor((Math.random() * 120000) + 8000))
                                 } else {
-                                    web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
+                                    web3.eth.personal.unlockAccount(user, pass, 120000);
                                     console.log('depositToken: ' + tokenBal);
                                     var contract2 = new eth.Contract(JSON.parse(a.text()), tokenAddr);
                                     contract2.methods.approve("0x8d12a197cb00d4747a1fe03395095ce2a5cc6819", (tokenBal)).send({
-                                        from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                                        from: user,
                                         gas: 250000,
                                         gasPrice: "10000000000"
                                     }).then(function(data) {
 
                                     });
                                     contract.methods.depositToken(tokenAddr, (tokenBal)).send({
-                                        from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                                        from: user,
                                         gas: 250000,
                                         gasPrice: "10000000000"
                                     }).then(function(data) {
@@ -585,7 +588,7 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
 function senditback() {
     try {
         if (dosenditback == true) {
-            web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
+            web3.eth.personal.unlockAccount(user, pass, 120000);
 
             eth.getBalance(user, function(error, tokenBal) {
 
@@ -645,7 +648,7 @@ function withdraw() {
                 } else {
                     dowithdraw = false;
                     contract.methods.withdraw(tokenBal).send({
-                        from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                        from: user,
                         gas: 250000,
                         gasPrice: "10000000000"
                     }).then(function(data) {
@@ -689,7 +692,7 @@ function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp) {
                 const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
                 const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
                 const tokenGive = tokenAddr; // 0x0 address means ETH
-                web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
+                web3.eth.personal.unlockAccount(user, pass, 120000);
                 var buytotal = 0;
                 var buy = 0;
                 console.log('edbuys length' + edBuys.length);
@@ -705,7 +708,7 @@ function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp) {
                         tokenBal = (tokenBal * .997);
                         console.log('buytotal max: ' + buytotal);
                         contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(tokenBal)).send({
-                            from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                            from: user,
                             gas: 250000,
                             gasPrice: "10000000000"
                         }).then(function(data) {
@@ -721,7 +724,7 @@ function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp) {
                         console.log('buytotal +1');
 
                         contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(edBuys[buy]['available'])).send({
-                            from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                            from: user,
                             gas: 250000,
                             gasPrice: "10000000000"
                         }).then(function(data) {
