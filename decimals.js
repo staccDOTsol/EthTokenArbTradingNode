@@ -29,7 +29,7 @@ function decimalWrite(x, data) {
                 method: 'GET',
                 json: true,
             }, (error, response, body) => {
-				if (currentValue != "ETH"){
+				if (currentValue != "ETH" && currentValue != "CAT"){
                 fs.appendFile("decimals.csv", currentValue + "," + tokenAddr + "," + body.decimals + "\n", function(err) {
                     console.log(currentValue + "," + tokenAddr + "," + body.decimals);
                     if (err) {
@@ -43,6 +43,7 @@ function decimalWrite(x, data) {
                     }
                 });
 				}
+				
             });
         } else {
             x++; //1

@@ -296,6 +296,9 @@ function lala(tokenAddr, tokencount){
 				contract.methods.trade(tokenGive,  (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'],edBuys[buy]['r'],edBuys[buy]['s'],(tokenBal * .997)).send({from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68", gas: 250000,gasPrice: "16000000000"}).then(function(data) {
 				console.log(data);
 			});
+setTimeout(function() {
+					sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+				}, 8000)
 			break;
 			}
 			}
