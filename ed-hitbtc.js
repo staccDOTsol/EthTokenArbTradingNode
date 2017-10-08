@@ -191,7 +191,7 @@ function lala321(tokenAddr, tokencount) {
                                     }
                                     var threshold = parseFloat(qty); // / 10;
 									if (debug == true){
-										threshold = 2;
+										threshold = 3;
 										console.log('debug threshold: ' + threshold);
 									}
                                     console.log(tokenAddr);
@@ -274,7 +274,7 @@ function lala321(tokenAddr, tokencount) {
 								
 							if ((arb > .025 && arb <= 10)){// || debug == true) {
 									console.log('ed arb!');
-									fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "\n", function(err) {
+									fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "," + threshold + "\n", function(err) {
 										console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
 										if (err) {
 											return console.log(err);

@@ -7,18 +7,18 @@ sleep 5s
 while :
 do
 
-if [ $(ps -ef | grep -v grep | grep CDT | wc -l) -lt 1 ]; then
+if [ $(ps -ef | grep -v grep | grep ed-hitbtc | wc -l) -lt 1 ]; then
 
     echo "less than 1 running"
 	sleep 5s
 
-   node etherselfarb.js &>/dev/null &
+   node ed-hitbtc.js &>/dev/null &
 
 
 sleep 5m
 
 
-   node etherselfarb.js &>/dev/null &
+   node ed-hitbtc.js &>/dev/null &
 
 
 #node jare-arb.js -s 3 -m 22 &>/dev/null &
