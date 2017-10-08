@@ -251,7 +251,7 @@ function lala321(tokenAddr, tokencount) {
 												buyPrice = 0;
 
 											}
-											buyTotal = buyTotal + parseFloat(data6['buys'][buys]['availableVolume']);
+											buyTotal = buyTotal + (parseFloat(data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]));
 											if (buyTotal >= tokenBal) {
 												buyDone = true;
 												buyPrice = data6['buys'][buys]['price'];
