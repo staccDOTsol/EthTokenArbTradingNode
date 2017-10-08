@@ -276,7 +276,7 @@ function lala321(tokenAddr, tokencount) {
                                     var winBp = bps;
                                     console.log(arb);
 									
-                                    if ((arb > .025 && arb <= 10) || debug == true) {
+								if ((arb > .025 && arb <= 10)){// || debug == true) {
                                         console.log('ed arb!');
 										fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "\n", function(err) {
 											console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
