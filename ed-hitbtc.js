@@ -191,7 +191,7 @@ function lala321(tokenAddr, tokencount) {
                                     }
                                     var threshold = parseFloat(qty); // / 10;
 									if (debug == true){
-										threshold = 1;
+										threshold = 2;
 										console.log('debug threshold: ' + threshold);
 									}
                                     console.log(tokenAddr);
