@@ -120,10 +120,10 @@ function lala123(tokencount) {
         go = false;
         console.log(tokens[count]);
         lala321(tokens[0], 0);
-                                withdraw();
-                                senditback();
-                                depositDatEth();
-		
+        withdraw();
+        senditback();
+        depositDatEth();
+
     });
 }
 
@@ -185,8 +185,8 @@ function lala321(tokenAddr, tokencount) {
                                     var qty = (parseFloat(body[currency]['available']) * .99).toFixed(precises[tokencount]); // TODO Fix to .99
                                     console.log('qty! ' + qty);
                                     if (qty >= 0.001) {
-										dodeposit = true;
-										dodeposit2 = true;
+                                        dodeposit = true;
+                                        dodeposit2 = true;
                                         dosenditback = true;
                                     }
                                     var threshold = parseFloat(qty); // / 10;
@@ -194,74 +194,72 @@ function lala321(tokenAddr, tokencount) {
                                     console.log(threshold);
                                 }
                             }
-								try{
-                            while (sellDone == false) {
-                                for (var sells in data4['asks']) {
-                                    if (sells == data4['asks'].length) {
-                                        sellDone = true;
-                                        break;
-                                        sellPrice = 1000000;
+                            try {
+                                while (sellDone == false) {
+                                    for (var sells in data4['asks']) {
+                                        if (sells == data4['asks'].length) {
+                                            sellDone = true;
+                                            break;
+                                            sellPrice = 1000000;
 
-                                    }
-                                    sellTotal = sellTotal + (data4['asks'][sells][1] * data4['asks'][sells][0]);
+                                        }
+                                        sellTotal = sellTotal + (data4['asks'][sells][1] * data4['asks'][sells][0]);
 
-                                    ////console.log(sellTotal);
-                                    if (sellTotal >= qty) {
-                                        sellDone = true;
-                                        sellPrice = data4['asks'][sells][0];
-                                        /*//console.log(sellPrice);
-                                        cells[13].value = sellPrice.toString();
-                                        cells[15].value = sellTotal.toString();
-                                        cells[13].save();
-                                        cells[15].save();*/
-                                        var sps = sellPrice;
-                                        break;
-                                    }
-                                }
-								}
-                            }
-								catch (err){}
-                            var callData = contract.methods.balanceOf(tokenAddr, user).call().then(function(data) {
-                                var tokenBal = data;
-								try{
-                                while (buyDone == false) {
-                                    for (var buys in data6['buys']) {
-                                        if (data6['buys'][buys]['ethAvailableVolume'] <= 0.05) {
-                                            console.log('useless....');
-                                        } else {
-                                            //console.log(data6['buys'][buys]);
-                                            console.log(buyTotal);
-                                            edBuys[buys] = {};
-                                            edBuys[buys]['available'] = data6['buys'][buys]['availableVolume'];
-                                            edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
-                                            edBuys[buys]['v'] = data6['buys'][buys]['v'];
-                                            edBuys[buys]['r'] = data6['buys'][buys]['r'];
-                                            edBuys[buys]['expires'] = data6['buys'][buys]['expires'];
-                                            edBuys[buys]['s'] = data6['buys'][buys]['s'];
-                                            edBuys[buys]['user'] = data6['buys'][buys]['user'];
-                                            edBuys[buys]['amountGet'] = math.bignumber(Number(data6['buys'][buys]['amountGet'])).toFixed(); //tokens
-                                            edBuys[buys]['amountGive'] = math.bignumber(Number(data6['buys'][buys]['amountGive'])).toFixed(); //eth
-                                            //console.log(edBuys);
-                                            if (buys == data6['buys'].length) {
-                                                buyDone = true;
-                                                break;
-                                                buyPrice = 0;
-
-                                            }
-                                            buyTotal = buyTotal + parseFloat(data6['buys'][buys]['availableVolume']);
-                                            if (buyTotal >= tokenBal) {
-                                                buyDone = true;
-                                                buyPrice = data6['buys'][buys]['price'];
-                                                var bps = buyPrice;
-                                                break;
-                                            }
+                                        ////console.log(sellTotal);
+                                        if (sellTotal >= qty) {
+                                            sellDone = true;
+                                            sellPrice = data4['asks'][sells][0];
+                                            /*//console.log(sellPrice);
+                                            cells[13].value = sellPrice.toString();
+                                            cells[15].value = sellTotal.toString();
+                                            cells[13].save();
+                                            cells[15].save();*/
+                                            var sps = sellPrice;
+                                            break;
                                         }
                                     }
-
-                                    break;
                                 }
-								}
-								catch (err){}
+                            } catch (err) {}
+                            var callData = contract.methods.balanceOf(tokenAddr, user).call().then(function(data) {
+                                var tokenBal = data;
+                                try {
+                                    while (buyDone == false) {
+                                        for (var buys in data6['buys']) {
+                                            if (data6['buys'][buys]['ethAvailableVolume'] <= 0.05) {
+                                                console.log('useless....');
+                                            } else {
+                                                //console.log(data6['buys'][buys]);
+                                                console.log(buyTotal);
+                                                edBuys[buys] = {};
+                                                edBuys[buys]['available'] = data6['buys'][buys]['availableVolume'];
+                                                edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
+                                                edBuys[buys]['v'] = data6['buys'][buys]['v'];
+                                                edBuys[buys]['r'] = data6['buys'][buys]['r'];
+                                                edBuys[buys]['expires'] = data6['buys'][buys]['expires'];
+                                                edBuys[buys]['s'] = data6['buys'][buys]['s'];
+                                                edBuys[buys]['user'] = data6['buys'][buys]['user'];
+                                                edBuys[buys]['amountGet'] = math.bignumber(Number(data6['buys'][buys]['amountGet'])).toFixed(); //tokens
+                                                edBuys[buys]['amountGive'] = math.bignumber(Number(data6['buys'][buys]['amountGive'])).toFixed(); //eth
+                                                //console.log(edBuys);
+                                                if (buys == data6['buys'].length) {
+                                                    buyDone = true;
+                                                    break;
+                                                    buyPrice = 0;
+
+                                                }
+                                                buyTotal = buyTotal + parseFloat(data6['buys'][buys]['availableVolume']);
+                                                if (buyTotal >= tokenBal) {
+                                                    buyDone = true;
+                                                    buyPrice = data6['buys'][buys]['price'];
+                                                    var bps = buyPrice;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        break;
+                                    }
+                                } catch (err) {}
                                 console.log(bps);
                                 console.log(sps);
                                 if (sps != 10 && bps != 0) {
@@ -290,10 +288,10 @@ function lala321(tokenAddr, tokencount) {
                                 depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
                                 sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
                                 if (tokencount < (tokens.length - 1)) {
-									console.log('do more');
+                                    console.log('do more');
                                     lala321(tokens[tokencount + 1], tokencount + 1);
                                 } else {
-									console.log('done');
+                                    console.log('done');
                                     lala321(tokens[0], 0);
                                 }
                             });
@@ -303,142 +301,132 @@ function lala321(tokenAddr, tokencount) {
             } catch (err) {
                 go = true;
                 if (tokencount < tokens.length) {
-                                    lala321(tokens[tokencount + 1], tokencount + 1);
-                                } else {
-                                    lala321(tokens[0], 0);
-                                }
+                    lala321(tokens[tokencount + 1], tokencount + 1);
+                } else {
+                    lala321(tokens[0], 0);
+                }
                 console.log(err);
             }
         });
     } catch (err) {
         console.log(err);
+        setTimeout(function() {
+            lala321(tokenAddr, tokencount);
+        }, Math.floor((Math.random() * 120000) + 8000))
         go = true;
-        lala321(tokenAddr, tokencount);
+
     }
 }
 
 function depositDatEth() {
-	if (dodeposit2 == true){
-		dodeposit2 = false;
-		var uri = '/api/2/account/balance';
-		var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
-		console.log(uri);
-		request({
-			url: 'https://api.hitbtc.com' + uri, //
-			method: 'GET',
-			headers: {
-				"Authorization": auth
-			},
-			json: true,
-		}, (error, response, bodycurrency) => {
-			//console.log(body);
-			for (var currency in bodycurrency) {
-				if (bodycurrency[currency]['currency'] == "ETH") {
+    try {
+        if (dodeposit2 == true) {
+            dodeposit2 = false;
+            var uri = '/api/2/account/balance';
+            var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+            console.log(uri);
+            request({
+                url: 'https://api.hitbtc.com' + uri, //
+                method: 'GET',
+                headers: {
+                    "Authorization": auth
+                },
+                json: true,
+            }, (error, response, bodycurrency) => {
+                //console.log(body);
+                for (var currency in bodycurrency) {
+                    if (bodycurrency[currency]['currency'] == "ETH") {
 
-					qty = (parseFloat(bodycurrency[currency]['available']));
-					if (qty > 0.01) {
-						var txObject1 = {
-							currency: "ETH",
-							amount: qty,
-							type: "bankToExchange"
-						};
-						console.log(txObject1);
-						var uri = '/api/2/account/transfer';
-						var options = {
-							url: 'https://api.hitbtc.com' + uri,
-							'json': true,
-							'method': 'POST',
-							headers: {
-								"Authorization": auth
-							},
-							'body': txObject1
+                        qty = (parseFloat(bodycurrency[currency]['available']));
+                        if (qty > 0.01) {
+                            var txObject1 = {
+                                currency: "ETH",
+                                amount: qty,
+                                type: "bankToExchange"
+                            };
+                            console.log(txObject1);
+                            var uri = '/api/2/account/transfer';
+                            var options = {
+                                url: 'https://api.hitbtc.com' + uri,
+                                'json': true,
+                                'method': 'POST',
+                                headers: {
+                                    "Authorization": auth
+                                },
+                                'body': txObject1
 
-						};
-						request(options, function(error, response, body) {
-	depositDatEth();
-						});
-					}
-				} else {
-					setTimeout(function() {
-						depositDatEth();
-					}, Math.floor((Math.random() * 120000) + 8000))
-				}
-			}
-		});
-	}
+                            };
+                            request(options, function(error, response, body) {
+                                setTimeout(function() {
+                                    depositDatEth();
+                                }, Math.floor((Math.random() * 120000) + 8000))
+                            });
+                        }
+                    } else {
+                        setTimeout(function() {
+                            depositDatEth();
+                        }, Math.floor((Math.random() * 120000) + 8000))
+                    }
+                }
+            });
+        }
+    } catch (err) {
+        setTimeout(function() {
+            depositDatEth();
+        }, Math.floor((Math.random() * 120000) + 8000))
+    }
 }
 
 
 function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty) {
-
-    var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
-    var n = require('nonce')();
-    const orderObject = {
-        clientOrderId: n().toString(),
-        symbol: currentValue + "ETH",
-        side: "buy",
-        price: parseFloat(winSp).toFixed(precise),
-        quantity: qty / parseFloat(winSp).toFixed(precise)
-    };
-    console.log(orderObject);
-    var uri = '/api/2/order';
-    var options = {
-        url: 'https://api.hitbtc.com' + uri,
-        'json': true,
-        'method': 'POST',
-        headers: {
-            "Authorization": auth
-        },
-        'body': orderObject
-
-    };
-    request(options, function(error, response, body) {
-        sleep(4000);
-        var uri = '/api/2/trading/balance';
-        console.log(uri);
-        request({
-            url: 'https://api.hitbtc.com' + uri, //
-            method: 'GET',
+    try {
+        var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+        var n = require('nonce')();
+        const orderObject = {
+            clientOrderId: n().toString(),
+            symbol: currentValue + "ETH",
+            side: "buy",
+            price: parseFloat(winSp).toFixed(precise),
+            quantity: qty / parseFloat(winSp).toFixed(precise)
+        };
+        console.log(orderObject);
+        var uri = '/api/2/order';
+        var options = {
+            url: 'https://api.hitbtc.com' + uri,
+            'json': true,
+            'method': 'POST',
             headers: {
                 "Authorization": auth
             },
-            json: true,
-        }, (error, response, bodycurrency) => {
-            //console.log(body);
-            for (var currency in bodycurrency) {
-                if (bodycurrency[currency]['currency'] == currentValue) {
+            'body': orderObject
 
-                    qty = (parseFloat(bodycurrency[currency]['available'])).toFixed(precise);
-                }
-            }
-            var txObject1 = {
-                currency: currentValue,
-                amount: qty,
-                type: "exchangeToBank"
-            };
-            console.log(txObject1);
-            var uri = '/api/2/account/transfer';
-            var options = {
-                url: 'https://api.hitbtc.com' + uri,
-                'json': true,
-                'method': 'POST',
+        };
+        request(options, function(error, response, body) {
+            sleep(4000);
+            var uri = '/api/2/trading/balance';
+            console.log(uri);
+            request({
+                url: 'https://api.hitbtc.com' + uri, //
+                method: 'GET',
                 headers: {
                     "Authorization": auth
                 },
-                'body': txObject1
+                json: true,
+            }, (error, response, bodycurrency) => {
+                //console.log(body);
+                for (var currency in bodycurrency) {
+                    if (bodycurrency[currency]['currency'] == currentValue) {
 
-            };
-            request(options, function(error, response, body) {
-                console.log(body);
-                sleep(4000);
-                var txObject2 = {
+                        qty = (parseFloat(bodycurrency[currency]['available'])).toFixed(precise);
+                    }
+                }
+                var txObject1 = {
                     currency: currentValue,
                     amount: qty,
-                    address: user,
-                    includeFee: true,
+                    type: "exchangeToBank"
                 };
-                console.log(txObject2);
-                var uri = '/api/2/account/crypto/withdraw';
+                console.log(txObject1);
+                var uri = '/api/2/account/transfer';
                 var options = {
                     url: 'https://api.hitbtc.com' + uri,
                     'json': true,
@@ -446,227 +434,280 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
                     headers: {
                         "Authorization": auth
                     },
-                    'body': txObject2
+                    'body': txObject1
 
                 };
                 request(options, function(error, response, body) {
                     console.log(body);
+                    sleep(4000);
+                    var txObject2 = {
+                        currency: currentValue,
+                        amount: qty,
+                        address: user,
+                        includeFee: true,
+                    };
+                    console.log(txObject2);
+                    var uri = '/api/2/account/crypto/withdraw';
+                    var options = {
+                        url: 'https://api.hitbtc.com' + uri,
+                        'json': true,
+                        'method': 'POST',
+                        headers: {
+                            "Authorization": auth
+                        },
+                        'body': txObject2
+
+                    };
+                    request(options, function(error, response, body) {
+                        console.log(body);
+                        setTimeout(function() {
+                            buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty);
+                        }, Math.floor((Math.random() * 120000) + 8000))
+                    });
+
                 });
 
             });
-
         });
-    });
-
-}
-
-function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
-    if (dodeposit == true) {
-		console.log('depositit = true');
-        dodeposit = false;
-        request('https://etherscan.io/address/' + tokenAddr + '#code', function(error, response, html) {
-			if (error){
-				                                setTimeout(function() {
-                                    depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-                                }, Math.floor((Math.random() * 120000) + 8000))
-			}
-            if (!error && response.statusCode == 200) {
-                if (!error && response.statusCode == 200) {
-                    var $ = cheerio.load(html);
-                    $('#js-copytextarea2').each(function(i, element) {
-                        var a = $(this);
-                        //console.log(a.text());
-                        request({
-                            url: "https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=" + tokenAddr + "&address=" + user + "&tag=latest&apikey=Y54HQWC3NJ3E9ZSKKM5347WPHZ2D7KA2XW", //
-                            method: 'GET',
-                            json: true,
-                        }, (error, response, data) => {
-							if (error){
-								                                setTimeout(function() {
-                                    depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-                                }, Math.floor((Math.random() * 120000) + 8000))
-							}
-                            var tokenBal = data['result'];
-                            console.log(decimals);
-                            var tokenThreshold = (1 * Math.pow(10, decimals));
-                            console.log('deposit bal: ' + tokenBal + ' threshold: ' + tokenThreshold);
-                            if (tokenBal <= tokenThreshold) {
-                                setTimeout(function() {
-                                    depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-                                }, Math.floor((Math.random() * 120000) + 8000))
-                            } else {
-                                web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
-                                console.log('depositToken: ' + tokenBal);
-                                var contract2 = new eth.Contract(JSON.parse(a.text()), tokenAddr);
-                                contract2.methods.approve("0x8d12a197cb00d4747a1fe03395095ce2a5cc6819", (tokenBal)).send({
-                                    from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
-                                    gas: 250000,
-                                    gasPrice: "10000000000"
-                                }).then(function(data) {
-
-                                });
-                                contract.methods.depositToken(tokenAddr, (tokenBal)).send({
-                                    from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
-                                    gas: 250000,
-                                    gasPrice: "10000000000"
-                                }).then(function(data) {
-
-                                });
-                            }
-                        });
-                    });
-                }
-            }
-        });
-    } else {
+    } catch (err) {
         setTimeout(function() {
-            depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
+            buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty);
         }, Math.floor((Math.random() * 120000) + 8000))
     }
 
 }
 
+function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
+    try {
+        if (dodeposit == true) {
+            console.log('depositit = true');
+            dodeposit = false;
+            request('https://etherscan.io/address/' + tokenAddr + '#code', function(error, response, html) {
+                if (error) {
+                    setTimeout(function() {
+                        depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
+                    }, Math.floor((Math.random() * 120000) + 8000))
+                }
+                if (!error && response.statusCode == 200) {
+                    if (!error && response.statusCode == 200) {
+                        var $ = cheerio.load(html);
+                        $('#js-copytextarea2').each(function(i, element) {
+                            var a = $(this);
+                            //console.log(a.text());
+                            request({
+                                url: "https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=" + tokenAddr + "&address=" + user + "&tag=latest&apikey=Y54HQWC3NJ3E9ZSKKM5347WPHZ2D7KA2XW", //
+                                method: 'GET',
+                                json: true,
+                            }, (error, response, data) => {
+                                if (error) {
+                                    setTimeout(function() {
+                                        depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
+                                    }, Math.floor((Math.random() * 120000) + 8000))
+                                }
+                                var tokenBal = data['result'];
+                                console.log(decimals);
+                                var tokenThreshold = (1 * Math.pow(10, decimals));
+                                console.log('deposit bal: ' + tokenBal + ' threshold: ' + tokenThreshold);
+                                if (tokenBal <= tokenThreshold) {
+                                    setTimeout(function() {
+                                        depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
+                                    }, Math.floor((Math.random() * 120000) + 8000))
+                                } else {
+                                    web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
+                                    console.log('depositToken: ' + tokenBal);
+                                    var contract2 = new eth.Contract(JSON.parse(a.text()), tokenAddr);
+                                    contract2.methods.approve("0x8d12a197cb00d4747a1fe03395095ce2a5cc6819", (tokenBal)).send({
+                                        from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                                        gas: 250000,
+                                        gasPrice: "10000000000"
+                                    }).then(function(data) {
+
+                                    });
+                                    contract.methods.depositToken(tokenAddr, (tokenBal)).send({
+                                        from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                                        gas: 250000,
+                                        gasPrice: "10000000000"
+                                    }).then(function(data) {
+
+                                    });
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+        } else {
+            setTimeout(function() {
+                depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
+            }, Math.floor((Math.random() * 120000) + 8000))
+        }
+    } catch (err) {
+        setTimeout(function() {
+            depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
+        }, Math.floor((Math.random() * 120000) + 8000))
+    }
+}
+
 function senditback() {
-    if (dosenditback == true) {
-        web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
+    try {
+        if (dosenditback == true) {
+            web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
 
-        eth.getBalance(user, function(error, tokenBal) {
+            eth.getBalance(user, function(error, tokenBal) {
 
-            console.log('I have ' + tokenBal + ' ETH');
-            if (tokenBal <= (.04 * Math.pow(10, 18))) {
-                console.log('eth less than 0.04');
-                setTimeout(function() {
-                    senditback();
-                }, Math.floor((Math.random() * 120000) + 8000))
-            } else {
-                dosenditback = false;
-                dowithdraw = true;
-                var uri = '/api/2/account/crypto/address/ETH';
-                console.log(uri);
+                console.log('I have ' + tokenBal + ' ETH');
+                if (tokenBal <= (.04 * Math.pow(10, 18))) {
+                    console.log('eth less than 0.04');
+                    setTimeout(function() {
+                        senditback();
+                    }, Math.floor((Math.random() * 120000) + 8000))
+                } else {
+                    dosenditback = false;
+                    dowithdraw = true;
+                    var uri = '/api/2/account/crypto/address/ETH';
+                    console.log(uri);
 
-                var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
-                request({
-                    url: 'https://api.hitbtc.com' + uri, //
-                    method: 'GET',
-                    headers: {
-                        "Authorization": auth
-                    },
-                    json: true,
-                }, (error, response, body) => {
-                    var address = body['address'];
-                    console.log('deposit to ' + address);
-                    eth.sendTransaction({
-                        from: user,
-                        to: address,
-                        value: (tokenBal * .8)
+                    var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+                    request({
+                        url: 'https://api.hitbtc.com' + uri, //
+                        method: 'GET',
+                        headers: {
+                            "Authorization": auth
+                        },
+                        json: true,
+                    }, (error, response, body) => {
+                        var address = body['address'];
+                        console.log('deposit to ' + address);
+                        eth.sendTransaction({
+                            from: user,
+                            to: address,
+                            value: (tokenBal * .8)
+                        });
+                        setTimeout(function() {
+                            senditback();
+                        }, Math.floor((Math.random() * 120000) + 8000))
                     });
-						setTimeout(function() {
-                    senditback();
-                }, Math.floor((Math.random() * 120000) + 8000))
-                });
 
-            }
-        });
+                }
+            });
+        }
+    } catch (err) {
+        setTimeout(function() {
+            senditback();
+        }, Math.floor((Math.random() * 120000) + 8000))
     }
 }
 
 function withdraw() {
-    var callData = contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
-        var tokenBal = data;
+    try {
+        var callData = contract.methods.balanceOf("0x0000000000000000000000000000000000000000", user).call().then(function(data) {
+            var tokenBal = data;
             if (dowithdraw == true) {
-		console.log('withdraw withdraw');
-        if (tokenBal <= (.01 * Math.pow(10, 18))) {
-            setTimeout(function() {
-                withdraw();
-            }, Math.floor((Math.random() * 120000) + 8000))
-        } else {
-                dowithdraw = false;
-                contract.methods.withdraw(tokenBal).send({
-                    from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
-                    gas: 250000,
-                    gasPrice: "10000000000"
-                }).then(function(data) {
-                    senditback();
-                setTimeout(function() {
-                    withdraw();
-                }, Math.floor((Math.random() * 120000) + 8000))
-                });
-            } 
-        }else {
+                console.log('withdraw withdraw');
+                if (tokenBal <= (.01 * Math.pow(10, 18))) {
+                    setTimeout(function() {
+                        withdraw();
+                    }, Math.floor((Math.random() * 120000) + 8000))
+                } else {
+                    dowithdraw = false;
+                    contract.methods.withdraw(tokenBal).send({
+                        from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                        gas: 250000,
+                        gasPrice: "10000000000"
+                    }).then(function(data) {
+                        senditback();
+                        setTimeout(function() {
+                            withdraw();
+                        }, Math.floor((Math.random() * 120000) + 8000))
+                    });
+                }
+            } else {
                 setTimeout(function() {
                     withdraw();
                 }, Math.floor((Math.random() * 120000) + 8000))
             }
-    });
+        });
+    } catch (err) {
+        setTimeout(function() {
+            withdraw();
+        }, Math.floor((Math.random() * 120000) + 8000))
+    }
 }
 
 function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp) {
-    var callData = contract.methods.balanceOf(tokenAddr, user).call().then(function(data) {
-        var tokenBal = data;
-        if (tokenBal <= (.09 * Math.pow(10, decimals[tokencount]))) {
-            setTimeout(function() {
-                sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
-            }, Math.floor((Math.random() * 120000) + 8000))
-        } else {
-            dodeposit = true;
-            console.log('token bal ed: ' + tokenBal);
+    try {
+        var callData = contract.methods.balanceOf(tokenAddr, user).call().then(function(data) {
+            var tokenBal = data;
+            if (tokenBal <= (.09 * Math.pow(10, decimals[tokencount]))) {
+                setTimeout(function() {
+                    sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+                }, Math.floor((Math.random() * 120000) + 8000))
+            } else {
+                dodeposit = true;
+                console.log('token bal ed: ' + tokenBal);
 
 
 
 
-            //tokenBal = (tokenBal / Math.pow(10, decimals[tokencount]));
-            console.log('decimals[tokencount]? ' + decimals[tokencount]);
-            console.log('do I have ' + tokenBal + " of " + tokenAddr);
-            const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
-            const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
-            const tokenGive = tokenAddr; // 0x0 address means ETH
-            web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
-            var buytotal = 0;
-            var buy = 0;
-            console.log('edbuys length' + edBuys.length);
-			console.log(edBuys);
-            console.log('available: ' + new BigNumber(edBuys[buy]['available']));
-            while (buy < edBuys.length) {
-                console.log(edBuys[buy]);
-                console.log('tokenbal: ' + Number(tokenBal));
-                if ((new BigNumber(edBuys[buy]['available'])) >= parseFloat(tokenBal)) {
-                    buytotal = buytotal + new BigNumber(edBuys[buy]['available']);
+                //tokenBal = (tokenBal / Math.pow(10, decimals[tokencount]));
+                console.log('decimals[tokencount]? ' + decimals[tokencount]);
+                console.log('do I have ' + tokenBal + " of " + tokenAddr);
+                const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
+                const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
+                const tokenGive = tokenAddr; // 0x0 address means ETH
+                web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
+                var buytotal = 0;
+                var buy = 0;
+                console.log('edbuys length' + edBuys.length);
+                console.log(edBuys);
+                console.log('available: ' + new BigNumber(edBuys[buy]['available']));
+                while (buy < edBuys.length) {
+                    console.log(edBuys[buy]);
+                    console.log('tokenbal: ' + Number(tokenBal));
+                    if ((new BigNumber(edBuys[buy]['available'])) >= parseFloat(tokenBal)) {
+                        buytotal = buytotal + new BigNumber(edBuys[buy]['available']);
 
 
-                    tokenBal = (tokenBal * .997);
-                    console.log('buytotal max: ' + buytotal);
-                    contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(tokenBal)).send({
-                        from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
-                        gas: 250000,
-                        gasPrice: "10000000000"
-                    }).then(function(data) {
-                        console.log(data);
+                        tokenBal = (tokenBal * .997);
+                        console.log('buytotal max: ' + buytotal);
+                        contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(tokenBal)).send({
+                            from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                            gas: 250000,
+                            gasPrice: "10000000000"
+                        }).then(function(data) {
+                            console.log(data);
 
-                    });
-					setTimeout(function() {
-                sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
-            }, Math.floor((Math.random() * 120000) + 8000))
-                    break;
-                } else {
+                        });
+                        setTimeout(function() {
+                            sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+                        }, Math.floor((Math.random() * 120000) + 8000))
+                        break;
+                    } else {
 
-                    console.log('buytotal +1');
+                        console.log('buytotal +1');
 
-                    contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(edBuys[buy]['available'])).send({
-                        from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
-                        gas: 250000,
-                        gasPrice: "10000000000"
-                    }).then(function(data) {
-                        console.log(data);
+                        contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(edBuys[buy]['available'])).send({
+                            from: "0x5100DAdF11113B0730829d2047B9df4DA1d80e68",
+                            gas: 250000,
+                            gasPrice: "10000000000"
+                        }).then(function(data) {
+                            console.log(data);
 
 
 
-                    });
-                    tokenBal = tokenBal - edBuys[buy]['available'];
+                        });
+                        tokenBal = tokenBal - edBuys[buy]['available'];
+                    }
+                    console.log('loop done...');
+                    buy++;
                 }
-                console.log('loop done...');
-                buy++;
-            }
 
-        }
-    });
+            }
+        });
+    } catch (err) {
+        console.log(err);
+        setTimeout(function() {
+            sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+        }, Math.floor((Math.random() * 120000) + 8000))
+    }
 }
