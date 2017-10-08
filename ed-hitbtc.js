@@ -15,7 +15,7 @@ var request = require("request");
 const sha256 = require('js-sha256').sha256;
 const ethUtil = require('ethereumjs-util');
 var sleep = require('system-sleep');
-var doc = new GoogleSpreadsheet('102TvZrB0RyuBK4nqhUd3aP_zRvP8JpDRsukIEOInnwI');
+var doc = new GoogleSpreadsheet('17TC-P08FYWLbgmDsPbtvexGG6mO--SbIeAOZgldH3Ng');
 var sheet;
 var crypto = require("crypto");
 var Web3 = require("web3");
@@ -120,9 +120,9 @@ function lala123(tokencount) {
         go = false;
         console.log(tokens[count]);
         lala321(tokens[0], 0);
-        withdraw();
-        senditback();
-        depositDatEth();
+      //  withdraw();
+      //  senditback();
+      //  depositDatEth();
 
     });
 }
@@ -268,9 +268,15 @@ function lala321(tokenAddr, tokencount) {
                                     var winBp = bps;
                                     console.log(arb);
                                     debug = false;
-                                    if ((arb > .01 && arb <= 10) || debug == true) {
+									
+                                    if ((arb > .025 && arb <= 10) || debug == true) {
                                         console.log('ed arb!');
-
+										fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "\n", function(err) {
+											console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
+											if (err) {
+												return console.log(err);
+											}
+										});
                                         try {
                                             if (threshold > .01 || debug == true) {
                                                 buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
@@ -285,8 +291,8 @@ function lala321(tokenAddr, tokencount) {
 
                                 }
                                 go = true;
-                                depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
-                                sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+                              //  depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
+                               // sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
                                 if (tokencount < (tokens.length - 1)) {
                                     console.log('do more');
                                     lala321(tokens[tokencount + 1], tokencount + 1);
