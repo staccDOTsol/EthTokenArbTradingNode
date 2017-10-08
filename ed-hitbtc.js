@@ -198,6 +198,7 @@ function lala321(tokenAddr, tokencount) {
                                     console.log(threshold);
                                 }
                             }
+							console.log('lala?');
                             try {
                                 while (sellDone == false) {
                                     for (var sells in data4['asks']) {
@@ -225,7 +226,7 @@ function lala321(tokenAddr, tokencount) {
                                         }
                                     }
                                 }
-                            } catch (err) {}
+                            } catch (err) {console.log(err);}
 							try {
 								while (buyDone == false) {
 									for (var buys in data6['buys']) {
@@ -265,7 +266,7 @@ function lala321(tokenAddr, tokencount) {
 
 									break;
 								}
-							} catch (err) {}
+							} catch (err) {console.log(err);}
 							console.log(bps);
 							console.log(sps);
 							if (sps != 10 && bps != 0) {
