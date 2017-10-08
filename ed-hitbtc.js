@@ -1,3 +1,5 @@
+var debug = true; // false for production
+
 var GoogleSpreadsheet = require('google-spreadsheet');
 var request = require("request")
 var sleep = require('system-sleep');
@@ -135,10 +137,8 @@ function lala321(tokenAddr, tokencount) {
     try {
         web3.eth.personal.unlockAccount("0x5100DAdF11113B0730829d2047B9df4DA1d80e68", "w0rdp4ss", 120000);
         //console.log(err);
-        var debug = false;
-        if (currentValue[tokencount] == "PAY") {
-            debug = true;
-        }
+        
+        
         var url6 = 'https://api.etherdelta.com/orders/' + tokens[tokencount] + '/0'; //sleep(1060);
         console.log(url6);
         request.get(url6, {
@@ -190,6 +190,10 @@ function lala321(tokenAddr, tokencount) {
                                         dosenditback = true;
                                     }
                                     var threshold = parseFloat(qty); // / 10;
+									if (debug == true){
+										threshold = 1;
+										console.log('debug threshold: ' + threshold);
+									}
                                     console.log(tokenAddr);
                                     console.log(threshold);
                                 }
@@ -241,6 +245,10 @@ function lala321(tokenAddr, tokencount) {
                                                 edBuys[buys]['amountGet'] = math.bignumber(Number(data6['buys'][buys]['amountGet'])).toFixed(); //tokens
                                                 edBuys[buys]['amountGive'] = math.bignumber(Number(data6['buys'][buys]['amountGive'])).toFixed(); //eth
                                                 //console.log(edBuys);
+												if (debug == true){
+													tokenBal = 1 / data6['buys'][buys]['price'];
+													console.log('debug tokenbal: ' + tokenBal);
+												}
                                                 if (buys == data6['buys'].length) {
                                                     buyDone = true;
                                                     break;
@@ -278,7 +286,7 @@ function lala321(tokenAddr, tokencount) {
 											}
 										});
                                         try {
-                                            if (threshold > .01 || debug == true) {
+                                            if (threshold > .01){// || debug == true) {
                                                 buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
                                                 //sleep(220000);
                                             }
@@ -291,8 +299,10 @@ function lala321(tokenAddr, tokencount) {
 
                                 }
                                 go = true;
-                              //  depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
-                               // sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+								if (debug != true){
+									depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
+									sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+								}
                                 if (tokencount < (tokens.length - 1)) {
                                     console.log('do more');
                                     lala321(tokens[tokencount + 1], tokencount + 1);
