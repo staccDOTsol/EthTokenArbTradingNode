@@ -43,9 +43,9 @@ lineReader2.on('line', function(line) {
         hitKey = line;
     } else if (linecount == 3) {
         hitSecret = line;
-    } else if (linecount == 4){
-		pass = line;
-	}
+    } else if (linecount == 4) {
+        pass = line;
+    }
     linecount++;
 });
 var tokens2 = [];
@@ -105,9 +105,11 @@ function lala123(tokencount) {
         go = false;
         console.log(tokens[count]);
         lala321(tokens[0], 0, ((Math.random() * 5) + .25));
-      //  withdraw();
-      //  senditback();
-      //  depositDatEth();
+        if (debug == false) {
+            withdraw();
+            senditback();
+            depositDatEth();
+        }
 
     });
 }
@@ -120,8 +122,8 @@ function lala321(tokenAddr, tokencount, checker) {
     try {
         web3.eth.personal.unlockAccount(user, pass, 120000);
         //console.log(err);
-        
-        
+
+
         var url6 = 'https://api.etherdelta.com/orders/' + tokens[tokencount] + '/0'; //sleep(1060);
         console.log(url6);
         request.get(url6, {
@@ -173,16 +175,16 @@ function lala321(tokenAddr, tokencount, checker) {
                                         dosenditback = true;
                                     }
                                     var threshold = parseFloat(qty); // / 10;
-									if (debug == true){
-										threshold = .1 * checker;
-										console.log('debug threshold: ' + threshold + ', modifier: ' + checker);
-									}
+                                    if (debug == true) {
+                                        threshold = .1 * checker;
+                                        console.log('debug threshold: ' + threshold + ', modifier: ' + checker);
+                                    }
                                     console.log(tokenAddr);
                                     console.log(threshold);
                                 }
                             }
-							sellDone = false;
-							buyDone = false;
+                            sellDone = false;
+                            buyDone = false;
                             try {
                                 while (sellDone == false) {
                                     for (var sells in data4['asks']) {
@@ -190,8 +192,8 @@ function lala321(tokenAddr, tokencount, checker) {
                                             sellDone = true;
                                             console.log('sells length');
                                             sellPrice = 1000000;
-											break;
-											
+                                            break;
+
                                         }
                                         sellTotal = sellTotal + (data4['asks'][sells][1] * data4['asks'][sells][0]);
 
@@ -209,112 +211,115 @@ function lala321(tokenAddr, tokencount, checker) {
                                             break;
                                         }
                                     }
-									sellDone = true;
-									break;
+                                    sellDone = true;
+                                    break;
                                 }
-                            } catch (err) {console.log(err);}
-							try {
-								while (buyDone == false) {
-									for (var buys in data6['buys']) {
-										if (data6['buys'][buys]['ethAvailableVolume'] <= 0.05) {
-											console.log('useless....');
-										} else {
-											//console.log(data6['buys'][buys]);
-											console.log(buyTotal);
-											edBuys[buys] = {};
-											edBuys[buys]['available'] = data6['buys'][buys]['availableVolume'];
-											edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
-											edBuys[buys]['v'] = data6['buys'][buys]['v'];
-											edBuys[buys]['r'] = data6['buys'][buys]['r'];
-											edBuys[buys]['expires'] = data6['buys'][buys]['expires'];
-											edBuys[buys]['s'] = data6['buys'][buys]['s'];
-											edBuys[buys]['user'] = data6['buys'][buys]['user'];
-											edBuys[buys]['amountGet'] = math.bignumber(Number(data6['buys'][buys]['amountGet'])).toFixed(); //tokens
-											edBuys[buys]['amountGive'] = math.bignumber(Number(data6['buys'][buys]['amountGive'])).toFixed(); //eth
-											//console.log(edBuys);
-											var tokenBal = threshold / data6['buys'][buys]['price'];
-											console.log('the tokenbal: ' + tokenBal);
-											if (buys == (data6['buys'].length - 1)) {
-												buyDone = true;
-												break;
-												buyPrice = 0;
+                            } catch (err) {
+                                console.log(err);
+                            }
+                            try {
+                                while (buyDone == false) {
+                                    for (var buys in data6['buys']) {
+                                        if (data6['buys'][buys]['ethAvailableVolume'] <= 0.05) {
+                                            console.log('useless....');
+                                        } else {
+                                            //console.log(data6['buys'][buys]);
+                                            console.log(buyTotal);
+                                            edBuys[buys] = {};
+                                            edBuys[buys]['available'] = data6['buys'][buys]['availableVolume'];
+                                            edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
+                                            edBuys[buys]['v'] = data6['buys'][buys]['v'];
+                                            edBuys[buys]['r'] = data6['buys'][buys]['r'];
+                                            edBuys[buys]['expires'] = data6['buys'][buys]['expires'];
+                                            edBuys[buys]['s'] = data6['buys'][buys]['s'];
+                                            edBuys[buys]['user'] = data6['buys'][buys]['user'];
+                                            edBuys[buys]['amountGet'] = math.bignumber(Number(data6['buys'][buys]['amountGet'])).toFixed(); //tokens
+                                            edBuys[buys]['amountGive'] = math.bignumber(Number(data6['buys'][buys]['amountGive'])).toFixed(); //eth
+                                            //console.log(edBuys);
+                                            var tokenBal = threshold / data6['buys'][buys]['price'];
+                                            console.log('the tokenbal: ' + tokenBal);
+                                            if (buys == (data6['buys'].length - 1)) {
+                                                buyDone = true;
+                                                break;
+                                                buyPrice = 0;
 
-											}
-											buyTotal = buyTotal + (parseFloat(data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]));
-											if (buyTotal >= tokenBal) {
-												buyDone = true;
-												buyPrice = data6['buys'][buys]['price'];
-												var bps = buyPrice;
-												break;
-											}
-										}
-									}
-									buyDone = true;
+                                            }
+                                            buyTotal = buyTotal + (parseFloat(data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]));
+                                            if (buyTotal >= tokenBal) {
+                                                buyDone = true;
+                                                buyPrice = data6['buys'][buys]['price'];
+                                                var bps = buyPrice;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    buyDone = true;
 
-									break;
-								}
-							} catch (err) {console.log(err);}
-							console.log(bps);
-							console.log(sps);
-							if (sps != 10 && bps != 0) {
-								var arb = -1 * (1 - (bps / sps));
-								var winSp = sps;
-								var winBp = bps;
-								console.log(arb);
-								
-							if ((arb > .025 && arb <= 10)){// || debug == true) {
-									console.log('ed arb!');
-									console.log('');
-									console.log('ed arb!');
-									console.log('');
-									console.log('ed arb!');
-									console.log('');
-									console.log('ed arb!');
-									console.log('');			
-									console.log('ed arb!');
+                                    break;
+                                }
+                            } catch (err) {
+                                console.log(err);
+                            }
+                            console.log(bps);
+                            console.log(sps);
+                            if (sps != 10 && bps != 0) {
+                                var arb = -1 * (1 - (bps / sps));
+                                var winSp = sps;
+                                var winBp = bps;
+                                console.log(arb);
 
-									fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "," + threshold + "\n", function(err) {
-										console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
-										if (err) {
-											return console.log(err);
-										}
-									});
-									try {
-										if (threshold > .01){// || debug == true) {
-											if (debug == false){
-											buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
-											}
-											//sleep(220000);
-										}
-									} catch (err) {
-										console.log(err);
-									}
+                                if ((arb > .025 && arb <= 10)) { // || debug == true) {
+                                    console.log('ed arb!');
+                                    console.log('');
+                                    console.log('ed arb!');
+                                    console.log('');
+                                    console.log('ed arb!');
+                                    console.log('');
+                                    console.log('ed arb!');
+                                    console.log('');
+                                    console.log('ed arb!');
+
+                                    fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "," + threshold + "\n", function(err) {
+                                        console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
+                                        if (err) {
+                                            return console.log(err);
+                                        }
+                                    });
+                                    try {
+                                        if (threshold > .01) { // || debug == true) {
+                                            if (debug == false) {
+                                                buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
+                                            }
+                                            //sleep(220000);
+                                        }
+                                    } catch (err) {
+                                        console.log(err);
+                                    }
 
 
-								}
+                                }
 
-							}
-							go = true;
-							if (tokencount < (tokens.length - 1)) {
-								console.log('do more');
-								lala321(tokens[tokencount + 1], tokencount + 1, checker);
-							} else {
-								console.log('done');
-								if (debug == true){
-								lala321(tokens[0], 0, ((Math.random() * 40) + .25));
-								}
-								else if (debug == false){
-								lala321(tokens[0], 0, 1);
-								}
-							}
+                            }
+                            go = true;
+                            if (tokencount < (tokens.length - 1)) {
+                                console.log('do more');
+                                lala321(tokens[tokencount + 1], tokencount + 1, checker);
+                            } else {
+                                console.log('done');
+                                if (debug == true) {
+                                    lala321(tokens[0], 0, ((Math.random() * 40) + .25));
+                                } else if (debug == false) {
+                                    lala321(tokens[0], 0, 1);
+                                }
+                            }
                         });
                     });
                 }
-				
-				if (debug != true){
-					depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
-					sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
-				}
+
+                if (debug != true) {
+                    depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
+                    sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+                }
             } catch (err) {
                 go = true;
                 if (tokencount < tokens.length) {
