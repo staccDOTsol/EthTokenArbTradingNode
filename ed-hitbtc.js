@@ -1,5 +1,15 @@
 var debug = true; // false for production
 
+var isWin = /^win/.test(process.platform);
+var isLin = /^linux/.test(process.platform);
+if (isLin) {
+    var creds = require('/root/EthTokenArbTradingNode/googlesheet.json');
+} else if (isWin) {
+    var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
+}
+var GoogleSpreadsheet = require('google-spreadsheet');
+var doc = new GoogleSpreadsheet('1UIXpRVYU2xyQl_5OWdc9KVTOjabn6eQenV5E0m4leZk');
+var sheet;
 var request = require("request")
 var sleep = require('system-sleep');
 var cheerio = require('cheerio');
@@ -288,21 +298,41 @@ function lala321(tokenAddr, tokencount, checker) {
                                             return console.log(err);
                                         }
                                     });
-                                    try {
-                                        if (threshold > .01) { // || debug == true) {
-                                            if (debug == false) {
-                                                buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
-                                            }
-                                            //sleep(220000);
-                                        }
-                                    } catch (err) {
-                                        console.log(err);
-                                    }
+									doc.useServiceAccountAuth(creds, function lala(){
+										doc.getInfo(function(err, info) {
+									  ////console.log('Loaded doc: '+info.title+' by '+info.author.email);
+										sheet = info.worksheets[0];
+											sheet.addRow({
+													'Datetime': formatted,
+													'ticker': currentValue[tokencount],
+													'tokenAddr': tokenAddr,
+													'arb': (-1 * (1 - (bps / sps))),
+													'eth threshold': threshold,
+													'instant eth': (threshold * arb),
+													'total eth': ((threshold * arb) + threshold),
+													'after fee': arb
+												}, function(err, row) {
+													console.log(err);
+													
+													try {
+														if (threshold > .01) { // || debug == true) {
+															if (debug == false) {
+																buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
+															}
+															
+														}
+													} catch (err) {
+														console.log(err);
+													}
+											});
+										});
+									});
 
 
                                 }
 
                             }
+							//sleep(3000);
                             go = true;
                             if (tokencount < (tokens.length - 1)) {
                                 console.log('do more');
