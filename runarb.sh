@@ -15,49 +15,13 @@ if [ $(ps -ef | grep -v grep | grep ed-hitbtc | wc -l) -lt 1 ]; then
    node ed-hitbtc.js &>/dev/null &
 
 
-sleep 1m
+sleep 3m
 
    node ed-hitbtc.js &>/dev/null &
-sleep 1m
+sleep 3m
 
    node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
-
-   node ed-hitbtc.js &>/dev/null &
-sleep 1m
+sleep 3m
 
    node ed-hitbtc.js &>/dev/null &
 
