@@ -1,6 +1,7 @@
 #!/bin/sh
 
 killall node
+killall killallnode.sh
 nohup ./killallnode.sh &
 sleep 5s
 
