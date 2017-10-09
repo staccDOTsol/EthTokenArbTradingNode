@@ -267,7 +267,7 @@ function lala321(tokenAddr, tokencount, checker) {
                                 var winSp = sps;
                                 var winBp = bps;
                                 console.log(arb);
-
+								
                                 if ((arb > .025 && arb <= 10)) { // || debug == true) {
                                     console.log('ed arb!');
                                     console.log('');
@@ -278,8 +278,11 @@ function lala321(tokenAddr, tokencount, checker) {
                                     console.log('ed arb!');
                                     console.log('');
                                     console.log('ed arb!');
-
-                                    fs.appendFile("hitbtcedarbs.csv", currentValue[tokencount] + "," + tokenAddr + "," + arb + "," + threshold + "\n", function(err) {
+									var dateTime = require('node-datetime');
+									var dt = dateTime.create();
+									var formatted = dt.format('Y-m-d H:M:S');
+									console.log(formatted);
+                                    fs.appendFile("hitbtcedarbs.csv", formatted + "," + currentValue[tokencount] + "," + tokenAddr + "," + arb + "," + threshold + "\n", function(err) {
                                         console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
                                         if (err) {
                                             return console.log(err);
