@@ -262,7 +262,7 @@ function lala321(tokenAddr, tokencount, checker) {
                             }
                             console.log(bps);
                             console.log(sps);
-                            if (sps != 10 && bps != 0) {
+                            if (sps != 10 && bps != 0 && sps != 1 && bps != 1) {
                                 var arb = (-1 * (1 - (bps / sps))) - (.01/threshold);
                                 var winSp = sps;
                                 var winBp = bps;
