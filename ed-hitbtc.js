@@ -101,7 +101,7 @@ function lala123(tokencount) {
                 }
             }
         }
-        console.log(count);
+        console.log("count: " + count);
         go = false;
         console.log(tokens[count]);
         lala321(tokens[0], 0, ((Math.random() * 5) + .25));
@@ -268,7 +268,7 @@ function lala321(tokenAddr, tokencount, checker) {
                                 var winBp = bps;
                                 console.log(arb);
 								
-                                if ((arb > .025 && arb <= 10)) { // || debug == true) {
+                                if ((arb > .001 && arb <= 10)) { // || debug == true) { //.025
                                     console.log('ed arb!');
                                     console.log('');
                                     console.log('ed arb!');
