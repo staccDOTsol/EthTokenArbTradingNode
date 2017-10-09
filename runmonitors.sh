@@ -26,7 +26,6 @@ do
 if [ $(ps -ef | grep -v grep | grep node | wc -l) -lt 2 ]; then
 
     echo "less than 2 running"
-	sleep 30s
 killall node
 	sleep 10s
 max=5
@@ -45,7 +44,6 @@ do
    node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
 done
 
-sleep 20s
 
 
 #node jare-arb.js -s 3 -m 22 &>/dev/null &
