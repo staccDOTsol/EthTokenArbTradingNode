@@ -18,7 +18,7 @@ do
    m=$((($i*33)+33+$awka))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
+   nohup node monitorarbs.js -s $s -m $m &
 done
 while :
 do
@@ -34,14 +34,14 @@ max=5
    m=$(($awka+33))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
+   nohup node monitorarbs.js -s $s -m $m &
 for i in `seq 0 $max`
 do
    s=$((($i*33)+$awka))
    m=$((($i*33)+33+$awka))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
+   nohup node monitorarbs.js -s $s -m $m &
 done
 
 
@@ -63,14 +63,14 @@ else
    m=$(($awka+33))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
+   nohup node monitorarbs.js -s $s -m $m &
 for i in `seq 0 $max`
 do
    s=$((($i*33)+$awka))
    m=$((($i*33)+33+$awka))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
+   nohup node monitorarbs.js -s $s -m $m &
 done
 sleep 120s
 fi
