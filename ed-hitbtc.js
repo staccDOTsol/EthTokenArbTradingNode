@@ -21,16 +21,17 @@ var crypto = require("crypto");
 var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var Eth = require('web3-eth');
-var eth = new Eth(Eth.givenProvider || 'http://localhost:8545');
-
+if (debug == false){
+var eth = new Eth(Eth.givenProvider || 'http://localhost:8545');;
+var contract = new eth.Contract(contractABI, "0x8d12a197cb00d4747a1fe03395095ce2a5cc6819");
+}
 var dodeposit = true;
 var dodeposit2 = true;
 var dowithdraw = true;
 var dosenditback = true;
 const wei = 1000000000000000000;
 var contractABI = require('./etherdelta.json');
-var dosenditback = true;
-var contract = new eth.Contract(contractABI, "0x8d12a197cb00d4747a1fe03395095ce2a5cc6819");
+var dosenditback = true
 
 var hitKey = "";
 var hitSecret = "";
@@ -130,7 +131,9 @@ function lala321(tokenAddr, tokencount, checker) {
 
     //console.log(tokens);
     try {
+if (debug == false){
         web3.eth.personal.unlockAccount(user, pass, 120000);
+}
         //console.log(err);
 
 
