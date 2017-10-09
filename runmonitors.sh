@@ -9,7 +9,7 @@ max=5
    m=$(($awka+33))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m >> runmonitor.txt &
+   nohup node monitorarbs.js -s $s -m $m &
 for i in `seq 0 $max`
 do
 
