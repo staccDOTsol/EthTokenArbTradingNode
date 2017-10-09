@@ -74,6 +74,6 @@ do
    echo $m
    node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
 done
-sleep 220s
+sleep 120s
 fi
 done
