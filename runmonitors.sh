@@ -58,7 +58,22 @@ sleep 20s
 
 #node monitorarbs.js -s 2 -m 2 &>/dev/null 
 else
-    echo "2 or more running"
-sleep 10s
+    killall node
+	max=5
+   awka=$(awk -v min=0 -v max=33 "BEGIN{srand(); print int(min+rand()*(max-min+1))}")
+   s=0
+   m=$(($awka+33))
+   echo $s
+   echo $m
+   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
+for i in `seq 0 $max`
+do
+   s=$((($i*33)+$awka))
+   m=$((($i*33)+33+$awka))
+   echo $s
+   echo $m
+   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
+done
+sleep 220s
 fi
 done
