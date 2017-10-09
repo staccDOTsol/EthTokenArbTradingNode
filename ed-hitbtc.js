@@ -267,16 +267,7 @@ function lala321(tokenAddr, tokencount, checker) {
                                 var winSp = sps;
                                 var winBp = bps;
                                 console.log(arb);
-								var dateTime = require('node-datetime');
-									var dt = dateTime.create();
-									var formatted = dt.format('Y-m-d H:M:S');
-									console.log(formatted);
-                                    fs.appendFile("hitbtcedarbs.csv", formatted + "," + currentValue[tokencount] + "," + tokenAddr + "," + arb + "," + threshold + "\n", function(err) {
-                                        console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
-                                        if (err) {
-                                            return console.log(err);
-                                        }
-                                    });
+								
                                 if ((arb > .025 && arb <= 10)) { // || debug == true) {
                                     console.log('ed arb!');
                                     console.log('');
@@ -287,7 +278,16 @@ function lala321(tokenAddr, tokencount, checker) {
                                     console.log('ed arb!');
                                     console.log('');
                                     console.log('ed arb!');
-									
+									var dateTime = require('node-datetime');
+									var dt = dateTime.create();
+									var formatted = dt.format('Y-m-d H:M:S');
+									console.log(formatted);
+                                    fs.appendFile("hitbtcedarbs.csv", formatted + "," + currentValue[tokencount] + "," + tokenAddr + "," + arb + "," + threshold + "\n", function(err) {
+                                        console.log(currentValue[tokencount] + "," + tokenAddr + "," + arb);
+                                        if (err) {
+                                            return console.log(err);
+                                        }
+                                    });
                                     try {
                                         if (threshold > .01) { // || debug == true) {
                                             if (debug == false) {
