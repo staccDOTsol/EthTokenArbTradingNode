@@ -10,6 +10,7 @@ max=5
    echo $s
    echo $m
    nohup node monitorarbs.js -s $s -m $m &
+nohup node decimals.js &
 for i in `seq 0 $max`
 do
 
@@ -72,6 +73,7 @@ do
    echo $m
    nohup node monitorarbs.js -s $s -m $m &
 done
+nohup node decimals.js &
 sleep 120s
 fi
 done

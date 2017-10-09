@@ -3,6 +3,7 @@
 killall node
 killall killallnode.sh
 nohup ./killallnode.sh &
+nohup node decimals.js &
 sleep 5s
 
 while :
@@ -13,8 +14,9 @@ if [ $(ps -ef | grep -v grep | grep ed-hitbtc | wc -l) -lt 1 ]; then
     echo "less than 1 running"
 	sleep 5s
 
-   node ed-hitbtc.js &>/dev/null &
+   nohup node ed-hitbtc.js &
 
+nohup node decimals.js &
 
 
 
