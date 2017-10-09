@@ -104,7 +104,7 @@ function lala123(tokencount) {
         console.log("count: " + count);
         go = false;
         console.log(tokens[count]);
-        lala321(tokens[0], 0, ((Math.random() * 5) + 9));
+        lala321(tokens[0], 0, ((Math.random() * 5) + 1));
         if (debug == false) {
             withdraw();
             senditback();
@@ -263,10 +263,10 @@ function lala321(tokenAddr, tokencount, checker) {
                             console.log(bps);
                             console.log(sps);
                             if (sps != 10 && bps != 0) {
-                                var arb = -1 * (1 - (bps / sps));
+                                var arb = (-1 * (1 - (bps / sps))) - (.01/threshold);
                                 var winSp = sps;
                                 var winBp = bps;
-                                console.log(arb);
+                                console.log('arb: ' + arb + ' calculated minus: ' + (.01/threshold) + ' first arb: ' + (-1 * (1 - (bps / sps))));
 								
                                 if ((arb > .001 && arb <= 10)) { // || debug == true) { //.025
                                     console.log('ed arb!');
@@ -310,7 +310,7 @@ function lala321(tokenAddr, tokencount, checker) {
                             } else {
                                 console.log('done');
                                 if (debug == true) {
-                                    lala321(tokens[0], 0, ((Math.random() * 19) + 9));
+                                    lala321(tokens[0], 0, ((Math.random() * 25) + 1));
                                 } else if (debug == false) {
                                     lala321(tokens[0], 0, 1);
                                 }
