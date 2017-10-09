@@ -104,7 +104,7 @@ function lala123(tokencount) {
         console.log("count: " + count);
         go = false;
         console.log(tokens[count]);
-        lala321(tokens[0], 0, ((Math.random() * 5) + .25));
+        lala321(tokens[0], 0, ((Math.random() * 5) + 9));
         if (debug == false) {
             withdraw();
             senditback();
@@ -310,7 +310,7 @@ function lala321(tokenAddr, tokencount, checker) {
                             } else {
                                 console.log('done');
                                 if (debug == true) {
-                                    lala321(tokens[0], 0, ((Math.random() * 40) + .25));
+                                    lala321(tokens[0], 0, ((Math.random() * 40) + 9));
                                 } else if (debug == false) {
                                     lala321(tokens[0], 0, 1);
                                 }
