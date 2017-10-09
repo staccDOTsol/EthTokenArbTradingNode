@@ -9,7 +9,7 @@ max=5
    m=$(($awka+33))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m &>/dev/null &
+   node monitorarbs.js -s $s -m $m >> runmonitor.txt &
 for i in `seq 0 $max`
 do
 
@@ -18,7 +18,7 @@ do
    m=$((($i*33)+33+$awka))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m &>/dev/null &
+   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
 done
 while :
 do
@@ -35,14 +35,14 @@ max=5
    m=$(($awka+33))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m &>/dev/null &
+   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
 for i in `seq 0 $max`
 do
    s=$((($i*33)+$awka))
    m=$((($i*33)+33+$awka))
    echo $s
    echo $m
-   node monitorarbs.js -s $s -m $m &>/dev/null &
+   node monitorarbs.js -s $s -m $m  >> runmonitor.txt &
 done
 
 sleep 20s

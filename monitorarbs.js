@@ -1,13 +1,16 @@
 var GoogleSpreadsheet = require('google-spreadsheet');
 var request = require("request")
 var sleep = require('system-sleep');
-var doc = new GoogleSpreadsheet('1IIOlhYnF-5m2Wdqku0NWTdKi2f4-Ts6XC8_OlWmONbU');
+var doc = new GoogleSpreadsheet('1xL3RkUoPfwncxeDSXxfSRNcktLWOSXPmQR1N-oMahfY');
 var sheet;
 
-var threshold = .4;
+   var isWin = /^win/.test(process.platform);
+var isLin = /^linux/.test(process.platform);
+if (isLin) {
     var creds = require('/root/EthTokenArbTradingNode/googlesheet.json');
-	
-	//var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
+} else if (isWin) {
+    var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
+}
 	const commandLineArgs = require('command-line-args')
 const optionDefinitions = [
   { name: 'start', alias: 's', type: Number },
@@ -15,9 +18,9 @@ const optionDefinitions = [
 ]
 const options = commandLineArgs(optionDefinitions)
 //console.log(options['start']);
-//console.log(options['max']);
-function oulala123(x, data, sheet){
-	
+//console.log(options['max']);arb > 
+function oulala123(x, data, sheet, threshold){
+	try{
 				    var running = false;
 	if (running == false){
 							running = true;
@@ -56,7 +59,7 @@ request.get(lalaurl, {json: true, timeout: 80000}, function(error, response, lal
 				  if (currentValue.startsWith("0x")){running = false;
 		x = x + 1;
 		if (x <= options['max']){
-			oulala123(x, data, sheet);
+			oulala123(x, data, sheet, ((Math.random() * 3.5) + .1));
 		}
 				  }else{
 				//currentValue = "MCO";
@@ -102,7 +105,7 @@ request.get(url4, {json: true, timeout: 80000}, function(error, response, data4)
 	   if (buyTotal >=threshold){
              buyDone = true;
               buyPrice = data4['bids'][buys][0];
-			  ////console.log(buyPrice);
+			  console.log('buyprice: ' + buyPrice);console.log('buytotal: ' + buyTotal);
 			  /*
 			  cells[14].value = buyPrice.toString();
 			  cells[16].value = buyTotal.toString();
@@ -112,7 +115,7 @@ request.get(url4, {json: true, timeout: 80000}, function(error, response, data4)
 			  bps['hit'] = buyPrice;
              break;
             }
-          }
+          }break;
         }
         while (sellDone == false){
           for (var sells in data4['asks']){
@@ -128,7 +131,8 @@ request.get(url4, {json: true, timeout: 80000}, function(error, response, data4)
 			if (sellTotal >=threshold){
              sellDone = true;
                sellPrice = data4['asks'][sells][0];
-			  /*//console.log(sellPrice);
+			  console.log('sellprice: ' + sellPrice);console.log('selltotal: ' + sellTotal);
+			  /*
 			  cells[13].value = sellPrice.toString();
 			  cells[15].value = sellTotal.toString();
 			  cells[13].save();
@@ -136,7 +140,7 @@ request.get(url4, {json: true, timeout: 80000}, function(error, response, data4)
 			  sps['hit'] = sellPrice;
              break;
             }
-          }
+          }break;
 	   }}
 	   catch (err){if (err instanceof TypeError){}else{console.log(err);}
 		   
@@ -166,7 +170,7 @@ request.get(url6, {json: true, timeout: 80000}, function(error6, response6, data
             if (buyTotal >=threshold){
              buyDone = true;
               buyPrice = data6['buys'][buys]['price'];
-			  ////console.log(buyPrice);
+			  console.log('buyprice: ' + buyPrice);console.log('buytotal: ' + buyTotal);
 			  console.log('ed buy' + buyPrice);
 			  bps['ed'] = buyPrice;/*
 			  cells[2].value = buyPrice.toString();
@@ -176,6 +180,7 @@ request.get(url6, {json: true, timeout: 80000}, function(error6, response6, data
              break;
             }
           }
+		  break;
         }
         while (sellDone == false){
           for (var sells in data6['sells']){
@@ -192,7 +197,7 @@ request.get(url6, {json: true, timeout: 80000}, function(error6, response6, data
              sellDone = true;
                sellPrice = data6['sells'][sells]['price'];
 			  console.log('ed sell' + sellPrice);
-			  ////console.log(sellPrice);
+			  console.log('sellprice: ' + sellPrice);console.log('selltotal: ' + sellTotal);
 			  /*
 			  cells[1].value = sellPrice.toString();
 			  cells[3].value = sellTotal.toString();
@@ -203,7 +208,7 @@ request.get(url6, {json: true, timeout: 80000}, function(error6, response6, data
 			  sps['ed'] = sellPrice;
              break;
             }
-          }
+          }break;
 	   } 
 			}
 	   }catch(err){console.log(err);}
@@ -234,7 +239,7 @@ request.get(url2, {json: true, timeout: 80000}, function(error, response, data5)
 	   if (buyTotal >=threshold){
              buyDone = true;
               buyPrice = data5['result']['buy'][buys]['Rate'];
-			  ////console.log(buyPrice);
+			  console.log('buyprice: ' + buyPrice);console.log('buytotal: ' + buyTotal);
 			  /*
 			  cells[6].value = buyPrice.toString();
 			  cells[8].value = buyTotal.toString();
@@ -244,7 +249,7 @@ request.get(url2, {json: true, timeout: 80000}, function(error, response, data5)
 			 bps['bit'] = buyPrice;
 			 break;
             }
-          }
+          }break;
         }
         while (sellDone == false){
           for (var sells in data5['result']['sell']){
@@ -260,7 +265,7 @@ request.get(url2, {json: true, timeout: 80000}, function(error, response, data5)
 			if (sellTotal >=threshold){
              sellDone = true;
                sellPrice = data5['result']['sell'][sells]['Rate'];
-			  ////console.log(sellPrice);
+			  console.log('sellprice: ' + sellPrice);console.log('selltotal: ' + sellTotal);
 			  /*
 			  cells[5].value = sellPrice.toString();
 			  cells[7].value = sellTotal.toString();
@@ -271,7 +276,7 @@ request.get(url2, {json: true, timeout: 80000}, function(error, response, data5)
 			  sps['bid'] = sellPrice;
              break;
             }
-          }
+          }break;
 	   }}
 	   catch (err){if (err instanceof TypeError){}else{console.log(err);}//////console.log(err)
 	   }
@@ -311,7 +316,7 @@ request.get(url3, {json: true, timeout: 80000}, function(error, response, data3)
 	   if (buyTotal >=threshold){
              buyDone = true;
               buyPrice = data3['bids'][buys][0];
-			  ////console.log(buyPrice);
+			  console.log('buyprice: ' + buyPrice);console.log('buytotal: ' + buyTotal);
 			  /*
 			  cells[10].value = buyPrice.toString();
 			  cells[12].value = buyTotal.toString();
@@ -320,7 +325,7 @@ request.get(url3, {json: true, timeout: 80000}, function(error, response, data3)
 			  bps['bin'] = buyPrice;
              break;
             }
-          }
+          }break;
         }
         while (sellDone == false){
           for (var sells in data3['asks']){
@@ -336,7 +341,7 @@ request.get(url3, {json: true, timeout: 80000}, function(error, response, data3)
 			if (sellTotal >=threshold){
              sellDone = true;
                sellPrice = data3['asks'][sells][0];
-			  ////console.log(sellPrice);
+			  console.log('sellprice: ' + sellPrice);console.log('selltotal: ' + sellTotal);
 			  /*
 			  cells[9].value = sellPrice.toString();
 			  cells[11].value = sellTotal.toString();
@@ -346,7 +351,7 @@ request.get(url3, {json: true, timeout: 80000}, function(error, response, data3)
 			  sps['bin'] = sellPrice;
              break;
             }
-          }
+          }break;
 	   }}
 	   catch (err){if (err instanceof TypeError){}else{console.log(err);}
 		   
@@ -384,7 +389,7 @@ request.get(url9, {json: true, timeout: 80000}, function(error, response, data9)
 	   if (buyTotal >=threshold){
              buyDone = true;
               buyPrice = data9[currentValue.toLowerCase() + '_eth']['bids'][buys][0];
-			  ////console.log(buyPrice);
+			  console.log('buyprice: ' + buyPrice);console.log('buytotal: ' + buyTotal);
 			  /*
 			  cells[29].value = buyPrice.toString();
 			  cells[31].value = buyTotal.toString();
@@ -393,7 +398,7 @@ request.get(url9, {json: true, timeout: 80000}, function(error, response, data9)
 			  bps['liq'] = buyPrice;
              break;
             }
-          }
+          }break;
         }
         while (sellDone == false){
           for (var sells in data9[currentValue.toLowerCase() + '_eth']['asks']){
@@ -409,7 +414,7 @@ request.get(url9, {json: true, timeout: 80000}, function(error, response, data9)
 			if (sellTotal >=threshold){
              sellDone = true;
                sellPrice = (parseFloat(data9[currentValue.toLowerCase() + '_eth']['asks'][sells][0]) * 1.05);
-			  ////console.log(sellPrice);
+			  console.log('sellprice: ' + sellPrice);console.log('selltotal: ' + sellTotal);
 			  /*
 			  cells[28].value = sellPrice.toString();
 			  cells[30].value = sellTotal.toString();
@@ -420,7 +425,7 @@ request.get(url9, {json: true, timeout: 80000}, function(error, response, data9)
 			  sps['liq'] = sellPrice;
              break; 
             }
-          }
+          }break;
 	   }}
 	   catch (err){if (err instanceof TypeError){}else{console.log(err);}//////console.log(err)
 	   }
@@ -456,7 +461,7 @@ request.get(url8, {json: true, timeout: 80000}, function(error, response, data8)
 	   if (buyTotal >=threshold){
              buyDone = true;
               buyPrice = data8['bids'][buys]['price'];
-			  ////console.log(buyPrice);
+			  console.log('buyprice: ' + buyPrice);console.log('buytotal: ' + buyTotal);
 			  /*
 			  cells[33].value = buyPrice.toString();
 			  cells[35].value = buyTotal.toString();
@@ -465,7 +470,7 @@ request.get(url8, {json: true, timeout: 80000}, function(error, response, data8)
 			  bps['gate'] = buyPrice;
              break;
             }
-          }
+          }break;
         }
         while (sellDone == false){
           for (var sells in data8['asks']){
@@ -481,7 +486,7 @@ request.get(url8, {json: true, timeout: 80000}, function(error, response, data8)
 			if (sellTotal >=threshold){
              sellDone = true;
                sellPrice = data8['asks'][sells]['price'];
-			  ////console.log(sellPrice);
+			  console.log('sellprice: ' + sellPrice);console.log('selltotal: ' + sellTotal);
 			  /*
 			  cells[32].value = sellPrice.toString();
 			  cells[34].value = sellTotal.toString();
@@ -491,7 +496,7 @@ request.get(url8, {json: true, timeout: 80000}, function(error, response, data8)
 			  sps['gate'] = sellPrice;
              break;
             }
-          }
+          }break;
 	   }}
 	   catch (err){if (err instanceof TypeError){}else{console.log(err);}//////console.log(err)
 	   }
@@ -528,7 +533,7 @@ request.get(url7, {json: true, timeout: 80000}, function(error, response, data7)
 	   if (buyTotal >=threshold){
              buyDone = true;
               buyPrice = parseFloat(data7['bids'][buys][0]);
-			  ////console.log(buyPrice);
+			  console.log('buyprice: ' + buyPrice);console.log('buytotal: ' + buyTotal);
 			  /*
 			  cells[37].value = buyPrice.toString();
 			  cells[39].value = buyTotal.toString();
@@ -537,7 +542,7 @@ request.get(url7, {json: true, timeout: 80000}, function(error, response, data7)
 			  bps['live'] = buyPrice;
              break;
             }
-          }
+          }break;
         }
         while (sellDone == false){
           for (var sells in data7['asks']){
@@ -553,7 +558,7 @@ request.get(url7, {json: true, timeout: 80000}, function(error, response, data7)
 			if (sellTotal >=threshold){
              sellDone = true;
                sellPrice = parseFloat(data7['asks'][sells][0]) ;
-			  ////console.log(sellPrice);
+			  console.log('sellprice: ' + sellPrice);console.log('selltotal: ' + sellTotal);
 			  /*
 			  cells[36].value = sellPrice.toString();
 			  cells[38].value = sellTotal.toString();
@@ -563,7 +568,7 @@ request.get(url7, {json: true, timeout: 80000}, function(error, response, data7)
 			  sps['live'] = sellPrice;
              break;
             }
-          }
+          }break;
 }
 	   }catch (err){if (err instanceof TypeError){}else{console.log(err);}//////console.log(err)
 	   }
@@ -586,18 +591,22 @@ request.get(url7, {json: true, timeout: 80000}, function(error, response, data7)
 				winSpEx = sp;
 			}
 		}
-		if (winSp != 10 && winBp != 0){
-		var arb = -1*(1-(winBp/winSp));
+		if (winSp != 10 && winBp != 0 && winSp != 1 && winBp != 1){
+		var arb = (-1 * (1 - (winBp/winSp))) - (.01/threshold);
 		console.log(arb);
-		if (arb > 0.01 && arb <= 10){
+		if (arb > .01 && arb <= 10){
+			var dateTime = require('node-datetime');
+									var dt = dateTime.create();
+									var formatted = dt.format('Y-m-d H:M:S');
+									console.log(formatted);
 			console.log('arb arb! ' + arb + ' ' + currentValue + ' winsp: ' + winSpEx + ' winbp: ' + winBpEx);
-			sheet.addRow({'time':new Date().toString(), 'ticker': currentValue, 'bid': winBp, 'ask': winSp, 'arb': arb, 'bid ex': winBpEx, 'ask ex': winSpEx}, function (err, row){console.log(err); });
+			sheet.addRow({'time':formatted, 'ticker': currentValue, 'bid': winBp, 'ask': winSp, 'arb with fee': arb, 'bid ex': winBpEx, 'ask ex': winSpEx, 'eth threshold': threshold}, function (err, row){console.log(err); });
 		}
 		}
 		running = false;
 		x = x + 1;
 		if (x <= options['max']){
-			oulala123(x, data, sheet);
+			oulala123(x, data, sheet, ((Math.random() * 3.5) + .1));
 		}
 		
 	   }); // 7th
@@ -622,12 +631,13 @@ request.get(url7, {json: true, timeout: 80000}, function(error, response, data7)
 		   running = false;
 		x = x + 1;
 		if (x <= options['max']){
-			 oulala123(x, data, sheet);
+			 oulala123(x, data, sheet, ((Math.random() * 3.5) + .1));
 		}
 	  }
 				  }
 				  }
 });}catch(err){}}
+	}catch(err){}
 }
 function oulala(){
 // spreadsheet key is the long id in the sheets URL 
@@ -643,7 +653,7 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
 			if (!error && response.statusCode === 200) {
 				//console.log(Object.keys(data).length);
 				
-					oulala123(options['start'], data, sheet);
+					oulala123(options['start'], data, sheet, ((Math.random() * 3.5) + .1));
 			}
 					  
 						sleep(4460);		
