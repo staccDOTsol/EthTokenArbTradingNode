@@ -472,8 +472,10 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
             'body': orderObject
 
         };
+	request(options, function(error, response, body) {
 		sleep(4000);
         exchangeToEd(currentValue);
+	});
     } catch (err) {
     }
 
@@ -481,71 +483,69 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
 function exchangeToEd(currentValue){
 	        var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
 
-	request(options, function(error, response, body) {
-            sleep(8000);
-            var uri = '/api/2/trading/balance';
-            console.log(uri);
-            request({
-                url: 'https://api.hitbtc.com' + uri, //
-                method: 'GET',
-                headers: {
-                    "Authorization": auth
-                },
-                json: true,
-            }, (error, response, bodycurrency) => {
-                //console.log(body);
-                for (var currency in bodycurrency) {
-                    if (bodycurrency[currency]['currency'] == currentValue) {
+		sleep(8000);
+		var uri = '/api/2/trading/balance';
+		console.log(uri);
+		request({
+			url: 'https://api.hitbtc.com' + uri, //
+			method: 'GET',
+			headers: {
+				"Authorization": auth
+			},
+			json: true,
+		}, (error, response, bodycurrency) => {
+			//console.log(body);
+			for (var currency in bodycurrency) {
+				if (bodycurrency[currency]['currency'] == currentValue) {
 
-                        var qty = (parseFloat(bodycurrency[currency]['available'])).toFixed(precise);
-                    }
-                }
-                var txObject1 = {
-                    currency: currentValue,
-                    amount: qty,
-                    type: "exchangeToBank"
-                };
-                console.log(txObject1);
-                var uri = '/api/2/account/transfer';
-                var options = {
-                    url: 'https://api.hitbtc.com' + uri,
-                    'json': true,
-                    'method': 'POST',
-                    headers: {
-                        "Authorization": auth
-                    },
-                    'body': txObject1
+					var qty = (parseFloat(bodycurrency[currency]['available'])).toFixed(precise);
+				}
+			}
+			var txObject1 = {
+				currency: currentValue,
+				amount: qty,
+				type: "exchangeToBank"
+			};
+			console.log(txObject1);
+			var uri = '/api/2/account/transfer';
+			var options = {
+				url: 'https://api.hitbtc.com' + uri,
+				'json': true,
+				'method': 'POST',
+				headers: {
+					"Authorization": auth
+				},
+				'body': txObject1
 
-                };
-                request(options, function(error, response, body) {
-                    console.log(body);
-                    sleep(8000);
-                    var txObject2 = {
-                        currency: currentValue,
-                        amount: qty,
-                        address: user,
-                        includeFee: true,
-                    };
-                    console.log(txObject2);
-                    var uri = '/api/2/account/crypto/withdraw';
-                    var options = {
-                        url: 'https://api.hitbtc.com' + uri,
-                        'json': true,
-                        'method': 'POST',
-                        headers: {
-                            "Authorization": auth
-                        },
-                        'body': txObject2
+			};
+			request(options, function(error, response, body) {
+				console.log(body);
+				sleep(8000);
+				var txObject2 = {
+					currency: currentValue,
+					amount: qty,
+					address: user,
+					includeFee: true,
+				};
+				console.log(txObject2);
+				var uri = '/api/2/account/crypto/withdraw';
+				var options = {
+					url: 'https://api.hitbtc.com' + uri,
+					'json': true,
+					'method': 'POST',
+					headers: {
+						"Authorization": auth
+					},
+					'body': txObject2
 
-                    };
-                    request(options, function(error, response, body) {
-                        console.log(body);
-                    });
+				};
+				request(options, function(error, response, body) {
+					console.log(body);
+				});
 
-                });
+			});
 
-            });
-        });
+		});
 }
 function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
     try {
