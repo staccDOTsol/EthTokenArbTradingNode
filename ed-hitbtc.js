@@ -606,8 +606,8 @@ function senditback() {
             eth.getBalance(user, function(error, tokenBal) {
 
                 console.log('I have ' + tokenBal + ' ETH');
-                if (tokenBal <= (.15 * Math.pow(10, 18))) {
-                    console.log('eth less than 0.15');
+                if (tokenBal <= (.26 * Math.pow(10, 18))) {
+                    console.log('eth less than 0.26');
                 } else {
                     dosenditback = false;
                     dowithdraw = true;
@@ -691,7 +691,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 								console.log(buyTotal);
 								
 								edBuys[buys] = {};
-								edBuys[buys]['available'] = math.bignumber(parseInt((data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]).toFixed(2)) *  Math.pow(10, decimals[tokencount])).toFixed();
+								edBuys[buys]['available'] = math.bignumber((Math.floor(((data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]).toFixed(2) * 1000)) * 1000) *  Math.pow(10, decimals[tokencount])).toFixed();
 								edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
 								edBuys[buys]['v'] = data6['buys'][buys]['v'];
 								edBuys[buys]['r'] = data6['buys'][buys]['r'];
@@ -741,14 +741,14 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 					console.log('available: ' + new BigNumber(edBuys[buy]['available']));
 					while (buy < edBuys.length) {
 						console.log(edBuys[buy]);
-						console.log('tokenbal: ' + Number(tokenBal));
+						console.log('tokenbal: ' + (tokenBal));
 						if ((new BigNumber(edBuys[buy]['available'])) >= parseFloat(tokenBal)) {
 							buytotal = buytotal + new BigNumber(edBuys[buy]['available']);
 
 
 							tokenBal = (tokenBal * .997);
 							console.log('buytotal max: ' + buytotal);
-							contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(tokenBal)).send({
+							contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], (tokenBal)).send({
 								from: user,
 								gas: 250000,
 								gasPrice: "18000000000"
