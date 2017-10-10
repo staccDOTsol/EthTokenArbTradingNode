@@ -126,7 +126,7 @@ function lala123(tokencount) {
             withdraw();
             senditback();
             depositDatEth();
-        }, Math.floor((Math.random() * 200000) + 180000))
+        }, Math.floor((Math.random() * 300000) + 280000))
         }
 
     });
@@ -364,7 +364,7 @@ if (debug == false){
 									depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
 									sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
 									exchangeToEd(currentValue[tokencount], precises[count]);
-								}, Math.floor((Math.random() * 200000) + 180000))
+								}, Math.floor((Math.random() *  300000) + 280000))
 								
 							}
 							//sleep(3000);
