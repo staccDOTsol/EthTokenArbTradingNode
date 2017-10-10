@@ -337,6 +337,11 @@ if (debug == false){
                                 }
 
                             }
+							
+							if (debug != true) {
+								depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
+								sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
+							}
 							//sleep(3000);
                             go = true;
                             if (tokencount < (tokens.length - 1)) {
@@ -354,10 +359,6 @@ if (debug == false){
                     });
                 }
 
-                if (debug != true) {
-                    depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
-                    sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
-                }
             } catch (err) {
                 go = true;
                 if (tokencount < tokens.length) {
