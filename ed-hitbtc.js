@@ -599,6 +599,7 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
 
                                     });
                                 }
+								sleep(15000);
                             });
                         });
                     }
@@ -690,6 +691,7 @@ function withdraw() {
                             withdraw();
                         }, Math.floor((Math.random() * 20000) + 8000))
                     });
+					sleep(15000);
                 }
             } else {
                 setTimeout(function() {
