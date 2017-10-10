@@ -299,7 +299,7 @@ if (debug == false){
                                 var arb = (-1 * (1 - (bps / sps))) - (.01/threshold);
                                 var winSp = sps;
                                 var winBp = bps;
-                                console.log('arb: ' + arb + 'threshold: ' + threshold + ' calculated minus: ' + (.01/threshold) + ' first arb: ' + (-1 * (1 - (bps / sps))));
+                                console.log('arb: ' + arb + ' threshold: ' + threshold + ' calculated minus: ' + (.01/threshold) + ' first arb: ' + (-1 * (1 - (bps / sps))));
 								
                                 if ((arb > .01 && arb <= 10)) { // || debug == true) { //.025
                                     console.log('ed arb!');
@@ -371,7 +371,7 @@ if (debug == false){
                             go = true;
                             if (tokencount < (tokens.length - 1)) {
                                 console.log('do more');
-                                lala321(tokens[tokencount + 1], tokencount + 1, checker);
+                                lala321(tokens[tokencount + 1], tokencount + 1,  ((Math.random() * 6) + 1.1));
                             } else {
                                 console.log('done');
                                 if (debug == true) {
