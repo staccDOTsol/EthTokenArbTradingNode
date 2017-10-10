@@ -691,7 +691,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 								console.log(buyTotal);
 								
 								edBuys[buys] = {};
-								edBuys[buys]['available'] = math.bignumber((Math.floor(((data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]).toFixed(2) * 1000)) * 1000) *  Math.pow(10, decimals[tokencount])).toFixed();
+								edBuys[buys]['available'] = new BigNumber((Math.floor(((data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]).toFixed(2) * 1000)) / 1000) *  Math.pow(10, decimals[tokencount])).toFixed();
 								edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
 								edBuys[buys]['v'] = data6['buys'][buys]['v'];
 								edBuys[buys]['r'] = data6['buys'][buys]['r'];
@@ -739,7 +739,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 					console.log('edbuys length' + edBuys.length);
 					console.log(edBuys);
 					console.log('available: ' + new BigNumber(edBuys[buy]['available']));
-					tokenBal = math.bignumber((Math.floor(((tokenBal) / Math.pow(10, 18).toFixed(2) * 1000)) * 1000) *  Math.pow(10, 18)).toFixed();
+					tokenBal = new BigNumber((Math.floor(((tokenBal) / Math.pow(10, 18).toFixed(2) * 1000)) / 1000) *  Math.pow(10, 18)).toFixed();
 					while (buy < edBuys.length) {
 						console.log(edBuys[buy]);
 						console.log('tokenbal: ' + (tokenBal));
