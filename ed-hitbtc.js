@@ -301,7 +301,7 @@ if (debug == false){
                                 var winBp = bps;
                                 console.log('arb: ' + arb + ' threshold: ' + threshold + ' calculated minus: ' + (.01/threshold) + ' first arb: ' + (-1 * (1 - (bps / sps))));
 								
-                                if ((arb > .01 && arb <= 10)) { // || debug == true) { //.025
+                                if ((arb > .01 && arb <= .9)) { // || debug == true) { //.025
                                     console.log('ed arb!');
                                     console.log('');
                                     console.log('ed arb!');
@@ -321,37 +321,38 @@ if (debug == false){
                                             return console.log(err);
                                         }
                                     });
-									doc.useServiceAccountAuth(creds, function lala(){
-										doc.getInfo(function(err, info) {
-									  ////console.log('Loaded doc: '+info.title+' by '+info.author.email);
-										sheet = info.worksheets[0];
-											sheet.addRow({
-													'Datetime': formatted,
-													'ticker': currentValue[tokencount],
-													'tokenAddr': tokenAddr,
-													'arb': (-1 * (1 - (bps / sps))),
-													'eth threshold': threshold,
-													'instant eth': (threshold * arb),
-													'total eth': ((threshold * arb) + threshold),
-													'after fee': arb
-												}, function(err, row) {
-													console.log(err);
-													
-													try {
-														if (threshold > .01) { // || debug == true) {
-															if (debug == false) {
-																buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
-															}
-															
-														}
-													} catch (err) {
+									if (threshold > .01) {
+										doc.useServiceAccountAuth(creds, function lala(){
+											doc.getInfo(function(err, info) {
+										  ////console.log('Loaded doc: '+info.title+' by '+info.author.email);
+											sheet = info.worksheets[0];
+												sheet.addRow({
+														'Datetime': formatted,
+														'ticker': currentValue[tokencount],
+														'tokenAddr': tokenAddr,
+														'arb': (-1 * (1 - (bps / sps))),
+														'eth threshold': threshold,
+														'instant eth': (threshold * arb),
+														'total eth': ((threshold * arb) + threshold),
+														'after fee': arb
+													}, function(err, row) {
 														console.log(err);
-													}
+														
+														try {
+															 // || debug == true) {
+																if (debug == false) {
+																	buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue[tokencount], precises[tokencount], threshold);
+																}
+																
+														} catch (err) {
+															console.log(err);
+														}
+												});
 											});
 										});
-									});
 
-
+									
+									}
                                 }
 
                             }
