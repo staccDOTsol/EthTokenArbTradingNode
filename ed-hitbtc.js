@@ -3,7 +3,7 @@ var debug = false; // false for production
 var isWin = /^win/.test(process.platform);
 var isLin = /^linux/.test(process.platform);
 if (isLin) {
-    var creds = require('/root/EthTokenArbTradingNode/googlesheet.json');
+    var creds = require('/root/EthTokenArbTradingNode2/googlesheet.json');
 } else if (isWin) {
     var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
 }
@@ -617,7 +617,7 @@ function senditback() {
             eth.getBalance(user, function(error, tokenBal) {
 
                 console.log('I have ' + tokenBal + ' ETH');
-                if (tokenBal <= (.04 * Math.pow(10, 18))) {
+                if (tokenBal <= (.08 * Math.pow(10, 18))) {
                     console.log('eth less than 0.04');
                     setTimeout(function() {
                         senditback();
@@ -639,6 +639,7 @@ function senditback() {
                     }, (error, response, body) => {
                         var address = body['address'];
                         console.log('deposit to ' + address);
+						web3.eth.personal.unlockAccount(user, pass, 120000);
                         eth.sendTransaction({
                             from: user,
                             to: address,
