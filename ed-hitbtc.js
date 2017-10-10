@@ -732,7 +732,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 								//console.log(data6['buys'][buys]);
 								console.log(buyTotal);
 								edBuys[buys] = {};
-								edBuys[buys]['available'] = data6['buys'][buys]['availableVolume'];
+								edBuys[buys]['available'] = math.bignumber(Number(data6['buys'][buys]['availableVolume'])).toFixed();;
 								edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
 								edBuys[buys]['v'] = data6['buys'][buys]['v'];
 								edBuys[buys]['r'] = data6['buys'][buys]['r'];
