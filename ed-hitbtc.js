@@ -233,7 +233,7 @@ if (debug == false){
                             try {
                                 while (buyDone == false) {
                                     for (var buys in data6['buys']) {
-                                        if (data6['buys'][buys]['ethAvailableVolume'] <= 0.075 {
+                                        if (data6['buys'][buys]['ethAvailableVolume'] <= 0.075) {
                                             console.log('useless....');
                                         } else {
                                             //console.log(data6['buys'][buys]);
