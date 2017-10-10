@@ -739,6 +739,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 					console.log('edbuys length' + edBuys.length);
 					console.log(edBuys);
 					console.log('available: ' + new BigNumber(edBuys[buy]['available']));
+					tokenBal = math.bignumber((Math.floor(((tokenBal) / Math.pow(10, 18).toFixed(2) * 1000)) * 1000) *  Math.pow(10, 18)).toFixed();
 					while (buy < edBuys.length) {
 						console.log(edBuys[buy]);
 						console.log('tokenbal: ' + (tokenBal));
