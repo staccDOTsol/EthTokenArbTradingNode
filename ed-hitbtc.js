@@ -726,7 +726,6 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 							} else {
 								if (doTokenBal == true){
 									
-								var tokenBal = threshold / data6['buys'][buys]['price'];
 								console.log('the tokenbal: ' + tokenBal);
 								doTokenBal = false;
 								}
@@ -801,7 +800,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 							setTimeout(function() {
 								sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
 							}, Math.floor((Math.random() * 20000) + 8000))
-							sleep(10000);
+							sleep(180000);
 							break;
 						} else {
 
