@@ -162,6 +162,8 @@ if (debug == false){
                     var buyDone = false;
                     var sellDone = false;
                     var buyTotal = 0;
+					var sps = 10;
+					var bps = 0;
                     var sellTotal = 0;
                     var edBuys = [];
                     var edSells = [];
@@ -194,7 +196,7 @@ if (debug == false){
                                         dodeposit2 = true;
                                         dosenditback = true;
                                     }
-                                    threshold = parseFloat(qty); // / 10;
+                                    threshold = parseFloat(qty) / 3; // / 10;
 									if (threshold == 0){
 										threshold = 0.01;
 									}
@@ -230,7 +232,7 @@ if (debug == false){
                                             cells[15].value = sellTotal.toString();
                                             cells[13].save();
                                             cells[15].save();*/
-                                            var sps = sellPrice;
+                                            sps = sellPrice;
                                             break;
                                         }
                                     }
@@ -275,7 +277,7 @@ if (debug == false){
                                             if (buyTotal >= tokenBal) {
                                                 buyDone = true;
                                                 buyPrice = data6['buys'][buys]['price'];
-                                                var bps = buyPrice;
+                                                bps = buyPrice;
                                                 break;
                                             }
                                         }
@@ -287,6 +289,10 @@ if (debug == false){
                             } catch (err) {
                                 console.log(err);
                             }
+							if (threshold <= 0.09){
+								sps = 10;
+								bps = 0;
+							}
                             console.log(bps);
                             console.log(sps);
                             if (sps != 10 && bps != 0 && sps != 1 && bps != 1) {
@@ -483,7 +489,7 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
 function exchangeToEd(currentValue, precise){
 	        var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
 
-		sleep(8000);
+		//sleep(8000);
 		var uri = '/api/2/trading/balance';
 		console.log(uri);
 		request({
@@ -501,6 +507,7 @@ function exchangeToEd(currentValue, precise){
 					var qty = (parseFloat(bodycurrency[currency]['available'])).toFixed(precise);
 				}
 			}
+			if (qty > 0){
 			var txObject1 = {
 				currency: currentValue,
 				amount: qty,
@@ -544,7 +551,7 @@ function exchangeToEd(currentValue, precise){
 				});
 
 			});
-
+			}
 		});
 }
 function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
@@ -591,8 +598,8 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                                     }).then(function(data) {
 
                                     });
-                                }
 								sleep(15000);
+                                }
                             });
                         });
                     }
