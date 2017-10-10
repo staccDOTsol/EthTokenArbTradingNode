@@ -60,6 +60,7 @@ lineReader2.on('line', function(line) {
     }
     linecount++;
 });
+var threshold = 0;
 var tokens2 = [];
 var decimals2 = [];
 var currentValue2 = [];
@@ -188,7 +189,7 @@ if (debug == false){
                                         dodeposit2 = true;
                                         dosenditback = true;
                                     }
-                                    var threshold = parseFloat(qty); // / 10;
+                                    threshold = parseFloat(qty); // / 10;
                                     if (debug == true) {
                                         threshold = .1 * checker;
                                         console.log('debug threshold: ' + threshold + ', modifier: ' + checker);

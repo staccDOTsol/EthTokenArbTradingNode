@@ -3,7 +3,6 @@
 killall node
 killall killallnode.sh
 nohup ./killallnode.sh &
-nohup node decimals.js &
 sleep 5s
 
 while :
@@ -31,6 +30,6 @@ nohup node decimals.js &
 #node monitorarbs.js -s 2 -m 2 &>/dev/null 
 else
     echo "1 or more running"
-sleep 10s
+sleep 30s
 fi
 done
