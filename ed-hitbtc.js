@@ -625,8 +625,8 @@ function senditback() {
             eth.getBalance(user, function(error, tokenBal) {
 
                 console.log('I have ' + tokenBal + ' ETH');
-                if (tokenBal <= (.08 * Math.pow(10, 18))) {
-                    console.log('eth less than 0.08');
+                if (tokenBal <= (.15 * Math.pow(10, 18))) {
+                    console.log('eth less than 0.15');
                     setTimeout(function() {
                         senditback();
                     }, Math.floor((Math.random() * 20000) + 8000))
