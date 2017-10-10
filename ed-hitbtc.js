@@ -29,7 +29,7 @@ var dodeposit = true;
 var dodeposit2 = true;
 var dowithdraw = true;
 var dosenditback = true;
-const wei = 2100000000000000000;
+const wei = 2350000000000000000;
 var contractABI = require('./etherdelta.json');
 var dosenditback = true
 
@@ -577,14 +577,14 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                                     contract2.methods.approve("0x8d12a197cb00d4747a1fe03395095ce2a5cc6819", (tokenBal)).send({
                                         from: user,
                                         gas: 250000,
-                                        gasPrice: "21000000000"
+                                        gasPrice: "23500000000"
                                     }).then(function(data) {
 
                                     });
                                     contract.methods.depositToken(tokenAddr, (tokenBal)).send({
                                         from: user,
                                         gas: 250000,
-                                        gasPrice: "21000000000"
+                                        gasPrice: "23500000000"
                                     }).then(function(data) {
 
                                     });
@@ -671,7 +671,7 @@ function withdraw() {
                     contract.methods.withdraw(tokenBal).send({
                         from: user,
                         gas: 250000,
-                        gasPrice: "21000000000"
+                        gasPrice: "23500000000"
                     }).then(function(data) {
                         senditback();
                         setTimeout(function() {
@@ -773,7 +773,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 							contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(tokenBal)).send({
 								from: user,
 								gas: 250000,
-								gasPrice: "21000000000"
+								gasPrice: "23500000000"
 							}).then(function(data) {
 								console.log(data);
 
@@ -789,7 +789,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 							contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(edBuys[buy]['available'])).send({
 								from: user,
 								gas: 250000,
-								gasPrice: "21000000000"
+								gasPrice: "23500000000"
 							}).then(function(data) {
 								console.log(data);
 
