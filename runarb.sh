@@ -4,14 +4,14 @@ killall node
 killall killallnode.sh
 nohup ./killallnode.sh &
 sleep 5s
-
+nohup node ed-hitbtc.js &
 while :
 do
 
 if [ $(ps -ef | grep -v grep | grep ed-hitbtc | wc -l) -lt 1 ]; then
 
     echo "less than 1 running"
-	sleep 5s
+	sleep 2m
 
    nohup node ed-hitbtc.js &
 

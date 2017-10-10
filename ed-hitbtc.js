@@ -582,6 +582,7 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                                 console.log('deposit bal: ' + tokenBal + ' threshold: ' + tokenThreshold);
                                 if (tokenBal <= tokenThreshold || tokenBal == 0) {
                                 } else {
+									dodeposit = false;
                                     web3.eth.personal.unlockAccount(user, pass, 120000);
                                     console.log('depositToken: ' + tokenBal);
                                     var contract2 = new eth.Contract(JSON.parse(a.text()), tokenAddr);
