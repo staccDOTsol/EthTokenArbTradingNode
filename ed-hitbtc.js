@@ -691,7 +691,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 								console.log(buyTotal);
 								
 								edBuys[buys] = {};
-								edBuys[buys]['available'] = math.bignumber((Number(data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]).toFixed(2)) *  Math.pow(10, decimals[tokencount])).toFixed();
+								edBuys[buys]['available'] = math.bignumber(parseInt((data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]).toFixed(2)) *  Math.pow(10, decimals[tokencount])).toFixed();
 								edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
 								edBuys[buys]['v'] = data6['buys'][buys]['v'];
 								edBuys[buys]['r'] = data6['buys'][buys]['r'];
