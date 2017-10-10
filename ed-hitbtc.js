@@ -353,9 +353,11 @@ if (debug == false){
 							if (debug != true) {
 									depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
 									sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
+									exchangeToEd(currentValue[tokencount]);
 								setInterval(function() {
 									depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
 									sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
+									exchangeToEd(currentValue[tokencount]);
 								}, Math.floor((Math.random() * 200000) + 180000))
 								
 							}
@@ -470,8 +472,17 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
             'body': orderObject
 
         };
-        request(options, function(error, response, body) {
-            sleep(4000);
+		sleep(4000);
+        exchangeToEd(currentValue);
+    } catch (err) {
+    }
+
+}
+function exchangeToEd(currentValue){
+	        var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+
+	request(options, function(error, response, body) {
+            sleep(8000);
             var uri = '/api/2/trading/balance';
             console.log(uri);
             request({
@@ -486,7 +497,7 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
                 for (var currency in bodycurrency) {
                     if (bodycurrency[currency]['currency'] == currentValue) {
 
-                        qty = (parseFloat(bodycurrency[currency]['available'])).toFixed(precise);
+                        var qty = (parseFloat(bodycurrency[currency]['available'])).toFixed(precise);
                     }
                 }
                 var txObject1 = {
@@ -508,7 +519,7 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
                 };
                 request(options, function(error, response, body) {
                     console.log(body);
-                    sleep(4000);
+                    sleep(8000);
                     var txObject2 = {
                         currency: currentValue,
                         amount: qty,
@@ -535,11 +546,7 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
 
             });
         });
-    } catch (err) {
-    }
-
 }
-
 function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
     try {
         if (dodeposit == true) {
@@ -691,7 +698,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 								console.log(buyTotal);
 								
 								edBuys[buys] = {};
-								edBuys[buys]['available'] = new BigNumber((Math.floor(((data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]).toFixed(2) * 1000)) / 1000) *  Math.pow(10, decimals[tokencount])).toFixed();
+								edBuys[buys]['available'] = math.bignumber((Math.floor(((data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]).toFixed(2)))) *  Math.pow(10, decimals[tokencount])).toFixed();
 								edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
 								edBuys[buys]['v'] = data6['buys'][buys]['v'];
 								edBuys[buys]['r'] = data6['buys'][buys]['r'];
@@ -739,7 +746,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 					console.log('edbuys length' + edBuys.length);
 					console.log(edBuys);
 					console.log('available: ' + new BigNumber(edBuys[buy]['available']));
-					tokenBal = new BigNumber((Math.floor(((tokenBal) / Math.pow(10, 18).toFixed(2) * 1000)) / 1000) *  Math.pow(10, 18)).toFixed();
+					tokenBal = new BigNumber((Math.floor(((tokenBal) / Math.pow(10, 18) * .997).toFixed(2))) *  Math.pow(10, 18));
 					while (buy < edBuys.length) {
 						console.log(edBuys[buy]);
 						console.log('tokenbal: ' + (tokenBal));
@@ -747,7 +754,6 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 							buytotal = buytotal + new BigNumber(edBuys[buy]['available']);
 
 
-							tokenBal = (tokenBal * .997);
 							console.log('buytotal max: ' + buytotal);
 							contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], (tokenBal)).send({
 								from: user,
