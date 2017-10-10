@@ -1,4 +1,4 @@
-var debug = true; // false for production
+var debug = false; // false for production
 
 var isWin = /^win/.test(process.platform);
 var isLin = /^linux/.test(process.platform);
@@ -8,7 +8,7 @@ if (isLin) {
     var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
 }
 var GoogleSpreadsheet = require('google-spreadsheet');
-var doc = new GoogleSpreadsheet('1UIXpRVYU2xyQl_5OWdc9KVTOjabn6eQenV5E0m4leZk');
+var doc = new GoogleSpreadsheet('1j3QFnuLMhATy6tH2xPmAM6CqCuMgX9-4gBGg-lRzmc4');
 var sheet;
 var request = require("request")
 var sleep = require('system-sleep');
@@ -281,7 +281,7 @@ if (debug == false){
                                 var winBp = bps;
                                 console.log('arb: ' + arb + ' calculated minus: ' + (.01/threshold) + ' first arb: ' + (-1 * (1 - (bps / sps))));
 								
-                                if ((arb > .001 && arb <= 10)) { // || debug == true) { //.025
+                                if ((arb > .01 && arb <= 10)) { // || debug == true) { //.025
                                     console.log('ed arb!');
                                     console.log('');
                                     console.log('ed arb!');
@@ -354,7 +354,7 @@ if (debug == false){
 
                 if (debug != true) {
                     depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
-                    sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+                    sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
                 }
             } catch (err) {
                 go = true;
@@ -639,7 +639,7 @@ function senditback() {
                         eth.sendTransaction({
                             from: user,
                             to: address,
-                            value: (tokenBal * .8)
+                            value: (tokenBal * .92)
                         });
                         setTimeout(function() {
                             senditback();
@@ -692,80 +692,127 @@ function withdraw() {
     }
 }
 
-function sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp) {
+function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
     try {
         var callData = contract.methods.balanceOf(tokenAddr, user).call().then(function(data) {
             var tokenBal = data;
+			
             if (tokenBal <= (.09 * Math.pow(10, decimals[tokencount]))) {
                 setTimeout(function() {
-                    sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+                    sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
                 }, Math.floor((Math.random() * 120000) + 8000))
             } else {
-                dodeposit = true;
-                console.log('token bal ed: ' + tokenBal);
+				try {
+					while (buyDone == false) {
+						for (var buys in data6['buys']) {
+							if (data6['buys'][buys]['ethAvailableVolume'] <= 0.05) {
+								console.log('useless....');
+							} else {
+								//console.log(data6['buys'][buys]);
+								console.log(buyTotal);
+								edBuys[buys] = {};
+								edBuys[buys]['available'] = data6['buys'][buys]['availableVolume'];
+								edBuys[buys]['nonce'] = data6['buys'][buys]['nonce'];
+								edBuys[buys]['v'] = data6['buys'][buys]['v'];
+								edBuys[buys]['r'] = data6['buys'][buys]['r'];
+								edBuys[buys]['expires'] = data6['buys'][buys]['expires'];
+								edBuys[buys]['s'] = data6['buys'][buys]['s'];
+								edBuys[buys]['user'] = data6['buys'][buys]['user'];
+								edBuys[buys]['amountGet'] = math.bignumber(Number(data6['buys'][buys]['amountGet'])).toFixed(); //tokens
+								edBuys[buys]['amountGive'] = math.bignumber(Number(data6['buys'][buys]['amountGive'])).toFixed(); //eth
+								//console.log(edBuys);
+								var tokenBal = threshold / data6['buys'][buys]['price'];
+								console.log('the tokenbal: ' + tokenBal);
+								if (buys == (data6['buys'].length - 1)) {
+									buyDone = true;
+									break;
+									buyPrice = 0;
+
+								}
+								buyTotal = buyTotal + (parseFloat(data6['buys'][buys]['availableVolume']) / Math.pow(10, decimals[tokencount]));
+								if (buyTotal >= tokenBal) {
+									buyDone = true;
+									buyPrice = data6['buys'][buys]['price'];
+									var bps = buyPrice;
+									break;
+								}
+							}
+						}
+						buyDone = true;
+
+						break;
+					}
+				
+					dodeposit = true;
+					console.log('token bal ed: ' + tokenBal);
 
 
 
 
-                //tokenBal = (tokenBal / Math.pow(10, decimals[tokencount]));
-                console.log('decimals[tokencount]? ' + decimals[tokencount]);
-                console.log('do I have ' + tokenBal + " of " + tokenAddr);
-                const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
-                const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
-                const tokenGive = tokenAddr; // 0x0 address means ETH
-                web3.eth.personal.unlockAccount(user, pass, 120000);
-                var buytotal = 0;
-                var buy = 0;
-                console.log('edbuys length' + edBuys.length);
-                console.log(edBuys);
-                console.log('available: ' + new BigNumber(edBuys[buy]['available']));
-                while (buy < edBuys.length) {
-                    console.log(edBuys[buy]);
-                    console.log('tokenbal: ' + Number(tokenBal));
-                    if ((new BigNumber(edBuys[buy]['available'])) >= parseFloat(tokenBal)) {
-                        buytotal = buytotal + new BigNumber(edBuys[buy]['available']);
+					//tokenBal = (tokenBal / Math.pow(10, decimals[tokencount]));
+					console.log('decimals[tokencount]? ' + decimals[tokencount]);
+					console.log('do I have ' + tokenBal + " of " + tokenAddr);
+					const contractAddr = '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819';
+					const tokenGet = '0x0000000000000000000000000000000000000000'; // VERI is what I want to get -- this is a buy order for VERI/ETH
+					const tokenGive = tokenAddr; // 0x0 address means ETH
+					web3.eth.personal.unlockAccount(user, pass, 120000);
+					var buytotal = 0;
+					var buy = 0;
+					console.log('edbuys length' + edBuys.length);
+					console.log(edBuys);
+					console.log('available: ' + new BigNumber(edBuys[buy]['available']));
+					while (buy < edBuys.length) {
+						console.log(edBuys[buy]);
+						console.log('tokenbal: ' + Number(tokenBal));
+						if ((new BigNumber(edBuys[buy]['available'])) >= parseFloat(tokenBal)) {
+							buytotal = buytotal + new BigNumber(edBuys[buy]['available']);
 
 
-                        tokenBal = (tokenBal * .997);
-                        console.log('buytotal max: ' + buytotal);
-                        contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(tokenBal)).send({
-                            from: user,
-                            gas: 250000,
-                            gasPrice: "10000000000"
-                        }).then(function(data) {
-                            console.log(data);
+							tokenBal = (tokenBal * .997);
+							console.log('buytotal max: ' + buytotal);
+							contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(tokenBal)).send({
+								from: user,
+								gas: 250000,
+								gasPrice: "10000000000"
+							}).then(function(data) {
+								console.log(data);
 
-                        });
-                        setTimeout(function() {
-                            sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
-                        }, Math.floor((Math.random() * 120000) + 8000))
-                        break;
-                    } else {
+							});
+							setTimeout(function() {
+								sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
+							}, Math.floor((Math.random() * 120000) + 8000))
+							break;
+						} else {
 
-                        console.log('buytotal +1');
+							console.log('buytotal +1');
 
-                        contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(edBuys[buy]['available'])).send({
-                            from: user,
-                            gas: 250000,
-                            gasPrice: "10000000000"
-                        }).then(function(data) {
-                            console.log(data);
+							contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(edBuys[buy]['available'])).send({
+								from: user,
+								gas: 250000,
+								gasPrice: "10000000000"
+							}).then(function(data) {
+								console.log(data);
 
 
 
-                        });
-                        tokenBal = tokenBal - edBuys[buy]['available'];
-                    }
-                    console.log('loop done...');
-                    buy++;
-                }
-
+							});
+							tokenBal = tokenBal - edBuys[buy]['available'];
+						}
+						console.log('loop done...');
+						buy++;
+					}
+				} catch (err) {
+						console.log(err);
+						setTimeout(function() {
+							sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
+						}, Math.floor((Math.random() * 120000) + 8000))
+				}
             }
         });
     } catch (err) {
         console.log(err);
         setTimeout(function() {
-            sellitoff(tokenAddr, tokencount, threshold, edBuys, winBp);
+            sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
         }, Math.floor((Math.random() * 120000) + 8000))
     }
 }
