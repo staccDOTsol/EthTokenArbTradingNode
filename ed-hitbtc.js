@@ -755,6 +755,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 
 
 							console.log('buytotal max: ' + buytotal);
+							if (tokenBal != 0){
 							contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], (tokenBal)).send({
 								from: user,
 								gas: 250000,
@@ -764,11 +765,15 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 
 							});
 							sleep(180000);
+							}
+							else {
+								break;
+							}
 							break;
 						} else {
 
 							console.log('buytotal +1');
-
+							
 							contract.methods.trade(tokenGive, (edBuys[buy]['amountGet']), tokenGet, (edBuys[buy]['amountGive']), edBuys[buy]['expires'], edBuys[buy]['nonce'], edBuys[buy]['user'], edBuys[buy]['v'], edBuys[buy]['r'], edBuys[buy]['s'], Number(edBuys[buy]['available'])).send({
 								from: user,
 								gas: 250000,
