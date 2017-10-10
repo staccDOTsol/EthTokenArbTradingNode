@@ -353,11 +353,11 @@ if (debug == false){
 							if (debug != true) {
 									depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
 									sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
-									exchangeToEd(currentValue[tokencount]);
+									exchangeToEd(currentValue[tokencount], precises[count]);
 								setInterval(function() {
 									depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
 									sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
-									exchangeToEd(currentValue[tokencount]);
+									exchangeToEd(currentValue[tokencount], precises[count]);
 								}, Math.floor((Math.random() * 200000) + 180000))
 								
 							}
@@ -474,13 +474,13 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
         };
 	request(options, function(error, response, body) {
 		sleep(4000);
-        exchangeToEd(currentValue);
+        exchangeToEd(currentValue, precise);
 	});
     } catch (err) {
     }
 
 }
-function exchangeToEd(currentValue){
+function exchangeToEd(currentValue, precise){
 	        var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
 
 		sleep(8000);
