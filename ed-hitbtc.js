@@ -801,6 +801,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 							setTimeout(function() {
 								sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
 							}, Math.floor((Math.random() * 20000) + 8000))
+							sleep(10000);
 							break;
 						} else {
 
@@ -817,6 +818,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 
 							});
 							tokenBal = tokenBal - edBuys[buy]['available'];
+							sleep(10000);
 						}
 						console.log('loop done...');
 						buy++;
