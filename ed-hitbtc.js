@@ -117,7 +117,7 @@ function lala123(tokencount) {
         console.log("count: " + count);
         go = false;
         console.log(tokens[count]);
-        lala321(tokens[0], 0, ((Math.random() * 5) + 1));
+        lala321(tokens[0], 0, ((Math.random() * 6) + 1.1));
         if (debug == false) {
             withdraw();
             senditback();
@@ -196,7 +196,7 @@ if (debug == false){
                                         dodeposit2 = true;
                                         dosenditback = true;
                                     }
-                                    threshold = parseFloat(qty) / 3; // / 10;
+                                    threshold = parseFloat(qty) / checker; // / 10;
 									if (threshold == 0){
 										threshold = 0.01;
 									}
@@ -299,7 +299,7 @@ if (debug == false){
                                 var arb = (-1 * (1 - (bps / sps))) - (.01/threshold);
                                 var winSp = sps;
                                 var winBp = bps;
-                                console.log('arb: ' + arb + ' calculated minus: ' + (.01/threshold) + ' first arb: ' + (-1 * (1 - (bps / sps))));
+                                console.log('arb: ' + arb + 'threshold: ' + threshold + ' calculated minus: ' + (.01/threshold) + ' first arb: ' + (-1 * (1 - (bps / sps))));
 								
                                 if ((arb > .01 && arb <= 10)) { // || debug == true) { //.025
                                     console.log('ed arb!');
@@ -377,7 +377,7 @@ if (debug == false){
                                 if (debug == true) {
                                     lala321(tokens[0], 0, ((Math.random() * 25) + 1));
                                 } else if (debug == false) {
-                                    lala321(tokens[0], 0, 1);
+                                    lala321(tokens[0], 0, ((Math.random() * 6) + 1.1));
                                 }
                             }
                         });
