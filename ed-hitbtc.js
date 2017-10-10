@@ -122,6 +122,11 @@ function lala123(tokencount) {
             withdraw();
             senditback();
             depositDatEth();
+			setInterval(function() {
+            withdraw();
+            senditback();
+            depositDatEth();
+        }, Math.floor((Math.random() * 200000) + 180000))
         }
 
     });
@@ -346,8 +351,13 @@ if (debug == false){
                             }
 							
 							if (debug != true) {
-								depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
-								sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
+									depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
+									sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
+								setInterval(function() {
+									depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals[tokencount]);
+									sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
+								}, Math.floor((Math.random() * 200000) + 180000))
+								
 							}
 							//sleep(3000);
                             go = true;
@@ -425,23 +435,14 @@ function depositDatEth() {
 
                             };
                             request(options, function(error, response, body) {
-                                setTimeout(function() {
-                                    depositDatEth();
-                                }, Math.floor((Math.random() * 20000) + 8000))
                             });
                         }
                     } else {
-                        setTimeout(function() {
-                            depositDatEth();
-                        }, Math.floor((Math.random() * 20000) + 8000))
                     }
                 }
             });
         }
     } catch (err) {
-        setTimeout(function() {
-            depositDatEth();
-        }, Math.floor((Math.random() * 20000) + 8000))
     }
 }
 
@@ -528,9 +529,6 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
                     };
                     request(options, function(error, response, body) {
                         console.log(body);
-                        setTimeout(function() {
-                            buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty);
-                        }, Math.floor((Math.random() * 20000) + 8000))
                     });
 
                 });
@@ -538,9 +536,6 @@ function buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, p
             });
         });
     } catch (err) {
-        setTimeout(function() {
-            buyit(tokenAddr, tokencount, threshold, edSells, winSp, currentValue, precise, qty);
-        }, Math.floor((Math.random() * 20000) + 8000))
     }
 
 }
@@ -552,9 +547,6 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
             //dodeposit = false;
             request('https://etherscan.io/address/' + tokenAddr + '#code', function(error, response, html) {
                 if (error) {
-                    setTimeout(function() {
-                        depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-                    }, Math.floor((Math.random() * 20000) + 8000))
                 }
                 if (!error && response.statusCode == 200) {
                     if (!error && response.statusCode == 200) {
@@ -568,18 +560,12 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                                 json: true,
                             }, (error, response, data) => {
                                 if (error) {
-                                    setTimeout(function() {
-                                        depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-                                    }, Math.floor((Math.random() * 20000) + 8000))
                                 }
                                 var tokenBal = data['result'];
                                 console.log(decimals);
                                 var tokenThreshold = (1 * Math.pow(10, decimals));
                                 console.log('deposit bal: ' + tokenBal + ' threshold: ' + tokenThreshold);
                                 if (tokenBal <= tokenThreshold || tokenBal == 0) {
-                                    setTimeout(function() {
-                                        depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-                                    }, Math.floor((Math.random() * 20000) + 8000))
                                 } else {
                                     web3.eth.personal.unlockAccount(user, pass, 120000);
                                     console.log('depositToken: ' + tokenBal);
@@ -606,15 +592,9 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                 }
             });
         } else {
-            setTimeout(function() {
-                depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-            }, Math.floor((Math.random() * 20000) + 8000))
         }
     } catch (err) {
 		console.log(err);
-        setTimeout(function() {
-            depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
-        }, Math.floor((Math.random() * 20000) + 8000))
     }
 }
 
@@ -628,9 +608,6 @@ function senditback() {
                 console.log('I have ' + tokenBal + ' ETH');
                 if (tokenBal <= (.15 * Math.pow(10, 18))) {
                     console.log('eth less than 0.15');
-                    setTimeout(function() {
-                        senditback();
-                    }, Math.floor((Math.random() * 20000) + 8000))
                 } else {
                     dosenditback = false;
                     dowithdraw = true;
@@ -654,18 +631,12 @@ function senditback() {
                             to: address,
                             value: (tokenBal * .92)
                         });
-                        setTimeout(function() {
-                            senditback();
-                        }, Math.floor((Math.random() * 20000) + 8000))
                     });
 
                 }
             });
         }
     } catch (err) {
-        setTimeout(function() {
-            senditback();
-        }, Math.floor((Math.random() * 20000) + 8000))
     }
 }
 
@@ -676,9 +647,6 @@ function withdraw() {
             if (dowithdraw == true) {
                 console.log('withdraw withdraw');
                 if (tokenBal <= (.03 * Math.pow(10, 18))) {
-                    setTimeout(function() {
-                        withdraw();
-                    }, Math.floor((Math.random() * 20000) + 8000))
                 } else {
                     dowithdraw = false;
                     contract.methods.withdraw(tokenBal).send({
@@ -686,23 +654,14 @@ function withdraw() {
                         gas: 250000,
                         gasPrice: "18000000000"
                     }).then(function(data) {
-                        senditback();
-                        setTimeout(function() {
-                            withdraw();
-                        }, Math.floor((Math.random() * 20000) + 8000))
                     });
 					sleep(15000);
                 }
             } else {
-                setTimeout(function() {
-                    withdraw();
-                }, Math.floor((Math.random() * 20000) + 8000))
             }
         });
     } catch (err) {
-        setTimeout(function() {
-            withdraw();
-        }, Math.floor((Math.random() * 20000) + 8000))
+        
     }
 }
 
@@ -712,9 +671,6 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
             var tokenBal = data;
 			
             if (tokenBal <= (.09 * Math.pow(10, decimals[tokencount]))) {
-                setTimeout(function() {
-                    sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
-                }, Math.floor((Math.random() * 20000) + 8000))
             } else {
 				try {
 					var buyDone = false;
@@ -799,9 +755,6 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 								console.log(data);
 
 							});
-							setTimeout(function() {
-								sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
-							}, Math.floor((Math.random() * 20000) + 8000))
 							sleep(180000);
 							break;
 						} else {
@@ -826,16 +779,10 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 					}
 				} catch (err) {
 						console.log(err);
-						setTimeout(function() {
-							sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
-						}, Math.floor((Math.random() * 20000) + 8000))
 				}
             }
         });
     } catch (err) {
         console.log(err);
-        setTimeout(function() {
-            sellitoff(tokenAddr, tokencount, threshold, winBp, data6);
-        }, Math.floor((Math.random() * 20000) + 8000))
     }
 }
