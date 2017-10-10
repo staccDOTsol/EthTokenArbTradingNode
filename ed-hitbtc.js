@@ -22,6 +22,7 @@ var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var Eth = require('web3-eth');
 if (debug == false){
+var contractABI = require('./etherdelta.json');
 var eth = new Eth(Eth.givenProvider || 'http://localhost:8545');;
 var contract = new eth.Contract(contractABI, "0x8d12a197cb00d4747a1fe03395095ce2a5cc6819");
 }
