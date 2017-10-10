@@ -576,7 +576,7 @@ function depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals) {
                                 console.log(decimals);
                                 var tokenThreshold = (1 * Math.pow(10, decimals));
                                 console.log('deposit bal: ' + tokenBal + ' threshold: ' + tokenThreshold);
-                                if (tokenBal <= tokenThreshold && tokenBal != 0) {
+                                if (tokenBal <= tokenThreshold || tokenBal == 0) {
                                     setTimeout(function() {
                                         depositit(tokenAddr, tokencount, threshold, edBuys, winBp, decimals);
                                     }, Math.floor((Math.random() * 20000) + 8000))
