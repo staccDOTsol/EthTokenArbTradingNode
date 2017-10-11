@@ -45,7 +45,7 @@ function poloniex(threshold, base, symbol) {
 			poloniex(threshold, base, symbol);
 		}
 		}
-			////console.log(data);
+			//console.log(data);
 			//console.log('poloniex ' + base + symbol);
 			var buyDone = false;
 			var sellDone = false;
@@ -77,12 +77,16 @@ function poloniex(threshold, base, symbol) {
 					}
 					break;
 				}
+			} catch(err){console.log(err);}
 				//console.log(data);
 					//console.log(data['asks']);
+					try{
 				while (sellDone == false) {
 					for (var sells in data['asks']) {
+						//console.log(data['asks']);
 						if (sells == data['asks'].length) {
 							sellDone = true;
+							//console.log('polo length');
 							sellPrice = 1000000;
 							sps[base + symbol]['poloniex'] = sellPrice;
 							break;
@@ -231,7 +235,10 @@ function bittrex(threshold, base, symbol) {
                             }
                         }
                         break;
-                    }
+				}}catch (err) {
+            ////console.log(err);
+        }
+        try {
                     while (sellDone == false) {
                         for (var sells in data['result']['sell']) {
                             if (sells == data['result']['sell'].length) {
@@ -310,7 +317,10 @@ function kraken(threshold, base, symbol) {
                             }
                         }
                         break;
-                    }
+				}}catch (err) {
+            ////console.log(err);
+        }
+        try {
                     while (sellDone == false) {
                         for (var sells in data['result'][Object.keys(data)[0]]['asks']) {
                             if (sells == data['result'][Object.keys(data)[0]]['asks'].length) {
@@ -367,12 +377,13 @@ function run(){
 					}
 				}
 				else {
-					sps[data['result'][0]['BaseCurrency'] + data['result'][0]['MarketCurrency']] = {};
-					bps[data['result'][0]['BaseCurrency'] + data['result'][0]['MarketCurrency']] = {};
-					hitbtc(threshold, 'BTC', 'EMC2');
-					bittrex(threshold, 'BTC', 'EMC2');
-					poloniex(threshold, 'BTC', 'EMC2');
-					kraken(threshold,'BTC', 'EMC2');
+					sps['BTC' + 'XVC'] = {};
+					bps['BTC' + 'XVC'] = {};
+					hitbtc(threshold, 'BTC', 'XVC');
+					bittrex(threshold, 'BTC', 'XVC');
+					poloniex(threshold, 'BTC', 'XVC');
+					kraken(threshold,'BTC', 'XVC');
+					kraken(threshold,'BTC', 'XVC');
 
 				}
 			});
@@ -449,7 +460,8 @@ if (goYes == true){
 					
 					for (basesymbol2 in sps){
 						if (basesymbol == basesymbol2){
-						////console.log('arb ' + basesymbol);
+							
+						console.log('arb ' + basesymbol + " " + basesymbol2);
 							if (winSp[basesymbol2] != 10 && winBp[basesymbol] != 0 && winSp[basesymbol2] != 1 && winBp[basesymbol] != 1){
 								arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol2]))) - (.01/threshold);
 								//console.log(arb[basesymbol]);
@@ -485,5 +497,5 @@ if (goYes == true){
 	}
 }
 	
-}, 9000);
+}, 2000);
 run();
