@@ -467,7 +467,7 @@ if (goYes == true){
 						if (basesymbol == basesymbol2){
 							
 							if (winSp[basesymbol2] != 10 && winBp[basesymbol] != 0 && winSp[basesymbol2] != 1 && winBp[basesymbol] != 1){
-								arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol2]))) - (.01/threshold);
+								arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol2]))) - (.001/threshold);
 								//console.log(arb[basesymbol]);
 							//console.log(winExBp[basesymbol]);
 							//console.log(winExSp[basesymbol]);
