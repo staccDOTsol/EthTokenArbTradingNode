@@ -284,9 +284,10 @@ function kraken(threshold, base, symbol) {
 				sleep(1000);
 			kraken(threshold, base, symbol);
 			}
-		}else{
-				//console.log(data);
-				//console.log(Object.keys(data)[0]);
+		}else {
+			console.log(data);
+				console.log(Object.keys(data['result'])[0]);
+				//console.log(Object.keys(data['result'])[0]);
 				//console.log('kraken ' + base + symbol);
                 var buyDone = false;
                 var sellDone = false;
@@ -297,9 +298,9 @@ function kraken(threshold, base, symbol) {
                 try {
 	done['kraken'][base + symbol] = false;
                     while (buyDone == false) {
-                        for (var buys in data['result'][Object.keys(data)[0]]['bids']) {
-                            buyTotal = buyTotal + (data['result'][Object.keys(data)[0]]['bids'][buys][1] * data['result'][Object.keys(data)[0]]['bids'][buys][0]);
-                            if (buys == data['result'][Object.keys(data)[0]]['bids'].length) {
+                        for (var buys in data['result'][Object.keys(data['result'])[0]]['bids']) {
+                            buyTotal = buyTotal + (data['result'][Object.keys(data['result'])[0]]['bids'][buys][1] * data['result'][Object.keys(data['result'])[0]]['bids'][buys][0]);
+                            if (buys == data['result'][Object.keys(data['result'])[0]]['bids'].length) {
                                 buyDone = true;
                                 buyPrice = 0;
                                 bps[base + symbol]['kraken'] = buyPrice;
@@ -308,7 +309,7 @@ function kraken(threshold, base, symbol) {
                             }
                             if (buyTotal >= threshold) {
                                 buyDone = true;
-                                buyPrice = data['result'][Object.keys(data)[0]]['bids'][buys][0];
+                                buyPrice = data['result'][Object.keys(data['result'])[0]]['bids'][buys][0];
                                 console.log('buyprice: ' + buyPrice);
                                 console.log('buytotal: ' + buyTotal);
                          
@@ -322,19 +323,19 @@ function kraken(threshold, base, symbol) {
         }
         try {
                     while (sellDone == false) {
-                        for (var sells in data['result'][Object.keys(data)[0]]['asks']) {
-                            if (sells == data['result'][Object.keys(data)[0]]['asks'].length) {
+                        for (var sells in data['result'][Object.keys(data['result'])[0]]['asks']) {
+                            if (sells == data['result'][Object.keys(data['result'])[0]]['asks'].length) {
                                 sellDone = true;
                                 sellPrice = 1000000;
                                 sps[base + symbol]['kraken'] = sellPrice;
                                 break;
 
                             }
-                            sellTotal = sellTotal + (data['result'][Object.keys(data)[0]]['asks'][sells][0] * data['result'][Object.keys(data)[0]]['asks'][sells][1]);
+                            sellTotal = sellTotal + (data['result'][Object.keys(data['result'])[0]]['asks'][sells][0] * data['result'][Object.keys(data['result'])[0]]['asks'][sells][1]);
 
                             if (sellTotal >= threshold) {
                                 sellDone = true;
-                                sellPrice = data['result'][Object.keys(data)[0]]['asks'][sells][0];
+                                sellPrice = data['result'][Object.keys(data['result'])[0]]['asks'][sells][0];
                                 console.log('sellprice: ' + sellPrice);
                                 console.log('selltotal: ' + sellTotal);
                                 sps[base + symbol]['kraken'] = sellPrice;
@@ -461,13 +462,13 @@ if (goYes == true){
 					for (basesymbol2 in sps){
 						if (basesymbol == basesymbol2){
 							
-						console.log('arb ' + basesymbol + " " + basesymbol2);
+						//console.log('arb ' + basesymbol + " " + basesymbol2);
 							if (winSp[basesymbol2] != 10 && winBp[basesymbol] != 0 && winSp[basesymbol2] != 1 && winBp[basesymbol] != 1){
 								arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol2]))) - (.01/threshold);
 								//console.log(arb[basesymbol]);
 							//console.log(winExBp[basesymbol]);
 							//console.log(winExSp[basesymbol]);
-								if (arb[basesymbol] > -20.0001 && arb[basesymbol] <= 10){
+								if (arb[basesymbol] > .0001 && arb[basesymbol] <= 10){
 									var dateTime = require('node-datetime');
 									var dt = dateTime.create();
 									var formatted = dt.format('Y-m-d H:M:S');
