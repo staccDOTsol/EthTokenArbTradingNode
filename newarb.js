@@ -314,8 +314,8 @@ function kraken(threshold, base, symbol) {
                             if (buyTotal >= threshold) {
                                 buyDone = true;
                                 buyPrice = data['result'][Object.keys(data['result'])[0]]['bids'][buys][0];
-                                console.log('buyprice: ' + buyPrice);
-                                console.log('buytotal: ' + buyTotal);
+                                //console.log('buyprice: ' + buyPrice);
+                                //console.log('buytotal: ' + buyTotal);
                          
                                 bps[base + symbol]['kraken'] = buyPrice;
                                 break;
@@ -340,8 +340,8 @@ function kraken(threshold, base, symbol) {
                             if (sellTotal >= threshold) {
                                 sellDone = true;
                                 sellPrice = data['result'][Object.keys(data['result'])[0]]['asks'][sells][0];
-                                console.log('sellprice: ' + sellPrice);
-                                console.log('selltotal: ' + sellTotal);
+                               // console.log('sellprice: ' + sellPrice);
+                                //console.log('selltotal: ' + sellTotal);
                                 sps[base + symbol]['kraken'] = sellPrice;
                                 break;
                             }
@@ -395,7 +395,7 @@ function run(){
 }
 var goAgain = true;
 setInterval(function(){ 
-//console.log('check dones');
+console.log('check dones');
 var go = {};
 for (exchange in done){
 	go[exchange] = true;
@@ -502,5 +502,5 @@ if (goYes == true){
 	}
 }
 	
-}, 2000);
+}, 8000);
 run();
