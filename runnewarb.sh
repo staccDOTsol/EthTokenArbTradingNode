@@ -8,12 +8,13 @@ nohup node newarb.js &
 while :
 do
 
-if [ $(ps -ef | grep -v grep | grep ed-hitbtc | wc -l) -lt 1 ]; then
+if [ $(ps -ef | grep -v grep | grep newarb | wc -l) -lt 1 ]; then
 
     echo "less than 1 running"
 
    nohup node newarb.js &
 
+sleep 30s
 
 
 
