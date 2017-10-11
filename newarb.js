@@ -446,19 +446,24 @@ if (goYes == true){
 				}	
 				var arb = {};
 				for (basesymbol in bps){
-					////console.log('arb ' + basesymbol);
-					if (winSp[basesymbol] != 10 && winBp[basesymbol] != 0 && winSp[basesymbol] != 1 && winBp[basesymbol] != 1){
-						arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol]))) - (.01/threshold);
-						//console.log(arb[basesymbol]);
-					//console.log(winExBp[basesymbol]);
-					//console.log(winExSp[basesymbol]);
-						if (arb[basesymbol] > .0001 && arb[basesymbol] <= 10){
-							var dateTime = require('node-datetime');
-							var dt = dateTime.create();
-							var formatted = dt.format('Y-m-d H:M:S');
-							//console.log(formatted);
-							//console.log('arb arb! ' + arb[basesymbol] + ' ' + basesymbol + ' winsp: ' + winExSp[basesymbol] + ' winbp: ' + winExBp[basesymbol]);
-							sheet.addRow({'time':formatted, 'ticker': basesymbol, 'bid': winBp[basesymbol], 'ask': winSp[basesymbol], 'arb with fee': arb[basesymbol], 'bid ex': winExBp[basesymbol], 'ask ex': winExSp[basesymbol], 'base threshold': threshold}, function (err, row){ });
+					
+					for (basesymbol2 in sps){
+						if (basesymbol == basesymbol2){
+						////console.log('arb ' + basesymbol);
+							if (winSp[basesymbol2] != 10 && winBp[basesymbol] != 0 && winSp[basesymbol2] != 1 && winBp[basesymbol] != 1){
+								arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol2]))) - (.01/threshold);
+								//console.log(arb[basesymbol]);
+							//console.log(winExBp[basesymbol]);
+							//console.log(winExSp[basesymbol]);
+								if (arb[basesymbol] > -20.0001 && arb[basesymbol] <= 10){
+									var dateTime = require('node-datetime');
+									var dt = dateTime.create();
+									var formatted = dt.format('Y-m-d H:M:S');
+									//console.log(formatted);
+									//console.log('arb arb! ' + arb[basesymbol] + ' ' + basesymbol + ' winsp: ' + winExSp[basesymbol] + ' winbp: ' + winExBp[basesymbol]);
+									sheet.addRow({'time':formatted, 'ticker': basesymbol, 'bid': winBp[basesymbol], 'ask': winSp[basesymbol2], 'arb with fee': arb[basesymbol], 'bid ex': winExBp[basesymbol], 'ask ex': winExSp[basesymbol], 'base threshold': threshold}, function (err, row){ });
+								}
+							}
 						}
 					}
 				}
