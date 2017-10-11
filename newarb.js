@@ -472,7 +472,7 @@ if (goYes == true){
 							//console.log(winExBp[basesymbol]);
 							//console.log(winExSp[basesymbol]);
 								if (arb[basesymbol] > .0001 && arb[basesymbol] <= 10){
-									console.log('arb ' + basesymbol + " " + basesymbol2 + ": " + arb);
+									console.log('arb ' + basesymbol + " " + basesymbol2 + ": " + arb[basesymbol]);
 									var dateTime = require('node-datetime');
 									var dt = dateTime.create();
 									var formatted = dt.format('Y-m-d H:M:S');
