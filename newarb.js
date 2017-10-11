@@ -466,13 +466,13 @@ if (goYes == true){
 					for (basesymbol2 in sps){
 						if (basesymbol == basesymbol2){
 							
-						//console.log('arb ' + basesymbol + " " + basesymbol2);
 							if (winSp[basesymbol2] != 10 && winBp[basesymbol] != 0 && winSp[basesymbol2] != 1 && winBp[basesymbol] != 1){
 								arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol2]))) - (.01/threshold);
 								//console.log(arb[basesymbol]);
 							//console.log(winExBp[basesymbol]);
 							//console.log(winExSp[basesymbol]);
 								if (arb[basesymbol] > .0001 && arb[basesymbol] <= 10){
+									console.log('arb ' + basesymbol + " " + basesymbol2 + ": " + arb);
 									var dateTime = require('node-datetime');
 									var dt = dateTime.create();
 									var formatted = dt.format('Y-m-d H:M:S');
