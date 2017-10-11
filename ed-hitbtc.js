@@ -196,7 +196,7 @@ if (debug == false){
                                         dodeposit2 = true;
                                         dosenditback = true;
                                     }
-                                    threshold = parseFloat(qty) / 1; // / checker; // / 10;
+                                    threshold = parseFloat(qty) * .97; // / checker; // / 10;
 									if (threshold == 0){
 										threshold = 0.01;
 									}
@@ -374,6 +374,7 @@ if (debug == false){
                                 if (debug == true) {
                                     lala321(tokens[0], 0, ((Math.random() * 25) + 1));
                                 } else if (debug == false) {
+									sleep(10000);
                                     lala321(tokens[0], 0, ((Math.random() * 6) + 1.1));
                                 }
                             }
@@ -751,7 +752,7 @@ function sellitoff(tokenAddr, tokencount, threshold, winBp, data6) {
 					console.log('edbuys length' + edBuys.length);
 					console.log(edBuys);
 					console.log('available: ' + new BigNumber(edBuys[buy]['available']));
-					tokenBal = new BigNumber((Math.floor(((tokenBal) / Math.pow(10, 18) * .997).toFixed(2))) *  Math.pow(10, 18));
+					tokenBal = new BigNumber((Math.floor(((tokenBal) / Math.pow(10, decimals[tokencount]) * .997).toFixed(3))) *  Math.pow(10, decimals[tokencount]));
 					while (buy < edBuys.length) {
 						console.log(edBuys[buy]);
 						console.log('tokenbal: ' + (tokenBal));

@@ -573,7 +573,7 @@ request.get(url7, {json: true, timeout: 80000}, function(error, response, data7)
 	   }catch (err){if (err instanceof TypeError){}else{console.log(err);}//////console.log(err)
 	   }
 	   
-	   
+	    var winSp = 1000000000000000;
 		var winBp = 0;
 		var winExBp = "";
 		var winExSp = "";
