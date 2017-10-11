@@ -116,6 +116,9 @@ function poloniex(threshold, base, symbol) {
 }
 	done['hitbtc'] = {};
 function hitbtc(threshold, base, symbol) {
+	
+	base = base.replace("USDT", "USD");
+	symbol = symbol.replace("USDT", "USD");
     var buyDone = false;
 	var buyPrice = 0;
 	var sellPrice = 1000000;
@@ -274,6 +277,9 @@ function bittrex(threshold, base, symbol) {
 
 function kraken(threshold, base, symbol) {
 	base = base.replace("BTC", "XBT");
+	base = base.replace("USDT", "USD");
+	symbol = symbol.replace("BTC", "XBT");
+	symbol = symbol.replace("USDT", "USD");
     var url = "https://api.kraken.com/0/public/Depth?pair=" + symbol + base;
     ////console.log(url);
     request.get(url, {
@@ -285,8 +291,6 @@ function kraken(threshold, base, symbol) {
 			kraken(threshold, base, symbol);
 			}
 		}else {
-			console.log(data);
-				console.log(Object.keys(data['result'])[0]);
 				//console.log(Object.keys(data['result'])[0]);
 				//console.log('kraken ' + base + symbol);
                 var buyDone = false;
