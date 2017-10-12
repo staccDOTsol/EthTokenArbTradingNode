@@ -149,10 +149,10 @@ function hitbtc(threshold, base, symbol) {
 
                     }
                     sellTotal = sellTotal + (data['asks'][sells][1] * data['asks'][sells][0]);
-
-                    ////console.log(sellTotal);
+					console.log('hitbtc current sell price: ' + data['asks'][sells][0]);
+                    console.log('hitbtc selltotal: ' + sellTotal);
                     if (sellTotal >= threshold) {
-                        ////console.log('threshold');
+                        console.log('threshold: ' + threshold);
                         sellDone = true;
                         sellPrice = data['asks'][sells][0];
                         sps[base + symbol]['hitbtc'] = sellPrice;
@@ -304,7 +304,8 @@ function kraken(threshold, base, symbol) {
                     while (buyDone == false) {
                         for (var buys in data['result'][Object.keys(data['result'])[0]]['bids']) {
                             buyTotal = buyTotal + (data['result'][Object.keys(data['result'])[0]]['bids'][buys][1] * data['result'][Object.keys(data['result'])[0]]['bids'][buys][0]);
-                            if (buys == data['result'][Object.keys(data['result'])[0]]['bids'].length) {
+                            console.log(buyTotal);
+							if (buys == data['result'][Object.keys(data['result'])[0]]['bids'].length) {
                                 buyDone = true;
                                 buyPrice = 0;
                                 bps[base + symbol]['kraken'] = buyPrice;
@@ -336,7 +337,7 @@ function kraken(threshold, base, symbol) {
 
                             }
                             sellTotal = sellTotal + (data['result'][Object.keys(data['result'])[0]]['asks'][sells][0] * data['result'][Object.keys(data['result'])[0]]['asks'][sells][1]);
-
+							console.log(sellTotal);
                             if (sellTotal >= threshold) {
                                 sellDone = true;
                                 sellPrice = data['result'][Object.keys(data['result'])[0]]['asks'][sells][0];
@@ -360,7 +361,7 @@ function kraken(threshold, base, symbol) {
 
 function run(){
 	var url = "https://bittrex.com/api/v1.1/public/getmarkets";
-    var threshold = 1;
+    
     request.get(url, {
                 json: true,
                 timeout: 8000
@@ -451,12 +452,13 @@ if (goYes == true){
 					winBp[basesymbol] = 0;
 					winExBp[basesymbol] = "";
 					for (exchange in bps[basesymbol]){
-						////console.log('bps exchange: ' + exchange);
+						console.log('bps exchange: ' + exchange);
+							console.log(basesymbol);
 						if (bps[basesymbol][exchange] >= winBp[basesymbol] && bps[basesymbol][exchange] != 1000000 && bps[basesymbol][exchange] != 0){
 							winBp[basesymbol] = bps[basesymbol][exchange];
-							////console.log(winBp[basesymbol]);
 							winExBp[basesymbol] = exchange;
 						}
+							console.log(winBp[basesymbol]);
 					}
 					////console.log('winbp: ' + winBp[basesymbol]);
 				}	
@@ -493,6 +495,12 @@ if (goYes == true){
 						////console.log(done[exchange][basesymbol]);
 					}
 				}
+				bps = {};
+				sps = {};
+				winSp = {};//1000000000000000;
+				winBp = {};//0;
+				winExBp = {};
+				winExSp = {};
 				sleep(10000);
 				threshold = ((Math.random() * 10) + .1);
 				goAgain = true;
