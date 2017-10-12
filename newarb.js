@@ -491,7 +491,7 @@ if (goYes == true){
 									var formatted = dt.format('Y-m-d H:M:S');
 									//console.log(formatted);
 									//console.log('arb arb! ' + arb[basesymbol] + ' ' + basesymbol + ' winsp: ' + winExSp[basesymbol] + ' winbp: ' + winExBp[basesymbol]);
-									if (basesymbol.startsWith('USDT'){
+									if (basesymbol.startsWith('USDT')){
 										sheet.addRow({'time':formatted, 'ticker': basesymbol, 'bid': winBp[basesymbol], 'ask': winSp[basesymbol2], 'arb with fee': arb[basesymbol], 'bid ex': winExBp[basesymbol], 'ask ex': winExSp[basesymbol], 'base threshold': threshold * 60}, function (err, row){ });
 										
 									}
