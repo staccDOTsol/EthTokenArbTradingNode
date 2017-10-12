@@ -7,7 +7,7 @@ if (isLin) {
 } else if (isWin) {
     var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
 }
-var threshold = 1;
+var threshold = ((Math.random() * 10) + .1);
 var GoogleSpreadsheet = require('google-spreadsheet');
 var doc = new GoogleSpreadsheet('1i97AYneAUFRl12gPp8BkL06_V-SYerkchYy-HPIxAbE');
 var sheet;
