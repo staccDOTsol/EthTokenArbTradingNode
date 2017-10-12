@@ -37,6 +37,9 @@ var done = {};
 	done['poloniex'] = {};
 
 function poloniex(threshold, base, symbol) {
+	if (base == "USDT"){
+		threshold = threshold * 60; 
+	}
     poloniex2.returnOrderBook(base, symbol, function(err, data) {
     if (err){
 		//console.log(err);
@@ -116,7 +119,9 @@ function poloniex(threshold, base, symbol) {
 }
 	done['hitbtc'] = {};
 function hitbtc(threshold, base, symbol) {
-	
+	if (base == "USDT"){
+		threshold = threshold * 60; 
+	}
 	base = base.replace("USDT", "USD");
 	symbol = symbol.replace("USDT", "USD");
     var buyDone = false;
@@ -200,6 +205,9 @@ function hitbtc(threshold, base, symbol) {
 
 	done['bittrex'] = {};
 function bittrex(threshold, base, symbol) {
+	if (base == "USDT"){
+		threshold = threshold * 60; 
+	}
     var url = "https://bittrex.com/api/v1.1/public/getorderbook?market=" + base + "-" + symbol + "&type=both";
     ////console.log(url);
     request.get(url, {
@@ -276,6 +284,9 @@ function bittrex(threshold, base, symbol) {
 	done['kraken'] = {};
 
 function kraken(threshold, base, symbol) {
+	if (base == "USDT"){
+		threshold = threshold * 60; 
+	}
 	base = base.replace("BTC", "XBT");
 	base = base.replace("USDT", "USD");
 	symbol = symbol.replace("BTC", "XBT");
