@@ -40,6 +40,9 @@ function poloniex(threshold, base, symbol) {
 	if (base == "USDT"){
 		threshold = threshold * 60; 
 	}
+	if (symbol == "BTC"){
+		threshold = threshold * 21.27;
+	}
     poloniex2.returnOrderBook(base, symbol, function(err, data) {
     if (err){
 		//console.log(err);
@@ -121,6 +124,9 @@ function poloniex(threshold, base, symbol) {
 function hitbtc(threshold, base, symbol) {
 	if (base == "USDT"){
 		threshold = threshold * 60; 
+	}
+	if (symbol == "BTC"){
+		threshold = threshold * 21.27;
 	}
 	base = base.replace("USDT", "USD");
 	symbol = symbol.replace("USDT", "USD");
@@ -208,6 +214,9 @@ function bittrex(threshold, base, symbol) {
 	if (base == "USDT"){
 		threshold = threshold * 60; 
 	}
+	if (symbol == "BTC"){
+		threshold = threshold * 21.27;
+	}
     var url = "https://bittrex.com/api/v1.1/public/getorderbook?market=" + base + "-" + symbol + "&type=both";
     ////console.log(url);
     request.get(url, {
@@ -286,6 +295,9 @@ function bittrex(threshold, base, symbol) {
 function kraken(threshold, base, symbol) {
 	if (base == "USDT"){
 		threshold = threshold * 60; 
+	}
+	if (symbol == "BTC"){
+		threshold = threshold * 21.27;
 	}
 	base = base.replace("BTC", "XBT");
 	base = base.replace("USDT", "USD");
@@ -491,7 +503,12 @@ if (goYes == true){
 									var formatted = dt.format('Y-m-d H:M:S');
 									//console.log(formatted);
 									//console.log('arb arb! ' + arb[basesymbol] + ' ' + basesymbol + ' winsp: ' + winExSp[basesymbol] + ' winbp: ' + winExBp[basesymbol]);
-									if (basesymbol.startsWith('USDT')){
+									if (basesymbol.startsWith('USDTBTC')){
+										sheet.addRow({'time':formatted, 'ticker': basesymbol, 'bid': winBp[basesymbol], 'ask': winSp[basesymbol2], 'arb with fee': arb[basesymbol], 'bid ex': winExBp[basesymbol], 'ask ex': winExSp[basesymbol], 'base threshold': threshold * 60 * 21.27}, function (err, row){ });
+										
+									}
+									
+									else if (basesymbol.startsWith('USDT')){
 										sheet.addRow({'time':formatted, 'ticker': basesymbol, 'bid': winBp[basesymbol], 'ask': winSp[basesymbol2], 'arb with fee': arb[basesymbol], 'bid ex': winExBp[basesymbol], 'ask ex': winExSp[basesymbol], 'base threshold': threshold * 60}, function (err, row){ });
 										
 									}
