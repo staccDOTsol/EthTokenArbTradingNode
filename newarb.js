@@ -734,7 +734,7 @@ function run(){
 					for (result in data['result']){
 						sps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
 						bps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
-						sleep((Math.random() * 1400) + 100);
+						//sleep((Math.random() * 1400) + 100);
 						gatecoin(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						bitstamp(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						yobit(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
