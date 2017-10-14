@@ -4,6 +4,6 @@ sleep 5s
 
 while :
 do
-sleep 1.5m
+sleep 15.6m
 killall node
 done
