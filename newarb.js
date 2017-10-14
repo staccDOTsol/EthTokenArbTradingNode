@@ -291,6 +291,341 @@ function bittrex(threshold, base, symbol) {
 }
 
 	done['kraken'] = {};
+done['liqui'] = {};
+done['gatecoin'] = {};
+done['bitstamp'] = {};
+done['yobit'] = {};
+function yobit(threshold, base, symbol){
+	base = base.replace("USDT", "USD");
+	symbol = symbol.replace("USDT", "USD");
+	if (base == "USDT"){
+		threshold = threshold * 60; 
+	}
+	if (symbol == "BTC"){
+		threshold = threshold * 21.27;
+	}
+	var url = "https://yobit.net/api/3/depth/" + symbol.toLowerCase() + "_" + base.toLowerCase();
+		
+		console.log(url);
+						sleep(1);
+request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
+			////////console.log(data5);
+					console.log(data);
+			var buyDone = false;
+                var sellDone = false;
+                var buyTotal = 0;
+                var sellTotal = 0;
+	var buyPrice = 0;
+	var sellPrice = 1000000;
+                try {
+	done['yobit'][base + symbol] = false;
+                    while (buyDone == false) {
+                        for (var buys in data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids']) {
+                            buyTotal = buyTotal + (data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'][buys][0] * data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'][buys][1]);
+							if (buys == data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'].length){
+				             buyDone = true;
+                                buyDone = true;
+                                buyPrice = 0;
+                                bps[base + symbol]['yobit'] = buyPrice;
+                                break;
+
+                            }
+                            if (buyTotal >= threshold) {
+                                buyDone = true;
+                                buyPrice = data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'][buys][0];
+                                console.log('buyprice yobit: ' + buyPrice);
+                                console.log('buytotal yobit: ' + buyTotal);
+                         
+                                bps[base + symbol]['yobit'] = buyPrice;
+                                break;
+                            }
+                        }
+                        break;
+				}}catch (err) {
+            console.log(err);
+        }
+        try {
+                    while (sellDone == false) {
+                        for (var sells in data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks']) {
+                            if (sells == data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'].length) {
+                                sellDone = true;
+                                sellPrice = 1000000;
+                                sps[base + symbol]['yobit'] = sellPrice;
+                                break;
+
+                            }
+                            sellTotal = sellTotal + (data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][0] * data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][1]);
+							console.log(sellTotal);
+                            if (sellTotal >= threshold) {
+                                sellDone = true;
+                                sellPrice = data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][0];
+                               // console.log('sellprice: ' + sellPrice);
+                                //console.log('selltotal: ' + sellTotal);
+                                sps[base + symbol]['yobit'] = sellPrice;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                } catch (err) {
+                    if (err instanceof TypeError) {} else {
+                        console.log(err);
+                    } 
+                }
+			done['yobit'][base + symbol] = true;
+		});
+			
+}
+
+function bitstamp(threshold, base, symbol){
+	base = base.replace("USDT", "USD");
+	symbol = symbol.replace("USDT", "USD");
+	if (base == "USDT"){
+		threshold = threshold * 60; 
+	}
+	if (symbol == "BTC"){
+		threshold = threshold * 21.27;
+	}
+	var url = "https://www.bitstamp.net/api/v2/order_book/" + symbol.toLowerCase() + base.toLowerCase();
+		
+		//console.log(url8);
+						sleep(1);
+request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
+			////////console.log(data5);
+			var buyDone = false;
+                var sellDone = false;
+                var buyTotal = 0;
+                var sellTotal = 0;
+	var buyPrice = 0;
+	var sellPrice = 1000000;
+                try {
+	done['bitstamp'][base + symbol] = false;
+                    while (buyDone == false) {
+                        for (var buys in data['bids']) {
+                            buyTotal = buyTotal + (data['bids'][buys][0] * data['bids'][buys][1]);
+							if (buys == data['bids'].length){
+				             buyDone = true;
+                                buyDone = true;
+                                buyPrice = 0;
+                                bps[base + symbol]['bitstamp'] = buyPrice;
+                                break;
+
+                            }
+                            if (buyTotal >= threshold) {
+                                buyDone = true;
+                                buyPrice = data['bids'][buys][0];
+                                console.log('buyprice bitstamp: ' + buyPrice);
+                                console.log('buytotal bitstamp: ' + buyTotal);
+                         
+                                bps[base + symbol]['bitstamp'] = buyPrice;
+                                break;
+                            }
+                        }
+                        break;
+				}}catch (err) {
+            ////console.log(err);
+        }
+        try {
+                    while (sellDone == false) {
+                        for (var sells in data['asks']) {
+                            if (sells == data['asks'].length) {
+                                sellDone = true;
+                                sellPrice = 1000000;
+                                sps[base + symbol]['bitstamp'] = sellPrice;
+                                break;
+
+                            }
+                            sellTotal = sellTotal + (data['asks'][sells][0] * data['asks'][sells][1]);
+							console.log(sellTotal);
+                            if (sellTotal >= threshold) {
+                                sellDone = true;
+                                sellPrice = data['asks'][0];
+                               // console.log('sellprice: ' + sellPrice);
+                                //console.log('selltotal: ' + sellTotal);
+                                sps[base + symbol]['bitstamp'] = sellPrice;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                } catch (err) {
+                    if (err instanceof TypeError) {} else {
+                        ////console.log(err);
+                    } 
+                }
+			done['bitstamp'][base + symbol] = true;
+		
+		});
+			
+}
+function gatecoin(threshold, base, symbol){
+	base = base.replace("USDT", "USD");
+	symbol = symbol.replace("USDT", "USD");
+	if (base == "USDT"){
+		threshold = threshold * 60; 
+	}
+	if (symbol == "BTC"){
+		threshold = threshold * 21.27;
+	}
+	var url = "https://api.gatecoin.com/Public/MarketDepth/" + symbol + base;
+		
+		//console.log(url8);
+						sleep(1);
+request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
+			////////console.log(data5);
+			var buyDone = false;
+                var sellDone = false;
+                var buyTotal = 0;
+                var sellTotal = 0;
+	var buyPrice = 0;
+	var sellPrice = 1000000;
+                try {
+	done['gatecoin'][base + symbol] = false;
+                    while (buyDone == false) {
+                        for (var buys in data['bids']) {
+                            buyTotal = buyTotal + (data['bids'][buys]['price'] * data['bids'][buys]['volume']);
+							if (buys == data['bids'].length){
+				             buyDone = true;
+                                buyDone = true;
+                                buyPrice = 0;
+                                bps[base + symbol]['gatecoin'] = buyPrice;
+                                break;
+
+                            }
+                            if (buyTotal >= threshold) {
+                                buyDone = true;
+                                buyPrice = data['bids'][buys]['price'];
+                                console.log('buyprice gatecoin: ' + buyPrice);
+                                console.log('buytotal gatecoin: ' + buyTotal);
+                         
+                                bps[base + symbol]['gatecoin'] = buyPrice;
+                                break;
+                            }
+                        }
+                        break;
+				}}catch (err) {
+            ////console.log(err);
+        }
+        try {
+                    while (sellDone == false) {
+                        for (var sells in data['asks']) {
+                            if (sells == data['asks'].length) {
+                                sellDone = true;
+                                sellPrice = 1000000;
+                                sps[base + symbol]['gatecoin'] = sellPrice;
+                                break;
+
+                            }
+                            sellTotal = sellTotal + (data['asks'][sells]['price'] * data['asks'][sells]['volume']);
+							console.log(sellTotal);
+                            if (sellTotal >= threshold) {
+                                sellDone = true;
+                                sellPrice = data['asks']['price'];
+                               // console.log('sellprice: ' + sellPrice);
+                                //console.log('selltotal: ' + sellTotal);
+                                sps[base + symbol]['gatecoin'] = sellPrice;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                } catch (err) {
+                    if (err instanceof TypeError) {} else {
+                        ////console.log(err);
+                    } 
+                }
+			done['gatecoin'][base + symbol] = true;
+		
+		});
+			
+}
+function liqui(threshold, base, symbol){
+	if (base == "USDT"){
+		threshold = threshold * 60; 
+	}
+	if (symbol == "BTC"){
+		threshold = threshold * 21.27;
+	}
+	base = base.replace("USDT", "USD");
+	symbol = symbol.replace("USDT", "USD");
+    var url = "https://api.liqui.io/api/3/depth/" + symbol.toLowerCase() + "_" + base.toLowerCase();
+    ////console.log(url);
+    request.get(url, {
+                json: true,
+                timeout: 22000
+            }, function(error, response, data) {if (error){//console.log(error);
+			if ((error.toString().indexOf('socket hang up') != -1) || (error.toString().indexOf('ECONNRESET') != -1)){
+				sleep(1000);
+			liqui(threshold, base, symbol);
+			}
+		}else {
+				//console.log(Object.keys(data['result'])[0]);
+				//console.log('kraken ' + base + symbol);
+                var buyDone = false;
+                var sellDone = false;
+                var buyTotal = 0;
+                var sellTotal = 0;
+	var buyPrice = 0;
+	var sellPrice = 1000000;
+                try {
+	done['liqui'][base + symbol] = false;
+                    while (buyDone == false) {
+                        for (var buys in data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids']) {
+                            buyTotal = buyTotal + (data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'][buys][0] * data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'][buys][1]);
+							if (buys == data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'].length){
+				             buyDone = true;
+                                buyDone = true;
+                                buyPrice = 0;
+                                bps[base + symbol]['liqui'] = buyPrice;
+                                break;
+
+                            }
+                            if (buyTotal >= threshold) {
+                                buyDone = true;
+                                buyPrice = data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'][buys][0];
+                                console.log('buyprice liqui: ' + buyPrice);
+                                console.log('buytotal liqui: ' + buyTotal);
+                         
+                                bps[base + symbol]['liqui'] = buyPrice;
+                                break;
+                            }
+                        }
+                        break;
+				}}catch (err) {
+            ////console.log(err);
+        }
+        try {
+                    while (sellDone == false) {
+                        for (var sells in data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks']) {
+                            if (sells == data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'].length) {
+                                sellDone = true;
+                                sellPrice = 1000000;
+                                sps[base + symbol]['liqui'] = sellPrice;
+                                break;
+
+                            }
+                            sellTotal = sellTotal + (data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][0] * data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][1]);
+							console.log(sellTotal);
+                            if (sellTotal >= threshold) {
+                                sellDone = true;
+                                sellPrice = data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][0];
+                               // console.log('sellprice: ' + sellPrice);
+                                //console.log('selltotal: ' + sellTotal);
+                                sps[base + symbol]['liqui'] = sellPrice;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                } catch (err) {
+                    if (err instanceof TypeError) {} else {
+                        ////console.log(err);
+                    } 
+                }
+			done['liqui'][base + symbol] = true;
+		}
+		});
+}
 
 function kraken(threshold, base, symbol) {
 	if (base == "USDT"){
@@ -399,20 +734,35 @@ function run(){
 					for (result in data['result']){
 						sps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
 						bps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
+						sleep((Math.random() * 1400) + 100);
+						gatecoin(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						sleep((Math.random() * 1400) + 100);
+						bitstamp(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						sleep((Math.random() * 1400) + 100);
+						yobit(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						sleep((Math.random() * 1400) + 100);
+						liqui(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						sleep((Math.random() * 1400) + 100);
 						hitbtc(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						sleep((Math.random() * 1400) + 100);
 						bittrex(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						sleep((Math.random() * 1400) + 100);
 						poloniex(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						sleep((Math.random() * 1400) + 100);
 						kraken(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 					}
 				}
 				else {
-					sps['BTC' + 'XVC'] = {};
-					bps['BTC' + 'XVC'] = {};
-					hitbtc(threshold, 'BTC', 'XVC');
-					bittrex(threshold, 'BTC', 'XVC');
-					poloniex(threshold, 'BTC', 'XVC');
-					kraken(threshold,'BTC', 'XVC');
-					kraken(threshold,'BTC', 'XVC');
+					sps['BTC' + 'ETH'] = {};
+					bps['BTC' + 'ETH'] = {};
+					yobit(threshold, 'BTC', 'ETH');
+					bitstamp(threshold, 'BTC', 'ETH');
+					gatecoin(threshold, 'BTC', 'ETH');
+					liqui(threshold,'BTC', 'ETH');
+					hitbtc(threshold, 'BTC', 'ETH');
+					bittrex(threshold, 'BTC', 'ETH');
+					poloniex(threshold, 'BTC', 'ETH');
+					kraken(threshold,'BTC', 'ETH');
 
 				}
 			});
