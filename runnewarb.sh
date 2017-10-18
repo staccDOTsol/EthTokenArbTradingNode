@@ -4,14 +4,20 @@ killall node
 killall killallnode.sh
 nohup ./killallnode.sh &
 sleep 5s
-nohup node newarb.js &
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHADX" &
+
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHFUN" &
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHSNT" &
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHPAY" &
 while :
 do
 
-if [ $(ps -ef | grep -v grep | grep newarb.js | wc -l) -lt 1 ]; then
+if [ $(ps -ef | grep -v grep | grep newarb.js | wc -l) -lt 4 ]; then
 
     echo "less than 1 running"
-
+   killall node
+   sleep 10s
    nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHADX" &
 
    nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
