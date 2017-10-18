@@ -285,25 +285,27 @@ function hitbtc(threshold, basesymbol, askOrBid) {
 				while (buyDone == false) {
 					for (var buys in data['bids']) {
 						if (buys == (data['bids'].length - 1)) {
-							sellDone = true;
+							buyDone = true;
 							////console.log('buys length');
-							sellPrice = 1000000;
-							bps[base + symbol]['hitbtc'] = sellPrice;
+							buyPrice = 1000000;
+							bps[base + symbol]['hitbtc'] = buyPrice;
 							break;
 
 						}
-						sellTotal = sellTotal + (data['bids'][buys][1] * data['bids'][buys][0]);
+						buyTotal = buyTotal + (data['bids'][buys][1] * data['bids'][buys][0]);
 
 						////console.log(sellTotal);
-						if (sellTotal >= threshold) {
+						if (buyTotal >= threshold * data['bids'][buys][0]) {
 							////console.log('threshold');
-							sellDone = true;
-							sellPrice = data['bids'][buys][0];
-							bps[base + symbol]['hitbtc'] = sellPrice;
+							buyDone = true;
+							buyPrice = data['bids'][buys][0];
+							console.log('hitbtc sellprice: ' + sellPrice);
+							console.log('hitbtc selltotal: ' + sellTotal);
+							bps[base + symbol]['hitbtc'] = buyPrice;
 							break;
 						}
 					}
-					sellDone = true;
+					buyDone = true;
 					break;
 				}
 			} catch (err) {
@@ -379,11 +381,11 @@ function bittrex(threshold, basesymbol, askOrBid) {
 						}
 						sellTotal = sellTotal + (data['result']['sell'][sells]['Quantity'] * data['result']['sell'][sells]['Rate']);
 
-						if (sellTotal >= threshold) {
+						if (sellTotal >= threshold * data['result']['sell'][sells]['Rate']) {
 							sellDone = true;
 							sellPrice = data['result']['sell'][sells]['Rate'];
-							////console.log('sellprice: ' + sellPrice);
-							////console.log('selltotal: ' + sellTotal);
+							console.log('bittrex sellprice: ' + sellPrice);
+							console.log('bittrex selltotal: ' + sellTotal);
 							sps[base + symbol]['bittrex'] = sellPrice;
 							break;
 						}
@@ -844,8 +846,30 @@ function run(){
 					//for (result in data['result']){
 						sps[options['pair']] = {};
 						bps[options['pair']] = {};
+						var basesymbol = options['pair'];
 						//sleep((Math.random() * 1400) + 100);
 						// only using bidEx = hitbtc, askEx = bittrex
+						
+									var uri = '/api/2/trading/balance';
+									console.log(uri);
+									var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+									request({
+										url: 'https://api.hitbtc.com' + uri, //
+										method: 'GET',
+										headers: {
+											"Authorization": auth
+										},
+										json: true,
+									}, (error, response, body) => {
+										for (var currency in body) {
+											if (body[currency]['currency'] == basesymbol.substring(3, basesymbol.length)) {
+												console.log(body[currency]);
+												var threshold = (parseFloat(body[currency]['available']) * .99)); // TODO Fix to .99
+												console.log('threshold! ' + threshold);
+												
+												
+											}
+										}
 						if (options['bidEx'] == 'gatecoin'){
 							gatecoin(threshold, options['pair'], 'b');
 							done['gatecoin'][options['pair']] == false;
@@ -911,6 +935,7 @@ function run(){
 							kraken(threshold, options['pair'], 'a');
 							done['kraken'][options['pair']] == false;
 						}//}
+									});
 				}
 				else {
 					sps['BTC' + 'ETH'] = {};
