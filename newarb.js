@@ -335,7 +335,7 @@ function hitbtc(threshold, basesymbol, askOrBid) {
 						if (buys == (data['bids'].length - 1)) {
 							buyDone = true;
 							////console.log('buys length');
-							buyPrice = 1000000;
+							buyPrice = 0;
 							bps[base + symbol]['hitbtc'] = buyPrice;
 							break;
 
