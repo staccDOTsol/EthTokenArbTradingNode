@@ -124,7 +124,7 @@ lineReader2.on('line', function(line) {
 		//												  console.log( data );
 		//												  console.log( err );
 														  
-});
+//});
     }
     linecount++;
 });
@@ -1263,7 +1263,7 @@ if (goYes == true){
 													});
 													  
 													});
-													sleep(180000);
+													//sleep(180000);
 												}
 												console.log('hitbtc: ' + basesymbol);
 												console.log('new threshold: ' + threshold);
