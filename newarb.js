@@ -864,7 +864,7 @@ function run(){
 										for (var currency in body) {
 											if (body[currency]['currency'] == basesymbol.substring(3, basesymbol.length)) {
 												console.log(body[currency]);
-												var threshold = (parseFloat(body[currency]['available']) * .99)); // TODO Fix to .99
+												var threshold = (parseFloat(body[currency]['available']) * .99); // TODO Fix to .99
 												console.log('threshold! ' + threshold);
 												
 												
