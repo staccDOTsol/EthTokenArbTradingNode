@@ -1078,7 +1078,7 @@ if (goYes == true){
 								//console.log(arb[basesymbol]);
 							//console.log(winExBp[basesymbol]);
 							//console.log(winExSp[basesymbol]);
-								if (arb[basesymbol] > .005 && arb[basesymbol] <= 300){
+								if (arb[basesymbol] > .001 && arb[basesymbol] <= 300){
 									console.log('arb ' + basesymbol + " " + basesymbol2 + ": " + arb[basesymbol]);
 									var dateTime = require('node-datetime');
 									var dt = dateTime.create();
