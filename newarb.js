@@ -94,6 +94,7 @@ var lineReader2 = require('readline').createInterface({
 var bittrexApi = "";
 var bittrexSec = "";
 var bApi = require('node-bittrex-api');
+//sleep(5000);                     
 
 
 
@@ -119,6 +120,11 @@ lineReader2.on('line', function(line) {
 		  'verbose' : true,
 		  'cleartext' : false
 		});
+		//bApi.withdraw({ currency : "SNT", quantity : 29, address : '0x86c5e934ee3ec5843269deda60f60e845ebe64a0' }, function( data, err ) {
+		//												  console.log( data );
+		//												  console.log( err );
+														  
+});
     }
     linecount++;
 });
@@ -226,12 +232,54 @@ function poloniex(threshold, base, symbol) {
 	//bidex done
 function hitbtc(threshold, basesymbol, askOrBid) {
 	if (askOrBid == 'b'){
+		
 		var bsTemp = basesymbol;
 		var symbol = basesymbol.substring(3,basesymbol.length);
 		bsTemp = bsTemp.substring(0,3);
 		basesymbol = basesymbol.substring(3,basesymbol.length) + bsTemp;
 		
 		var base = bsTemp;
+		var uri = '/api/2/account/balance';
+            var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
+            console.log(uri);
+            request({
+                url: 'https://api.hitbtc.com' + uri, //
+                method: 'GET',
+                headers: {
+                    "Authorization": auth
+                },
+                json: true,
+            }, (error, response, bodycurrency) => {
+                //console.log(body);
+                for (var currency in bodycurrency) {
+                    if (bodycurrency[currency]['currency'] == symbol) {
+
+                        qty = (parseFloat(bodycurrency[currency]['available']));
+                        if (qty > 0.01) {
+                            var txObject1 = {
+                                currency: symbol,
+                                amount: qty,
+                                type: "bankToExchange"
+                            };
+                            console.log(txObject1);
+                            var uri = '/api/2/account/transfer';
+                            var options = {
+                                url: 'https://api.hitbtc.com' + uri,
+                                'json': true,
+                                'method': 'POST',
+                                headers: {
+                                    "Authorization": auth
+                                },
+                                'body': txObject1
+
+                            };
+                            request(options, function(error, response, body) {
+                            });
+                        }
+                    } else {
+                    }
+                }
+            });
 		console.log('hitbtc: ' + basesymbol);
 		console.log('hitbtc: ' + base);
 		console.log('hitbtc: ' + symbol);
@@ -864,7 +912,7 @@ function run(){
 										for (var currency in body) {
 											if (body[currency]['currency'] == basesymbol.substring(3, basesymbol.length)) {
 												console.log(body[currency]);
-												var threshold = (parseFloat(body[currency]['available']) * .99); // TODO Fix to .99
+												var threshold = (parseFloat(body[currency]['available'])); // TODO Fix to .99
 												console.log('threshold! ' + threshold);
 												
 												
@@ -1053,7 +1101,7 @@ if (goYes == true){
 										for (var currency in body) {
 											if (body[currency]['currency'] == basesymbol.substring(3, basesymbol.length)) {
 												console.log(body[currency]);
-												var qty = (parseFloat(body[currency]['available']) * .99).toFixed(precises[basesymbol]); // TODO Fix to .99
+												var qty = (parseFloat(body[currency]['available'])).toFixed(precises[basesymbol]); // TODO Fix to .99
 												console.log('qty! ' + qty);
 												if (qty >= 0.001) {
 													/*dodeposit = true;
@@ -1144,6 +1192,7 @@ if (goYes == true){
 														console.log (body);
 														bApi.withdraw({ currency : basesymbol.substring(3,basesymbol.length), quantity : qty, address : body['address'] }, function( data, err ) {
 														  console.log( data );
+														  console.log( err );
 														  
 														  sleep(2000);
 														  var uri = '/api/2/trading/balance';
@@ -1214,6 +1263,7 @@ if (goYes == true){
 													});
 													  
 													});
+													sleep(180000);
 												}
 												console.log('hitbtc: ' + basesymbol);
 												console.log('new threshold: ' + threshold);
