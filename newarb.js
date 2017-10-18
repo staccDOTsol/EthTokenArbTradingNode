@@ -1108,7 +1108,7 @@ if (goYes == true){
 													dodeposit2 = true;
 													dosenditback = true; */
 												}
-												threshold = parseFloat(qty) * .97; // / checker; // / 10;
+												threshold = parseFloat(qty); // / checker; // / 10;
 												if (threshold == 0){
 													threshold = 0.01;
 												}
