@@ -12,8 +12,12 @@ if [ $(ps -ef | grep -v grep | grep newarb.js | wc -l) -lt 1 ]; then
 
     echo "less than 1 running"
 
-   nohup node newarb.js &
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHADX" &
 
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHFUN" &
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHSNT" &
+   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHPAY" &
 sleep 30s
 
 
