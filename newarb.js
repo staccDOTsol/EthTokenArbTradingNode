@@ -347,8 +347,8 @@ function hitbtc(threshold, basesymbol, askOrBid) {
 							////console.log('threshold');
 							buyDone = true;
 							buyPrice = data['bids'][buys][0];
-							console.log('hitbtc sellprice: ' + sellPrice);
-							console.log('hitbtc selltotal: ' + sellTotal);
+							console.log('hitbtc sellprice: ' + buyPrice);
+							console.log('hitbtc selltotal: ' + buyTotal);
 							bps[base + symbol]['hitbtc'] = buyPrice;
 							break;
 						}
