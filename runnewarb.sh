@@ -15,7 +15,7 @@ do
 
 if [ $(ps -ef | grep -v grep | grep newarb2.js | wc -l) -lt 4 ]; then
 
-    echo "less than 1 running"
+    echo "less than 1 newarb2 running"
    killall node
    sleep 10s
    nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHADX" &

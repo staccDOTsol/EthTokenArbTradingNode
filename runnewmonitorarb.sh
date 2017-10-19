@@ -8,9 +8,9 @@ sleep 5s
 while :
 do
 
-if [ $(ps -ef | grep -v grep | grep monitornewarb.js | wc -l) -lt 4 ]; then
+if [ $(ps -ef | grep -v grep | grep monitornewarb.js | wc -l) -lt 1 ]; then
 
-    echo "less than 1 running"
+    echo "less than 1 monitornewarb running"
    killall node
    sleep 10s
    nohup node monitornewarb.js &
