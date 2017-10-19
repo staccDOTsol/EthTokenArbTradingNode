@@ -45,14 +45,14 @@ function poloniex(threshold, base, symbol) {
 	}
     poloniex2.returnOrderBook(base, symbol, function(err, data) {
     if (err){
-		//console.log(err);
+		////console.log(err);
 		if ((err.toString().indexOf('socket hang up') != -1) || (err.toString().indexOf('ETIMEDOUT') != -1)){
-			console.log('rerun polo');
+			//console.log('rerun polo');
 			poloniex(threshold, base, symbol);
 		}
 		}
-			//console.log(data);
-			//console.log('poloniex ' + base + symbol);
+			////console.log(data);
+			////console.log('poloniex ' + base + symbol);
 			var buyDone = false;
 			var sellDone = false;
 	var buyPrice = 0;
@@ -74,8 +74,8 @@ function poloniex(threshold, base, symbol) {
 						if (buyTotal >= threshold) {
 							buyDone = true;
 							buyPrice = data['bids'][buys][0];
-							//console.log('buyprice: ' + buyPrice);
-							//console.log('buytotal: ' + buyTotal);
+							////console.log('buyprice: ' + buyPrice);
+							////console.log('buytotal: ' + buyTotal);
 					 
 							bps[base + symbol]['poloniex'] = buyPrice;
 							break;
@@ -83,16 +83,16 @@ function poloniex(threshold, base, symbol) {
 					}
 					break;
 				}
-			} catch(err){console.log(err);}
-				//console.log(data);
-					//console.log(data['asks']);
+			} catch(err){//console.log(err);}
+				////console.log(data);
+					////console.log(data['asks']);
 					try{
 				while (sellDone == false) {
 					for (var sells in data['asks']) {
-						//console.log(data['asks']);
+						////console.log(data['asks']);
 						if (sells == data['asks'].length) {
 							sellDone = true;
-							//console.log('polo length');
+							////console.log('polo length');
 							sellPrice = 1000000;
 							sps[base + symbol]['poloniex'] = sellPrice;
 							break;
@@ -103,8 +103,8 @@ function poloniex(threshold, base, symbol) {
 						if (sellTotal >= threshold) {
 							sellDone = true;
 							sellPrice = data['asks'][sells][0];
-							//console.log('sellprice: ' + sellPrice);
-							//console.log('selltotal: ' + sellTotal);
+							////console.log('sellprice: ' + sellPrice);
+							////console.log('selltotal: ' + sellTotal);
 							sps[base + symbol]['poloniex'] = sellPrice;
 							break;
 						}
@@ -113,7 +113,7 @@ function poloniex(threshold, base, symbol) {
 				}
 			} catch (err) {
 				if (err instanceof TypeError) {} else {
-					console.log(err);
+					//console.log(err);
 				} 
 			}
 		done['poloniex'][base + symbol] = true;
@@ -137,15 +137,15 @@ function hitbtc(threshold, base, symbol) {
     var buyTotal = 0;
     var sellTotal = 0;
     var url = 'https://api.hitbtc.com/api/1/public/' + symbol + base + '/orderbook';
-    ////console.log(url);
+    //////console.log(url);
     //sleep(1060)
     request.get(url, {
         json: true,
         timeout: 22000
-    }, function(error, response, data) {if (error){//console.log(error);
+    }, function(error, response, data) {if (error){////console.log(error);
 			hitbtc(threshold, base, symbol);
 		}
-		//console.log('hitbtc ' + base + symbol);
+		////console.log('hitbtc ' + base + symbol);
         sellDone = false;
         try {
     done['hitbtc'][base + symbol] = false;
@@ -153,17 +153,17 @@ function hitbtc(threshold, base, symbol) {
                 for (var sells in data['asks']) {
                     if (sells == (data['asks'].length - 1)) {
                         sellDone = true;
-                        ////console.log('sells length');
+                        //////console.log('sells length');
                         sellPrice = 1000000;
                         sps[base + symbol]['hitbtc'] = sellPrice;
                         break;
 
                     }
                     sellTotal = sellTotal + (data['asks'][sells][1] * data['asks'][sells][0]);
-					console.log('hitbtc current sell price: ' + data['asks'][sells][0]);
-                    console.log('hitbtc selltotal: ' + sellTotal);
+					//console.log('hitbtc current sell price: ' + data['asks'][sells][0]);
+                    //console.log('hitbtc selltotal: ' + sellTotal);
                     if (sellTotal >= threshold) {
-                        console.log('threshold: ' + threshold);
+                        //console.log('threshold: ' + threshold);
                         sellDone = true;
                         sellPrice = data['asks'][sells][0];
                         sps[base + symbol]['hitbtc'] = sellPrice;
@@ -174,14 +174,14 @@ function hitbtc(threshold, base, symbol) {
                 break;
             }
         } catch (err) {
-            ////console.log(err);
+            //////console.log(err);
         }
         try {
             while (buyDone == false) {
                 for (var buys in data['bids']) {
                     if (buys == (data['bids'].length - 1)) {
                         sellDone = true;
-                        ////console.log('buys length');
+                        //////console.log('buys length');
                         sellPrice = 1000000;
                         bps[base + symbol]['hitbtc'] = sellPrice;
                         break;
@@ -189,9 +189,9 @@ function hitbtc(threshold, base, symbol) {
                     }
                     sellTotal = sellTotal + (data['bids'][buys][1] * data['bids'][buys][0]);
 
-                    ////console.log(sellTotal);
+                    //////console.log(sellTotal);
                     if (sellTotal >= threshold) {
-                        ////console.log('threshold');
+                        //////console.log('threshold');
                         sellDone = true;
                         sellPrice = data['bids'][buys][0];
                         bps[base + symbol]['hitbtc'] = sellPrice;
@@ -202,7 +202,7 @@ function hitbtc(threshold, base, symbol) {
                 break;
             }
         } catch (err) {
-           // ////console.log(err);
+           // //////console.log(err);
         }
         done['hitbtc'][base + symbol] = true;
     });
@@ -218,14 +218,14 @@ function bittrex(threshold, base, symbol) {
 		threshold = threshold * 21.27;
 	}
     var url = "https://bittrex.com/api/v1.1/public/getorderbook?market=" + base + "-" + symbol + "&type=both";
-    ////console.log(url);
+    //////console.log(url);
     request.get(url, {
                 json: true,
                 timeout: 22000
-            }, function(error, response, data) {if (error){//console.log(error);
+            }, function(error, response, data) {if (error){////console.log(error);
 			bittrex(threshold, base, symbol);
 		}
-				//console.log('bittrex ' + base + symbol);
+				////console.log('bittrex ' + base + symbol);
                 var buyDone = false;
                 var sellDone = false;
                 var buyTotal = 0;
@@ -247,8 +247,8 @@ function bittrex(threshold, base, symbol) {
                             if (buyTotal >= threshold) {
                                 buyDone = true;
                                 buyPrice = data['result']['buy'][buys]['Rate'];
-                                ////console.log('buyprice: ' + buyPrice);
-                                ////console.log('buytotal: ' + buyTotal);
+                                //////console.log('buyprice: ' + buyPrice);
+                                //////console.log('buytotal: ' + buyTotal);
                          
                                 bps[base + symbol]['bittrex'] = buyPrice;
                                 break;
@@ -256,7 +256,7 @@ function bittrex(threshold, base, symbol) {
                         }
                         break;
 				}}catch (err) {
-            ////console.log(err);
+            //////console.log(err);
         }
         try {
                     while (sellDone == false) {
@@ -273,8 +273,8 @@ function bittrex(threshold, base, symbol) {
                             if (sellTotal >= threshold) {
                                 sellDone = true;
                                 sellPrice = data['result']['sell'][sells]['Rate'];
-                                ////console.log('sellprice: ' + sellPrice);
-                                ////console.log('selltotal: ' + sellTotal);
+                                //////console.log('sellprice: ' + sellPrice);
+                                //////console.log('selltotal: ' + sellTotal);
                                 sps[base + symbol]['bittrex'] = sellPrice;
                                 break;
                             }
@@ -283,7 +283,7 @@ function bittrex(threshold, base, symbol) {
                     }
                 } catch (err) {
                     if (err instanceof TypeError) {} else {
-                        ////console.log(err);
+                        //////console.log(err);
                     } 
                 }
 			done['bittrex'][base + symbol] = true;
@@ -306,11 +306,11 @@ function yobit(threshold, base, symbol){
 	}
 	var url = "https://yobit.net/api/3/depth/" + symbol.toLowerCase() + "_" + base.toLowerCase();
 		
-		console.log(url);
+		//console.log(url);
 						sleep(1);
 request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
-			////////console.log(data5);
-					console.log(data);
+			//////////console.log(data5);
+					//console.log(data);
 			var buyDone = false;
                 var sellDone = false;
                 var buyTotal = 0;
@@ -333,8 +333,8 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
                             if (buyTotal >= threshold) {
                                 buyDone = true;
                                 buyPrice = data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'][buys][0];
-                                console.log('buyprice yobit: ' + buyPrice);
-                                console.log('buytotal yobit: ' + buyTotal);
+                                //console.log('buyprice yobit: ' + buyPrice);
+                                //console.log('buytotal yobit: ' + buyTotal);
                          
                                 bps[base + symbol]['yobit'] = buyPrice;
                                 break;
@@ -342,7 +342,7 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
                         }
                         break;
 				}}catch (err) {
-            console.log(err);
+            //console.log(err);
         }
         try {
                     while (sellDone == false) {
@@ -355,12 +355,12 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
 
                             }
                             sellTotal = sellTotal + (data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][0] * data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][1]);
-							console.log(sellTotal);
+							//console.log(sellTotal);
                             if (sellTotal >= threshold) {
                                 sellDone = true;
                                 sellPrice = data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][0];
-                               // console.log('sellprice: ' + sellPrice);
-                                //console.log('selltotal: ' + sellTotal);
+                               // //console.log('sellprice: ' + sellPrice);
+                                ////console.log('selltotal: ' + sellTotal);
                                 sps[base + symbol]['yobit'] = sellPrice;
                                 break;
                             }
@@ -369,7 +369,7 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
                     }
                 } catch (err) {
                     if (err instanceof TypeError) {} else {
-                        console.log(err);
+                        //console.log(err);
                     } 
                 }
 			done['yobit'][base + symbol] = true;
@@ -388,10 +388,10 @@ function bitstamp(threshold, base, symbol){
 	}
 	var url = "https://www.bitstamp.net/api/v2/order_book/" + symbol.toLowerCase() + base.toLowerCase();
 		
-		//console.log(url8);
+		////console.log(url8);
 						sleep(1);
 request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
-			////////console.log(data5);
+			//////////console.log(data5);
 			var buyDone = false;
                 var sellDone = false;
                 var buyTotal = 0;
@@ -414,8 +414,8 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
                             if (buyTotal >= threshold) {
                                 buyDone = true;
                                 buyPrice = data['bids'][buys][0];
-                                console.log('buyprice bitstamp: ' + buyPrice);
-                                console.log('buytotal bitstamp: ' + buyTotal);
+                                //console.log('buyprice bitstamp: ' + buyPrice);
+                                //console.log('buytotal bitstamp: ' + buyTotal);
                          
                                 bps[base + symbol]['bitstamp'] = buyPrice;
                                 break;
@@ -423,7 +423,7 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
                         }
                         break;
 				}}catch (err) {
-            ////console.log(err);
+            //////console.log(err);
         }
         try {
                     while (sellDone == false) {
@@ -436,12 +436,12 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
 
                             }
                             sellTotal = sellTotal + (data['asks'][sells][0] * data['asks'][sells][1]);
-							console.log(sellTotal);
+							//console.log(sellTotal);
                             if (sellTotal >= threshold) {
                                 sellDone = true;
                                 sellPrice = data['asks'][0];
-                               // console.log('sellprice: ' + sellPrice);
-                                //console.log('selltotal: ' + sellTotal);
+                               // //console.log('sellprice: ' + sellPrice);
+                                ////console.log('selltotal: ' + sellTotal);
                                 sps[base + symbol]['bitstamp'] = sellPrice;
                                 break;
                             }
@@ -450,7 +450,7 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
                     }
                 } catch (err) {
                     if (err instanceof TypeError) {} else {
-                        ////console.log(err);
+                        //////console.log(err);
                     } 
                 }
 			done['bitstamp'][base + symbol] = true;
@@ -469,10 +469,10 @@ function gatecoin(threshold, base, symbol){
 	}
 	var url = "https://api.gatecoin.com/Public/MarketDepth/" + symbol + base;
 		
-		//console.log(url8);
+		////console.log(url8);
 						sleep(1);
 request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
-			////////console.log(data5);
+			//////////console.log(data5);
 			var buyDone = false;
                 var sellDone = false;
                 var buyTotal = 0;
@@ -495,8 +495,8 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
                             if (buyTotal >= threshold) {
                                 buyDone = true;
                                 buyPrice = data['bids'][buys]['price'];
-                                console.log('buyprice gatecoin: ' + buyPrice);
-                                console.log('buytotal gatecoin: ' + buyTotal);
+                                //console.log('buyprice gatecoin: ' + buyPrice);
+                                //console.log('buytotal gatecoin: ' + buyTotal);
                          
                                 bps[base + symbol]['gatecoin'] = buyPrice;
                                 break;
@@ -504,7 +504,7 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
                         }
                         break;
 				}}catch (err) {
-            ////console.log(err);
+            //////console.log(err);
         }
         try {
                     while (sellDone == false) {
@@ -517,12 +517,12 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
 
                             }
                             sellTotal = sellTotal + (data['asks'][sells]['price'] * data['asks'][sells]['volume']);
-							console.log(sellTotal);
+							//console.log(sellTotal);
                             if (sellTotal >= threshold) {
                                 sellDone = true;
                                 sellPrice = data['asks']['price'];
-                               // console.log('sellprice: ' + sellPrice);
-                                //console.log('selltotal: ' + sellTotal);
+                               // //console.log('sellprice: ' + sellPrice);
+                                ////console.log('selltotal: ' + sellTotal);
                                 sps[base + symbol]['gatecoin'] = sellPrice;
                                 break;
                             }
@@ -531,7 +531,7 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
                     }
                 } catch (err) {
                     if (err instanceof TypeError) {} else {
-                        ////console.log(err);
+                        //////console.log(err);
                     } 
                 }
 			done['gatecoin'][base + symbol] = true;
@@ -549,18 +549,18 @@ function liqui(threshold, base, symbol){
 	base = base.replace("USDT", "USD");
 	symbol = symbol.replace("USDT", "USD");
     var url = "https://api.liqui.io/api/3/depth/" + symbol.toLowerCase() + "_" + base.toLowerCase();
-    ////console.log(url);
+    //////console.log(url);
     request.get(url, {
                 json: true,
                 timeout: 22000
-            }, function(error, response, data) {if (error){//console.log(error);
+            }, function(error, response, data) {if (error){////console.log(error);
 			if ((error.toString().indexOf('socket hang up') != -1) || (error.toString().indexOf('ECONNRESET') != -1)){
 				sleep(1000);
 			liqui(threshold, base, symbol);
 			}
 		}else {
-				//console.log(Object.keys(data['result'])[0]);
-				//console.log('kraken ' + base + symbol);
+				////console.log(Object.keys(data['result'])[0]);
+				////console.log('kraken ' + base + symbol);
                 var buyDone = false;
                 var sellDone = false;
                 var buyTotal = 0;
@@ -583,8 +583,8 @@ function liqui(threshold, base, symbol){
                             if (buyTotal >= threshold) {
                                 buyDone = true;
                                 buyPrice = data[symbol.toLowerCase() + "_" + base.toLowerCase()]['bids'][buys][0];
-                                console.log('buyprice liqui: ' + buyPrice);
-                                console.log('buytotal liqui: ' + buyTotal);
+                                //console.log('buyprice liqui: ' + buyPrice);
+                                //console.log('buytotal liqui: ' + buyTotal);
                          
                                 bps[base + symbol]['liqui'] = buyPrice;
                                 break;
@@ -592,7 +592,7 @@ function liqui(threshold, base, symbol){
                         }
                         break;
 				}}catch (err) {
-            ////console.log(err);
+            //////console.log(err);
         }
         try {
                     while (sellDone == false) {
@@ -605,12 +605,12 @@ function liqui(threshold, base, symbol){
 
                             }
                             sellTotal = sellTotal + (data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][0] * data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][1]);
-							console.log(sellTotal);
+							//console.log(sellTotal);
                             if (sellTotal >= threshold) {
                                 sellDone = true;
                                 sellPrice = data[symbol.toLowerCase() + "_" + base.toLowerCase()]['asks'][sells][0];
-                               // console.log('sellprice: ' + sellPrice);
-                                //console.log('selltotal: ' + sellTotal);
+                               // //console.log('sellprice: ' + sellPrice);
+                                ////console.log('selltotal: ' + sellTotal);
                                 sps[base + symbol]['liqui'] = sellPrice;
                                 break;
                             }
@@ -619,7 +619,7 @@ function liqui(threshold, base, symbol){
                     }
                 } catch (err) {
                     if (err instanceof TypeError) {} else {
-                        ////console.log(err);
+                        //////console.log(err);
                     } 
                 }
 			done['liqui'][base + symbol] = true;
@@ -639,18 +639,18 @@ function kraken(threshold, base, symbol) {
 	symbol = symbol.replace("BTC", "XBT");
 	symbol = symbol.replace("USDT", "USD");
     var url = "https://api.kraken.com/0/public/Depth?pair=" + symbol + base;
-    ////console.log(url);
+    //////console.log(url);
     request.get(url, {
                 json: true,
                 timeout: 22000
-            }, function(error, response, data) {if (error){//console.log(error);
+            }, function(error, response, data) {if (error){////console.log(error);
 			if ((error.toString().indexOf('socket hang up') != -1) || (error.toString().indexOf('ECONNRESET') != -1)){
 				sleep(1000);
 			kraken(threshold, base, symbol);
 			}
 		}else {
-				//console.log(Object.keys(data['result'])[0]);
-				//console.log('kraken ' + base + symbol);
+				////console.log(Object.keys(data['result'])[0]);
+				////console.log('kraken ' + base + symbol);
                 var buyDone = false;
                 var sellDone = false;
                 var buyTotal = 0;
@@ -662,7 +662,7 @@ function kraken(threshold, base, symbol) {
                     while (buyDone == false) {
                         for (var buys in data['result'][Object.keys(data['result'])[0]]['bids']) {
                             buyTotal = buyTotal + (data['result'][Object.keys(data['result'])[0]]['bids'][buys][1] * data['result'][Object.keys(data['result'])[0]]['bids'][buys][0]);
-                            console.log(buyTotal);
+                            //console.log(buyTotal);
 							if (buys == data['result'][Object.keys(data['result'])[0]]['bids'].length) {
                                 buyDone = true;
                                 buyPrice = 0;
@@ -673,8 +673,8 @@ function kraken(threshold, base, symbol) {
                             if (buyTotal >= threshold) {
                                 buyDone = true;
                                 buyPrice = data['result'][Object.keys(data['result'])[0]]['bids'][buys][0];
-                                //console.log('buyprice: ' + buyPrice);
-                                //console.log('buytotal: ' + buyTotal);
+                                ////console.log('buyprice: ' + buyPrice);
+                                ////console.log('buytotal: ' + buyTotal);
                          
                                 bps[base + symbol]['kraken'] = buyPrice;
                                 break;
@@ -682,7 +682,7 @@ function kraken(threshold, base, symbol) {
                         }
                         break;
 				}}catch (err) {
-            ////console.log(err);
+            //////console.log(err);
         }
         try {
                     while (sellDone == false) {
@@ -695,12 +695,12 @@ function kraken(threshold, base, symbol) {
 
                             }
                             sellTotal = sellTotal + (data['result'][Object.keys(data['result'])[0]]['asks'][sells][0] * data['result'][Object.keys(data['result'])[0]]['asks'][sells][1]);
-							console.log(sellTotal);
+							//console.log(sellTotal);
                             if (sellTotal >= threshold) {
                                 sellDone = true;
                                 sellPrice = data['result'][Object.keys(data['result'])[0]]['asks'][sells][0];
-                               // console.log('sellprice: ' + sellPrice);
-                                //console.log('selltotal: ' + sellTotal);
+                               // //console.log('sellprice: ' + sellPrice);
+                                ////console.log('selltotal: ' + sellTotal);
                                 sps[base + symbol]['kraken'] = sellPrice;
                                 break;
                             }
@@ -709,7 +709,7 @@ function kraken(threshold, base, symbol) {
                     }
                 } catch (err) {
                     if (err instanceof TypeError) {} else {
-                        ////console.log(err);
+                        //////console.log(err);
                     } 
                 }
 			done['kraken'][base + symbol] = true;
@@ -724,9 +724,9 @@ function run(){
                 json: true,
                 timeout: 8000
             }, function(error, response, data) {
-				if (error){//console.log(error);
-					//console.log(error);
-					////console.log(result);
+				if (error){////console.log(error);
+					////console.log(error);
+					//////console.log(result);
 					sleep(10000);
 					run();
 				}
@@ -763,12 +763,12 @@ function run(){
 }
 var goAgain = true;
 setInterval(function(){ 
-console.log('check dones');
+//console.log('check dones');
 var go = {};
 for (exchange in done){
 	go[exchange] = true;
 	for (basesymbol in done[exchange]){
-		////console.log(done[exchange][basesymbol]);
+		//////console.log(done[exchange][basesymbol]);
 		if (done[exchange][basesymbol] == false){
 			go[exchange] = false;
 		}
@@ -776,8 +776,8 @@ for (exchange in done){
 }
 var goYes = true;
 for (exchange in go){
-	//console.log(exchange);
-	//console.log(go[exchange]);
+	////console.log(exchange);
+	////console.log(go[exchange]);
 	if (go[exchange] == false){
 		goYes = false;
 	}
@@ -788,7 +788,7 @@ if (goYes == true){
 		goAgain = false;
 		doc.useServiceAccountAuth(creds, function lala(){
 			doc.getInfo(function(err, info) {
-				////console.log('Loaded doc: '+info.title+' by '+info.author.email);
+				//////console.log('Loaded doc: '+info.title+' by '+info.author.email);
 				sheet = info.worksheets[2];
 				for (exchange in go){
 					go[exchange] = false;
@@ -803,7 +803,7 @@ if (goYes == true){
 				var winExBp = {};
 				var winExSp = {};
 				for (basesymbol in sps){
-					////console.log('sps ' + basesymbol);
+					//////console.log('sps ' + basesymbol);
 					winSp[basesymbol] = 1000000000000000;
 					winExSp[basesymbol] = "";
 					for (exchange in sps[basesymbol]){
@@ -812,22 +812,22 @@ if (goYes == true){
 							winExSp[basesymbol] = exchange;
 						}
 					}
-					////console.log('winsp: ' + winSp[basesymbol]);
+					//////console.log('winsp: ' + winSp[basesymbol]);
 				}	
 				for (basesymbol in bps){
-					////console.log('bps ' + basesymbol);
+					//////console.log('bps ' + basesymbol);
 					winBp[basesymbol] = 0;
 					winExBp[basesymbol] = "";
 					for (exchange in bps[basesymbol]){
-						console.log('bps exchange: ' + exchange);
-							console.log(basesymbol);
+						//console.log('bps exchange: ' + exchange);
+							//console.log(basesymbol);
 						if (bps[basesymbol][exchange] >= winBp[basesymbol] && bps[basesymbol][exchange] != 1000000 && bps[basesymbol][exchange] != 0){
 							winBp[basesymbol] = bps[basesymbol][exchange];
 							winExBp[basesymbol] = exchange;
 						}
-							console.log(winBp[basesymbol]);
+							//console.log(winBp[basesymbol]);
 					}
-					////console.log('winbp: ' + winBp[basesymbol]);
+					//////console.log('winbp: ' + winBp[basesymbol]);
 				}	
 				var arb = {};
 				for (basesymbol in bps){
@@ -837,16 +837,16 @@ if (goYes == true){
 							
 							if (winSp[basesymbol2] != 10 && winBp[basesymbol] != 0 && winSp[basesymbol2] != 1 && winBp[basesymbol] != 1){
 								arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol2]))) - (.001/threshold);
-								//console.log(arb[basesymbol]);
-							//console.log(winExBp[basesymbol]);
-							//console.log(winExSp[basesymbol]);
+								////console.log(arb[basesymbol]);
+							////console.log(winExBp[basesymbol]);
+							////console.log(winExSp[basesymbol]);
 								if (arb[basesymbol] > .0001 && arb[basesymbol] <= 10){
-									console.log('arb ' + basesymbol + " " + basesymbol2 + ": " + arb[basesymbol]);
+									//console.log('arb ' + basesymbol + " " + basesymbol2 + ": " + arb[basesymbol]);
 									var dateTime = require('node-datetime');
 									var dt = dateTime.create();
 									var formatted = dt.format('Y-m-d H:M:S');
-									//console.log(formatted);
-									//console.log('arb arb! ' + arb[basesymbol] + ' ' + basesymbol + ' winsp: ' + winExSp[basesymbol] + ' winbp: ' + winExBp[basesymbol]);
+									////console.log(formatted);
+									////console.log('arb arb! ' + arb[basesymbol] + ' ' + basesymbol + ' winsp: ' + winExSp[basesymbol] + ' winbp: ' + winExBp[basesymbol]);
 									if (basesymbol.startsWith('USDTBTC')){
 										sheet.addRow({'time':formatted, 'ticker': basesymbol, 'bid': winBp[basesymbol], 'ask': winSp[basesymbol2], 'arb with fee': arb[basesymbol], 'bid ex': winExBp[basesymbol], 'ask ex': winExSp[basesymbol], 'base threshold': threshold * 60 * 21.27}, function (err, row){ });
 										
@@ -864,13 +864,13 @@ if (goYes == true){
 						}
 					}
 				}
-				//console.log('r1111unning again');
+				////console.log('r1111unning again');
 				for (exchange in go){
-					////console.log(go[exchange]);
+					//////console.log(go[exchange]);
 				}
 				for (exchange in done){
 					for (basesymbol in done[exchange]){
-						////console.log(done[exchange][basesymbol]);
+						//////console.log(done[exchange][basesymbol]);
 					}
 				}
 				bps = {};
