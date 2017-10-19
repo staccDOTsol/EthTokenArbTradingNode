@@ -92,7 +92,7 @@ function etherdelta(threshold, base, symbol) {
 			else if (error6){
 				console.log(error6);
 			}
-			f (!error6){
+			if (!error6){
 				if(data4['buys'] == undefined){
 				console.log(data4);
 				}
