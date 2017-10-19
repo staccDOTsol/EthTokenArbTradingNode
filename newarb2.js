@@ -1095,7 +1095,7 @@ setInterval(function() {
                                     var fee = 0.5;
                                     try {
                                         var uri = '/api/2/trading/balance';
-                                        //console.log(uri);
+                                        console.log(uri);
                                         var auth = "Basic " + new Buffer(hitKey + ":" + hitSecret).toString("base64");
                                         request({
                                             url: 'https://api.hitbtc.com' + uri, //
@@ -1109,7 +1109,7 @@ setInterval(function() {
                                                 if (body[currency]['currency'] == basesymbol.substring(3, basesymbol.length)) {
                                                     //console.log(body[currency]);
                                                     var qty = (parseFloat(body[currency]['available'])).toFixed(precises[basesymbol]); // TODO Fix to .99
-                                                    //console.log('qty! ' + qty);
+                                                    console.log('qty! ' + qty);
                                                     if (qty >= 0.001) {
                                                         /*dodeposit = true;
                                                         dodeposit2 = true;
@@ -1323,7 +1323,7 @@ setInterval(function() {
                                             }
                                         });
                                     } catch (err) {
-                                        //console.log(err);
+                                        console.log(err);
                                     }
                                     sleep(30000);
                                 }
