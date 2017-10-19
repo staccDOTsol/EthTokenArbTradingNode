@@ -70,7 +70,7 @@ function etherdelta(threshold, base, symbol) {
 	}
 	
 			done['etherdelta'][base + symbol] = false;
-	if (tokens2[symbol] != undefined){
+	if (tokens2[symbol] != undefined && base == "ETH"){
 	 var url6 = 'https://api.etherdelta.com/orders/' + tokens2[symbol] + '/0'; ////sleep(1060);
         //sleep((Math.random() * 120) + 50);
 		//consol.log(url6);
