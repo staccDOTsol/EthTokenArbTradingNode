@@ -9,7 +9,7 @@ sleep 5s
    nohup node /root/EthTokenArbTradingNodeAct/monitornewarb.js &
    nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHADX" &
 
-   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
+   #nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
    nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHFUN" &
    nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHSNT" &
    nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHPAY" &
@@ -25,7 +25,7 @@ if [ $(ps -ef | grep -v grep | grep newarb2.js | wc -l) -lt 4 ]; then
    nohup node /root/EthTokenArbTradingNodeAct/monitornewarb.js &
    nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHADX" &
 
-   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
+   #nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
    nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHFUN" &
    nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHSNT" &
    nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHPAY" &
