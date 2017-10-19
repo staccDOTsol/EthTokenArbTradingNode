@@ -1278,7 +1278,7 @@ if (goYes == true){
 										//console.log(err);
 									}
 									}}}});		
-									//sleep(30000);
+									sleep(30000);
 								
 					}
 				}}}
@@ -1297,7 +1297,7 @@ if (goYes == true){
 				winBp = {};//0;
 				winExBp = {};
 				winExSp = {};
-				sleep(10000);
+				//sleep(10000);
 				//threshold = ((Math.random() * 10) + .1);
 				goAgain = true;
 				run();
