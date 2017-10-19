@@ -74,7 +74,7 @@ function etherdelta(threshold, base, symbol) {
 	if (tokens2[symbol] != undefined){
 	 var url6 = 'https://api.etherdelta.com/orders/' + tokens2[symbol] + '/0'; //sleep(1060);
         //sleep((Math.random() * 300) + 50);
-		//console.log(url6);
+		console.log(url6);
         request.get(url6, {
             json: true,
             timeout: 8000
