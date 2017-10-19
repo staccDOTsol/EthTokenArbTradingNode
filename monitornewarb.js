@@ -69,20 +69,26 @@ function etherdelta(threshold, base, symbol) {
 	if (symbol == "BTC"){
 		threshold = threshold * 21.27;
 	}
-	done['etherdelta'][base + symbol] = false;
 	
 	if (tokens2[symbol] != undefined){
+			done['etherdelta'][base + symbol] = false;
 	 var url6 = 'https://api.etherdelta.com/orders/' + tokens2[symbol] + '/0'; //sleep(1060);
-        //console.log(url6);
+        console.log(url6);
         request.get(url6, {
             json: true,
             timeout: 8000
         }, function(error6, response6, data4) {
-            if (error6 || response6.statusCode != 200) {
-                sleep(1000);
-                //console.log(error6);
-                //lala321(tokenAddr, tokencount, checker);
+            if (error6.toString().indexOf('bad gateway') != -1) {
+                sleep(2000);
+				console.log('bad gateway');
+                etherdelta(threshold, base, symbol);
             }
+			else if (error6.toString().indexOf('ESOCKETTIMEDOUT') != -1){
+                sleep(2000);
+				console.log('timeout');
+                etherdelta(threshold, base, symbol);
+			}
+			else{
             try {
                 if (!error6 && response6.statusCode === 200) {
                     //////////console.log(data6);
@@ -109,8 +115,8 @@ function etherdelta(threshold, base, symbol) {
 						if (buyTotal >= threshold) {
 							buyDone = true;
 							buyPrice = data4['bids'][buys][0];
-							//console.log('buyprice: ' + buyPrice);
-							//console.log('buytotal: ' + buyTotal);
+							console.log('buyprice: ' + buyPrice);
+							console.log('buytotal: ' + buyTotal);
 					 
 							bps[base + symbol]['etherdelta'] = buyPrice;
 							break;
@@ -139,8 +145,8 @@ function etherdelta(threshold, base, symbol) {
 						if (sellTotal >= threshold) {
 							sellDone = true;
 							sellPrice = data4['asks'][sells][0];
-							//console.log('sellprice: ' + sellPrice);
-							//console.log('selltotal: ' + sellTotal);
+							console.log('sellprice: ' + sellPrice);
+							console.log('selltotal: ' + sellTotal);
 							sps[base + symbol]['etherdelta'] = sellPrice;
 							break;
 						}
@@ -154,7 +160,8 @@ function etherdelta(threshold, base, symbol) {
 			}
 		done['etherdelta'][base + symbol] = true;
 				}
-			}catch(err){}
+			}catch(err){
+			done['etherdelta'][base + symbol] = true;} }
 		});
 	}
 }
@@ -888,7 +895,7 @@ function run(){
 }
 var goAgain = true;
 setInterval(function(){ 
-////console.log('check dones');
+console.log('check dones');
 var go = {};
 for (exchange in done){
 	go[exchange] = true;
@@ -963,8 +970,8 @@ if (goYes == true){
 							if (winSp[basesymbol2] != 10 && winBp[basesymbol] != 0 && winSp[basesymbol2] != 1 && winBp[basesymbol] != 1){
 								arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol2]))) - (.001/threshold);
 								
-								console.log(basesymbol);
-								console.log(arb[basesymbol]);
+								//console.log(basesymbol);
+								//console.log(arb[basesymbol]);
 							//////console.log(winExBp[basesymbol]);
 							//////console.log(winExSp[basesymbol]);
 								if (arb[basesymbol] > .0001 && arb[basesymbol] <= 10){
@@ -1015,5 +1022,5 @@ if (goYes == true){
 	}
 }
 	
-}, 8000);
+}, 3000);
 run();
