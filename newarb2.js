@@ -1105,10 +1105,9 @@ if (goYes == true){
 													//console.log('debug threshold: ' + threshold + ', modifier: ' + checker);
 												    */
 												}
-												console.log('qty: ' + qty);
-												console.log('price: ' + winBp[basesymbol]);
-									fee = (0.00215 / (parseFloat(winBp[basesymbol]) * qty)) + 0.0025;
-								console.log('fee: ' + fee);
+												//console.log('qty: ' + qty);
+												//console.log('price: ' + winBp[basesymbol]);
+								//console.log('fee: ' + fee);
 								arb[basesymbol] = (-1 * (1 - (winBp[basesymbol]/winSp[basesymbol2]))) - fee;
 								console.log('arb: ' + arb[basesymbol]);
 							////console.log(winExBp[basesymbol]);
