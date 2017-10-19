@@ -103,8 +103,8 @@ function etherdelta(threshold, base, symbol) {
 				if(data4['buys'] == undefined){
 				console.log(data4);
 				}
-				console.log(data4['buys'] );
-				console.log('got it' + data4['buys'][0][0]);
+				//console.log(data4['buys'] );
+				console.log('got it' + data4['buys'][0]['price']);
             try {
                 if (!error6 && response6.statusCode === 200) {
                     //////////console.log(data6);
@@ -120,7 +120,7 @@ function etherdelta(threshold, base, symbol) {
 			try {
 				while (buyDone == false) {
 					for (var buys in data4['buys']) {
-						buyTotal = buyTotal + (data4['buys'][buys][0] * data4['buys'][buys][1]);
+						buyTotal = buyTotal + (data4['buys'][buys]['price'] * data4['buys'][buys]['availableVolume']);
 						console.log(buyTotal);
 						if (buys == data4['buys'].length) {
 							buyDone = true;
@@ -131,7 +131,7 @@ function etherdelta(threshold, base, symbol) {
 						}
 						if (buyTotal >= threshold) {
 							buyDone = true;
-							buyPrice = data4['buys'][buys][0];
+							buyPrice = data4['buys'][buys]['price'];
 							console.log('buyprice: ' + buyPrice);
 							console.log('buytotal: ' + buyTotal);
 					 
@@ -157,12 +157,12 @@ function etherdelta(threshold, base, symbol) {
 							break;
 
 						}
-						sellTotal = (data4['sells'][sells][1] * data4['sells'][sells][0]);
+						sellTotal = (data4['sells'][sells]['availableVolume'] * data4['sells'][sells]['price']);
 						console.log(buyTotal);
 
 						if (sellTotal >= threshold) {
 							sellDone = true;
-							sellPrice = data4['sells'][sells][0];
+							sellPrice = data4['sells'][sells]['price'];
 							console.log('sellprice: ' + sellPrice);
 							console.log('selltotal: ' + sellTotal);
 							sps[base + symbol]['etherdelta'] = sellPrice;
