@@ -103,6 +103,7 @@ function etherdelta(threshold, base, symbol) {
 				if(data4['buys'] == undefined){
 				console.log(data4);
 				}
+				console.log(data4['buys'] );
 				console.log('got it' + data4['buys'][0][0]);
             try {
                 if (!error6 && response6.statusCode === 200) {
