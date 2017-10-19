@@ -887,16 +887,16 @@ function run(){
 						sps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
 						bps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
 						//sleep((Math.random() * 1400) + 100);
-						gatecoin(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
-						bitstamp(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
-						yobit(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						//gatecoin(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						//bitstamp(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						//yobit(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						liqui(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						hitbtc(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						bittrex(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						poloniex(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						etherdelta(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						
-						kraken(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						//kraken(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 					}
 				}
 				else {
