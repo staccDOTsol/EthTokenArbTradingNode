@@ -95,10 +95,10 @@ function etherdelta(threshold, base, symbol) {
 			}
 			}
 			else{
-				if(data4['bids'] == undefined){
+				if(data4['buys'] == undefined){
 				console.log(data4);
 				}
-				console.log('got it' + data4['bids'][0][0]);
+				console.log('got it' + data4['buys'][0][0]);
             try {
                 if (!error6 && response6.statusCode === 200) {
                     //////////console.log(data6);
@@ -113,10 +113,10 @@ function etherdelta(threshold, base, symbol) {
     
 			try {
 				while (buyDone == false) {
-					for (var buys in data4['bids']) {
-						buyTotal = buyTotal + (data4['bids'][buys][0] * data4['bids'][buys][1]);
+					for (var buys in data4['buys']) {
+						buyTotal = buyTotal + (data4['buys'][buys][0] * data4['buys'][buys][1]);
 						console.log(buyTotal);
-						if (buys == data4['bids'].length) {
+						if (buys == data4['buys'].length) {
 							buyDone = true;
 							buyPrice = 0;
 							bps[base + symbol]['etherdelta'] = buyPrice;
@@ -125,7 +125,7 @@ function etherdelta(threshold, base, symbol) {
 						}
 						if (buyTotal >= threshold) {
 							buyDone = true;
-							buyPrice = data4['bids'][buys][0];
+							buyPrice = data4['buys'][buys][0];
 							console.log('buyprice: ' + buyPrice);
 							console.log('buytotal: ' + buyTotal);
 					 
@@ -141,7 +141,7 @@ function etherdelta(threshold, base, symbol) {
 					//////console.log(data['asks']);
 					try{
 				while (sellDone == false) {
-					for (var sells in data4['asks']) {
+					for (var sells in data4['sells']) {
 						//////console.log(data['asks']);
 						if (sells == data4['asks'].length) {
 							sellDone = true;
@@ -151,12 +151,12 @@ function etherdelta(threshold, base, symbol) {
 							break;
 
 						}
-						sellTotal = (data4['asks'][sells][1] * data4['asks'][sells][0]);
+						sellTotal = (data4['sells'][sells][1] * data4['sells'][sells][0]);
 						console.log(buyTotal);
 
 						if (sellTotal >= threshold) {
 							sellDone = true;
-							sellPrice = data4['asks'][sells][0];
+							sellPrice = data4['sells'][sells][0];
 							console.log('sellprice: ' + sellPrice);
 							console.log('selltotal: ' + sellTotal);
 							sps[base + symbol]['etherdelta'] = sellPrice;
