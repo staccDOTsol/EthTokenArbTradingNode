@@ -79,7 +79,6 @@ function etherdelta(threshold, base, symbol) {
             json: true,
             timeout: 8000
         }, function(error6, response6, data4) {
-			if (error6){
             if (error6.toString().indexOf('bad gateway') != -1 || data4.toString().indexOf('bad gateway') != -1 || error6.toString().indexOf('Bad gateway') != -1 || data4.toString().indexOf('Bad gateway') != -1|| error6.toString().indexOf('What happened') != -1 || data4.toString().indexOf('What happened') != -1) {//>What happened
                 sleep(2000);
 				console.log('bad gateway');
@@ -93,8 +92,7 @@ function etherdelta(threshold, base, symbol) {
 			else if (error6){
 				console.log(error6);
 			}
-			}
-			else{
+			f (!error6){
 				if(data4['buys'] == undefined){
 				console.log(data4);
 				}
