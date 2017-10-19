@@ -2,28 +2,28 @@
 
 killall node
 killall killallnode.sh
-nohup ./killallnode.sh &
+nohup /root/EthTokenArbTradingNodeAct/killallnode.sh &
 sleep 5s
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHADX" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHADX" &
 
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHFUN" &
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHSNT" &
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHPAY" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHFUN" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHSNT" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHPAY" &
 while :
 do
 
-if [ $(ps -ef | grep -v grep | grep newarb.js | wc -l) -lt 4 ]; then
+if [ $(ps -ef | grep -v grep | grep newarb2.js | wc -l) -lt 4 ]; then
 
     echo "less than 1 running"
    killall node
    sleep 10s
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHADX" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHADX" &
 
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHFUN" &
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHSNT" &
-   nohup node newarb.js -a "bittrex" -b "hitbtc" -p "ETHPAY" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHOMG" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHFUN" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHSNT" &
+   nohup node /root/EthTokenArbTradingNodeAct/newarb2.js -a "bittrex" -b "hitbtc" -p "ETHPAY" &
 sleep 30s
 
 
