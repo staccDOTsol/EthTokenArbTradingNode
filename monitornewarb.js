@@ -38,12 +38,12 @@ var GoogleSpreadsheet = require('google-spreadsheet');
 var doc = new GoogleSpreadsheet('1i97AYneAUFRl12gPp8BkL06_V-SYerkchYy-HPIxAbE');
 var sheet;
 var request = require("request")
-var sleep = require('system-sleep');
+var //sleep = require('system-//sleep');
 var cheerio = require('cheerio');
 var math = require("mathjs");
 var BigNumber = require("bignumber.js");
 var request = require("request");
-var sleep = require('system-sleep');
+var //sleep = require('system-//sleep');
 var crypto = require("crypto");
 var Web3 = require("web3");
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
@@ -72,8 +72,8 @@ function etherdelta(threshold, base, symbol) {
 	
 			done['etherdelta'][base + symbol] = false;
 	if (tokens2[symbol] != undefined){
-	 var url6 = 'https://api.etherdelta.com/orders/' + tokens2[symbol] + '/0'; //sleep(1060);
-        sleep((Math.random() * 120) + 50);
+	 var url6 = 'https://api.etherdelta.com/orders/' + tokens2[symbol] + '/0'; ////sleep(1060);
+        //sleep((Math.random() * 120) + 50);
 		console.log(url6);
         request.get(url6, {
             json: true,
@@ -81,12 +81,12 @@ function etherdelta(threshold, base, symbol) {
         }, function(error6, response6, data4) {
 			if (error6){
             if (error6.toString().indexOf('bad gateway') != -1 ||  error6.toString().indexOf('Bad gateway') != -1 || error6.toString().indexOf('What happened') != -1 ) {//>What happened
-                sleep(2000);
+                //sleep(2000);
 				//console.log('bad gateway');
                 etherdelta(threshold, base, symbol);
             }
 		else if (error6.toString().indexOf('ESOCKETTIMEDOUT') != -1 || error6.toString().indexOf('ETIMEDOUT')){
-                sleep(2000);
+                //sleep(2000);
 				//console.log('timeout');
                 etherdelta(threshold, base, symbol);
 			}
@@ -96,7 +96,7 @@ function etherdelta(threshold, base, symbol) {
 			}
 			if (data4){
 			if(data4.toString().indexOf('bad gateway') != -1 || data4.toString().indexOf('Bad gateway') != -1|| data4.toString().indexOf('What happened') != -1){
-				sleep(2000);
+				//sleep(2000);
 				//console.log('DATA4 bad gateway');
                 etherdelta(threshold, base, symbol);
 			}
@@ -290,7 +290,7 @@ function hitbtc(threshold, base, symbol) {
     var sellTotal = 0;
     var url = 'https://api.hitbtc.com/api/1/public/' + symbol + base + '/orderbook';
     //////////console.log(url);
-    //sleep(1060)
+    ////sleep(1060)
     request.get(url, {
         json: true,
         timeout: 22000
@@ -459,7 +459,7 @@ function yobit(threshold, base, symbol){
 	var url = "https://yobit.net/api/3/depth/" + symbol.toLowerCase() + "_" + base.toLowerCase();
 		
 		//////console.log(url);
-						sleep(1);
+						//sleep(1);
 request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
 			//////////////console.log(data5);
 					//////console.log(data);
@@ -541,7 +541,7 @@ function bitstamp(threshold, base, symbol){
 	var url = "https://www.bitstamp.net/api/v2/order_book/" + symbol.toLowerCase() + base.toLowerCase();
 		
 		////////console.log(url8);
-						sleep(1);
+						//sleep(1);
 request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
 			//////////////console.log(data5);
 			var buyDone = false;
@@ -622,7 +622,7 @@ function gatecoin(threshold, base, symbol){
 	var url = "https://api.gatecoin.com/Public/MarketDepth/" + symbol + base;
 		
 		////////console.log(url8);
-						sleep(1);
+						//sleep(1);
 request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
 			//////////////console.log(data5);
 			var buyDone = false;
@@ -708,7 +708,7 @@ function liqui(threshold, base, symbol){
             }, function(error, response, data) {if (error){}////////console.log(error);
 			try{
 			if ((error.toString().indexOf('socket hang up') != -1) || (error.toString().indexOf('ECONNRESET') != -1)){
-				sleep(1000);
+				//sleep(1000);
 			liqui(threshold, base, symbol);
 			}else {
 				////////console.log(Object.keys(data['result'])[0]);
@@ -798,7 +798,7 @@ function kraken(threshold, base, symbol) {
                 timeout: 22000
             }, function(error, response, data) {if (error){////////console.log(error);
 			if ((error.toString().indexOf('socket hang up') != -1) || (error.toString().indexOf('ECONNRESET') != -1)){
-				sleep(1000);
+				//sleep(1000);
 			kraken(threshold, base, symbol);
 			}
 		}else {
@@ -880,14 +880,14 @@ function run(){
 				if (error){////////console.log(error);
 					////////console.log(error);
 					//////////console.log(result);
-					sleep(10000);
+					//sleep(10000);
 					run();
 				}
 				if (debug == false){
 					for (result in data['result']){
 						sps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
 						bps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
-						//sleep((Math.random() * 1400) + 100);
+						////sleep((Math.random() * 1400) + 100);
 						gatecoin(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						//bitstamp(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						//yobit(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
@@ -936,7 +936,7 @@ for (exchange in go){
 		goYes = false;
 	}
 }
-//sleep(10000);
+////sleep(10000);
 if (goYes == true){
 	if (goAgain == true){
 		goAgain = false;
@@ -1035,7 +1035,7 @@ if (goYes == true){
 				winBp = {};//0;
 				winExBp = {};
 				winExSp = {};
-				//sleep(10000);
+				////sleep(10000);
 				threshold = ((Math.random() * 10) + .1);
 				goAgain = true;
 				run();
