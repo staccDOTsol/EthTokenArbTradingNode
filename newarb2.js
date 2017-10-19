@@ -1076,7 +1076,7 @@ if (goYes == true){
 							if (winSp[basesymbol2] != 10 && winBp[basesymbol] != 0 && winSp[basesymbol2] != 1 && winBp[basesymbol] != 1){
 								var fee = 0.5;
 								if (basesymbol == 'ETHSNT'){
-									fee = 0.038461233455722 + 0.0081361721417304 + 0.0025;
+									fee = 0.026189319077704 + 0.0081361721417304 + 0.0025;
 								}
 								else if (basesymbol == 'ETHPAY'){
 									fee = 0.0100744634253176 + 0.0081361721417304 + 0.0025;
