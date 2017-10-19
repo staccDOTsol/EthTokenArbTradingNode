@@ -73,7 +73,7 @@ function etherdelta(threshold, base, symbol) {
 			done['etherdelta'][base + symbol] = false;
 	if (tokens2[symbol] != undefined){
 	 var url6 = 'https://api.etherdelta.com/orders/' + tokens2[symbol] + '/0'; //sleep(1060);
-        //sleep((Math.random() * 300) + 50);
+        sleep((Math.random() * 120) + 50);
 		console.log(url6);
         request.get(url6, {
             json: true,
@@ -888,7 +888,7 @@ function run(){
 						sps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
 						bps[data['result'][result]['BaseCurrency'] + data['result'][result]['MarketCurrency']] = {};
 						//sleep((Math.random() * 1400) + 100);
-						//gatecoin(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						gatecoin(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						//bitstamp(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						//yobit(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						liqui(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
@@ -897,7 +897,7 @@ function run(){
 						poloniex(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						etherdelta(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						
-						//kraken(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						kraken(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 					}
 				}
 				else {
