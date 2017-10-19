@@ -80,7 +80,7 @@ function etherdelta(threshold, base, symbol) {
             timeout: 8000
         }, function(error6, response6, data4) {
 			if (error6){
-            if (error6.toString().indexOf('bad gateway') != -1 || data4.toString().indexOf('bad gateway') != -1) {
+            if (error6.toString().indexOf('bad gateway') != -1 || data4.toString().indexOf('bad gateway') != -1 || error6.toString().indexOf('Bad gateway') != -1 || data4.toString().indexOf('Bad gateway') != -1) {
                 sleep(2000);
 				console.log('bad gateway');
                 etherdelta(threshold, base, symbol);
