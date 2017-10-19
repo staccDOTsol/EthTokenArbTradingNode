@@ -94,12 +94,13 @@ function etherdelta(threshold, base, symbol) {
 				//console.log(error6);
 			}
 			}
-			else if(data4.toString().indexOf('bad gateway') != -1 || data4.toString().indexOf('Bad gateway') != -1|| data4.toString().indexOf('What happened') != -1){
+			if (data4){
+			if(data4.toString().indexOf('bad gateway') != -1 || data4.toString().indexOf('Bad gateway') != -1|| data4.toString().indexOf('What happened') != -1){
 				sleep(2000);
 				//console.log('DATA4 bad gateway');
                 etherdelta(threshold, base, symbol);
 			}
-			else if (!error6){
+			if (!error6){
 				if(data4['buys'] == undefined){
 				//console.log(data4);
 				}
@@ -179,7 +180,7 @@ function etherdelta(threshold, base, symbol) {
 		done['etherdelta'][base + symbol] = true;
 				}
 			}catch(err){//console.log(err);
-			done['etherdelta'][base + symbol] = true;} }
+			done['etherdelta'][base + symbol] = true;} }}else{done['etherdelta'][base + symbol] = true;}
 		});
 	}
 	else {
