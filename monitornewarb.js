@@ -70,25 +70,35 @@ function etherdelta(threshold, base, symbol) {
 		threshold = threshold * 21.27;
 	}
 	
-	if (tokens2[symbol] != undefined){
 			done['etherdelta'][base + symbol] = false;
+	if (tokens2[symbol] != undefined){
 	 var url6 = 'https://api.etherdelta.com/orders/' + tokens2[symbol] + '/0'; //sleep(1060);
-        console.log(url6);
+        //sleep((Math.random() * 300) + 50);
+		console.log(url6);
         request.get(url6, {
             json: true,
             timeout: 8000
         }, function(error6, response6, data4) {
-            if (error6.toString().indexOf('bad gateway') != -1) {
+			if (error6){
+            if (error6.toString().indexOf('bad gateway') != -1 || data4.toString().indexOf('bad gateway') != -1) {
                 sleep(2000);
 				console.log('bad gateway');
                 etherdelta(threshold, base, symbol);
             }
-			else if (error6.toString().indexOf('ESOCKETTIMEDOUT') != -1){
+		else if (error6.toString().indexOf('ESOCKETTIMEDOUT') != -1 || error6.toString().indexOf('ETIMEDOUT')){
                 sleep(2000);
 				console.log('timeout');
                 etherdelta(threshold, base, symbol);
 			}
+			else if (error6){
+				console.log(error6);
+			}
+			}
 			else{
+				if(data4['bids'] == undefined){
+				console.log(data4);
+				}
+				console.log('got it' + data4['bids'][0][0]);
             try {
                 if (!error6 && response6.statusCode === 200) {
                     //////////console.log(data6);
@@ -105,6 +115,7 @@ function etherdelta(threshold, base, symbol) {
 				while (buyDone == false) {
 					for (var buys in data4['bids']) {
 						buyTotal = buyTotal + (data4['bids'][buys][0] * data4['bids'][buys][1]);
+						console.log(buyTotal);
 						if (buys == data4['bids'].length) {
 							buyDone = true;
 							buyPrice = 0;
@@ -124,7 +135,7 @@ function etherdelta(threshold, base, symbol) {
 					}
 					break;
 				}
-			} catch(err){////console.log(err);
+			} catch(err){console.log(err);
 			}
 				//////console.log(data);
 					//////console.log(data['asks']);
@@ -141,6 +152,7 @@ function etherdelta(threshold, base, symbol) {
 
 						}
 						sellTotal = (data4['asks'][sells][1] * data4['asks'][sells][0]);
+						console.log(buyTotal);
 
 						if (sellTotal >= threshold) {
 							sellDone = true;
@@ -155,14 +167,17 @@ function etherdelta(threshold, base, symbol) {
 				}
 			} catch (err) {
 				if (err instanceof TypeError) {} else {
-					////console.log(err);
+					console.log(err);
 				} 
 			}
 		done['etherdelta'][base + symbol] = true;
 				}
-			}catch(err){
+			}catch(err){console.log(err);
 			done['etherdelta'][base + symbol] = true;} }
 		});
+	}
+	else {
+		done['etherdelta'][base + symbol] = true;
 	}
 }
 function poloniex(threshold, base, symbol) {
@@ -850,7 +865,7 @@ function kraken(threshold, base, symbol) {
 
 function run(){
 	var url = "https://bittrex.com/api/v1.1/public/getmarkets";
-    
+    console.log('run');
     request.get(url, {
                 json: true,
                 timeout: 8000
@@ -900,7 +915,7 @@ var go = {};
 for (exchange in done){
 	go[exchange] = true;
 	for (basesymbol in done[exchange]){
-		////////console.log(done[exchange][basesymbol]);
+		//console.log(done[exchange][basesymbol]);
 		if (done[exchange][basesymbol] == false){
 			go[exchange] = false;
 		}
@@ -914,7 +929,7 @@ for (exchange in go){
 		goYes = false;
 	}
 }
-sleep(10000);
+//sleep(10000);
 if (goYes == true){
 	if (goAgain == true){
 		goAgain = false;
@@ -1013,7 +1028,7 @@ if (goYes == true){
 				winBp = {};//0;
 				winExBp = {};
 				winExSp = {};
-				sleep(10000);
+				//sleep(10000);
 				threshold = ((Math.random() * 10) + .1);
 				goAgain = true;
 				run();
