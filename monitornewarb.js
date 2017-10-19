@@ -111,8 +111,8 @@ function etherdelta(threshold, base, symbol) {
                     var buyDone = false;
                     var sellDone = false;
                     var buyTotal = 0;
-					var sps = 10;
-					var bps = 0;
+					sps[base + symbol]['etherdelta'] = 10;
+					bps[base + symbol]['etherdelta'] = 0;
                     var sellTotal = 0;
                     var edBuys = [];
                     var edSells = [];
