@@ -7,6 +7,30 @@ if (isLin) {
 } else if (isWin) {
     var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
 }
+var lineReader = require('readline').createInterface({
+    input: require('fs').createReadStream('decimals.csv')
+});
+var linecount = 0;
+var tokens2 = {};
+var decimals2 = [];
+var currentValue2 = [];
+var tokens = [];
+var decimals = [];
+var currentValue = [];
+var count = 0;
+var count2 = 0;
+var lots = [];
+var steps = [];
+var precises =  {};
+lineReader.on('line', function(line) {
+    if (line.indexOf('currentValue') == -1) {
+        currentValue2[count2] = line.split(',')[0];
+        decimals2[count2] = line.split(',')[2];
+        tokens2[line.split(',')[0]] = line.split(',')[1];
+        //console.log(line);
+        count2++;
+    }
+});
 var threshold = ((Math.random() * 10) + .1);
 var GoogleSpreadsheet = require('google-spreadsheet');
 var doc = new GoogleSpreadsheet('1i97AYneAUFRl12gPp8BkL06_V-SYerkchYy-HPIxAbE');
@@ -35,7 +59,100 @@ var hitbtcDone = false;
 var done = {};
 
 	done['poloniex'] = {};
+	done['etherdelta'] = {};
+function etherdelta(threshold, base, symbol) {
+	if (base == "USDT"){
+		threshold = threshold * 60; 
+	}
+	if (symbol == "BTC"){
+		threshold = threshold * 21.27;
+	}
+	done['etherdelta'][base + symbol] = false;
+	 var url6 = 'https://api.etherdelta.com/orders/' + tokens2[symbol] + '/0'; //sleep(1060);
+        console.log(url6);
+        request.get(url6, {
+            json: true,
+            timeout: 8000
+        }, function(error6, response6, data4) {
+            if (error6 || response6.statusCode != 200) {
+                sleep(1000);
+                console.log(error6);
+                //lala321(tokenAddr, tokencount, checker);
+            }
+            try {
+                if (!error6 && response6.statusCode === 200) {
+                    ////////console.log(data6);
+                    var buyDone = false;
+                    var sellDone = false;
+                    var buyTotal = 0;
+					var sps = 10;
+					var bps = 0;
+                    var sellTotal = 0;
+                    var edBuys = [];
+                    var edSells = [];
+    
+			try {
+				while (buyDone == false) {
+					for (var buys in data4['bids']) {
+						buyTotal = buyTotal + (data4['bids'][buys][0] * data4['bids'][buys][1]);
+						if (buys == data4['bids'].length) {
+							buyDone = true;
+							buyPrice = 0;
+							bps[base + symbol]['etherdelta'] = buyPrice;
+							break;
 
+						}
+						if (buyTotal >= threshold) {
+							buyDone = true;
+							buyPrice = data4['bids'][buys][0];
+							////console.log('buyprice: ' + buyPrice);
+							////console.log('buytotal: ' + buyTotal);
+					 
+							bps[base + symbol]['etherdelta'] = buyPrice;
+							break;
+						}
+					}
+					break;
+				}
+			} catch(err){//console.log(err);
+			}
+				////console.log(data);
+					////console.log(data['asks']);
+					try{
+				while (sellDone == false) {
+					for (var sells in data4['asks']) {
+						////console.log(data['asks']);
+						if (sells == data4['asks'].length) {
+							sellDone = true;
+							////console.log('polo length');
+							sellPrice = 1000000;
+							sps[base + symbol]['etherdelta'] = sellPrice;
+							break;
+
+						}
+						sellTotal = (data4['asks'][sells][1] * data4['asks'][sells][0]);
+
+						if (sellTotal >= threshold) {
+							sellDone = true;
+							sellPrice = data4['asks'][sells][0];
+							////console.log('sellprice: ' + sellPrice);
+							////console.log('selltotal: ' + sellTotal);
+							sps[base + symbol]['etherdelta'] = sellPrice;
+							break;
+						}
+					}
+					break;
+				}
+			} catch (err) {
+				if (err instanceof TypeError) {} else {
+					//console.log(err);
+				} 
+			}
+		done['etherdelta'][base + symbol] = true;
+				}
+			}catch(err){}
+		});
+}
 function poloniex(threshold, base, symbol) {
 	if (base == "USDT"){
 		threshold = threshold * 60; 
@@ -743,6 +860,7 @@ function run(){
 						hitbtc(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						bittrex(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						poloniex(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
+						etherdelta(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 						
 						kraken(threshold, data['result'][result]['BaseCurrency'], data['result'][result]['MarketCurrency']);
 					}
