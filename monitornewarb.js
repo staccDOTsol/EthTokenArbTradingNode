@@ -83,7 +83,8 @@ function poloniex(threshold, base, symbol) {
 					}
 					break;
 				}
-			} catch(err){//console.log(err);}
+			} catch(err){//console.log(err);
+			}
 				////console.log(data);
 					////console.log(data['asks']);
 					try{
