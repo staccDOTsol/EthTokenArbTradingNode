@@ -920,68 +920,68 @@ function run(){
 										}
 						if (options['bidEx'] == 'gatecoin'){
 							gatecoin(threshold, options['pair'], 'b');
-							done['gatecoin'][options['pair']] == false;
+							done['gatecoin'][options['pair']] = false;
 						}
 						if (options['askEx'] == 'gatecoin'){
 							gatecoin(threshold, options['pair'], 'a');
-							done['gatecoin'][options['pair']] == false;
+							done['gatecoin'][options['pair']] = false;
 						}
 						
 						if (options['bidEx'] == 'bitstamp'){
 							bitstamp(threshold, options['pair'], 'b');
-							done['bitstamp'][options['pair']] == false;
+							done['bitstamp'][options['pair']] = false;
 						}
 						if (options['askEx'] == 'bitstamp'){
 							bitstamp(threshold, options['pair'], 'a');
-							done['bitstamp'][options['pair']] == false;
+							done['bitstamp'][options['pair']] = false;
 						}
 						if (options['bidEx'] == 'yobit'){
 							yobit(threshold, options['pair'], 'b');
-							done['yobit'][options['pair']] == false;
+							done['yobit'][options['pair']] = false;
 						}
 						if (options['askEx'] == 'yobit'){
 							yobit(threshold, options['pair'], 'a');
-							done['yobit'][options['pair']] == false;
+							done['yobit'][options['pair']] = false;
 						}
 						if (options['bidEx'] == 'liqui'){
 							liqui(threshold, options['pair'], 'b');
-							done['liqui'][options['pair']] == false;
+							done['liqui'][options['pair']] = false;
 						}
 						if (options['askEx'] == 'liqui'){
 							liqui(threshold, options['pair'], 'a');
-							done['liqui'][options['pair']] == false;
+							done['liqui'][options['pair']] = false;
 						}
 						if (options['bidEx'] == 'hitbtc'){
 							hitbtc(threshold, options['pair'], 'b');
-							done['hitbtc'][options['pair']] == false;
+							done['hitbtc'][options['pair']] = false;
 						}
 						if (options['askEx'] == 'hitbtc'){
 							hitbtc(threshold, options['pair'], 'a');
-							done['hitbtc'][options['pair']] == false;
+							done['hitbtc'][options['pair']] = false;
 						}
 						if (options['bidEx'] == 'bittrex'){
 							bittrex(threshold, options['pair'], 'b');
-							done['bittrex'][options['pair']] == false;
+							done['bittrex'][options['pair']] = false;
 						}
 						if (options['askEx'] == 'bittrex'){
 							bittrex(threshold, options['pair'], 'a');
-							done['bittrex'][options['pair']] == false;
+							done['bittrex'][options['pair']] = false;
 						}
 						if (options['bidEx'] == 'poloniex'){
 							poloniex(threshold, options['pair'], 'b');
-							done['poloniex'][options['pair']] == false;
+							done['poloniex'][options['pair']] = false;
 						}
 						if (options['askEx'] == 'poloniex'){
 							poloniex(threshold, options['pair'], 'a');
-							done['poloniex'][options['pair']] == false;
+							done['poloniex'][options['pair']] = false;
 						}
 						if (options['bidEx'] == 'kraken'){
 							kraken(threshold, options['pair'], 'b');
-							done['kraken'][options['pair']] == false;
+							done['kraken'][options['pair']] = false;
 						}
 						if (options['askEx'] == 'kraken'){
 							kraken(threshold, options['pair'], 'a');
-							done['kraken'][options['pair']] == false;
+							done['kraken'][options['pair']] = false;
 						}//}
 									});
 				}
