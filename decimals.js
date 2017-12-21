@@ -29,25 +29,22 @@ function decimalWrite(x, data) {
                 method: 'GET',
                 json: true,
             }, (error, response, body) => {
-				if (currentValue != "ETH" && currentValue != "CAT" && currentValue != "8BT" && currentValue != "AIR" && currentValue != "AMB" && currentValue != "BOS" && currentValue != "CND"&& currentValue != "CRS"&& currentValue != "ECAT" && currentValue != "EVX"&& currentValue != "FUEL"&& currentValue != "FYP"&& currentValue != "GRAPH" && currentValue != "HRB"&& currentValue != "ICOS"&& currentValue != "ICX"&& currentValue != "IGNIS" && currentValue != "IML"&& currentValue != "MPK"&& currentValue != "MRV" && currentValue != "PBKS"&& currentValue != "PQT"&& currentValue != "ROOTS"&& currentValue != "WTT"   && currentValue != "XLC"  && currentValue != "XTZ"   ){
                 fs.appendFile("decimals.csv", currentValue + "," + tokenAddr + "," + body.decimals + "\n", function(err) {
                     console.log(currentValue + "," + tokenAddr + "," + body.decimals);
                     if (err) {
                         return console.log(err);
                     }
                     x++; //1
-                    if (x == (Object.keys(data).length - 1)) {
+                    if (x == Object.keys(data).length) {
                         console.log('done!');
                     } else {
                         decimalWrite(x + 1, data);
                     }
                 });
-				}
-				
             });
         } else {
             x++; //1
-            if (x == (Object.keys(data).length - 1)) {
+            if (x == Object.keys(data).length) {
                 console.log('done!');
             } else {
                 decimalWrite(x + 1, data);

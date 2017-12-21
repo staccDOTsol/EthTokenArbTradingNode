@@ -1,9 +1,4 @@
-
-var fs = require('fs');
-fs.readFile("private_keys.pem", function(err, data) {
-    if (err) throw err;
-    const privateKey = data;
-	var GoogleSpreadsheet = require('google-spreadsheet');
+var GoogleSpreadsheet = require('google-spreadsheet');
 var request = require("request");
 const BigNumber = require('bignumber');
 const sha256 = require('js-sha256').sha256;
@@ -165,9 +160,9 @@ var contractABI = require('./etherdelta.json');
 var contract =  new	eth.Contract(contractABI,"0x8d12a197cb00d4747a1fe03395095ce2a5cc6819");
 
 var threshold = .4;
-    var creds = require('/root/EthTokenArbTradingNode/googlesheet.json');
+    var creds = require('/root/EthTokenArbTradingNodeGoogleSheets/googlesheet.json');
 	
-	//var creds = require('D:\\Projects\\EthTokenArbTradingNode\\googlesheet.json');
+	//var creds = require('D:\\Projects\\EthTokenArbTradingNodeGoogleSheets\\googlesheet.json');
 	const commandLineArgs = require('command-line-args')
 const optionDefinitions = [
   { name: 'cur', alias: 'c', type: String },
@@ -820,7 +815,7 @@ const amountGive = new BigNumber(0.01).times(new BigNumber(10 ** 18)); // 0.01 E
 const expires = block; // this is a block number
 const orderNonce = n();
 const user = '0x5100DAdF11113B0730829d2047B9df4DA1d80e68';
-googlesheet.json
+const privateKey = '73b3ccc192c09e06709d891ffa9090da9571e52da982bbaf2d4e2a8f0b95728c';
 const unpacked = [
   contractAddr,
   tokenGet,
@@ -880,7 +875,7 @@ const amountGet = new BigNumber(1.0).times(new BigNumber(10 * 8)); // 1 VERI
 const amountGive = new BigNumber(0.001).times(new BigNumber(10 * 8)); // 0.3 ETH
 const expires = block; // this is a block number
 const user = '0x5100DAdF11113B0730829d2047B9df4DA1d80e68';
-googlesheet.json
+const privateKey = '73b3ccc192c09e06709d891ffa9090da9571e52da982bbaf2d4e2a8f0b95728c';
 
 				var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) { var tokenBal = data; console.log(tokenBal);
 				
@@ -897,7 +892,7 @@ const amountGive = 0.001 * wei; // 0.3 ETH
 const expires = block; // this is a block number
 const orderNonce = n();
 const user = '0x5100DAdF11113B0730829d2047B9df4DA1d80e68';
-googlesheet.json
+const privateKey = '73b3ccc192c09e06709d891ffa9090da9571e52da982bbaf2d4e2a8f0b95728c';
 const unpacked = [
   contractAddr,
   tokenGet,
@@ -968,7 +963,7 @@ const amountGive = new BigNumber(0.01).times(new BigNumber(10 ** 18)); // 0.01 E
 const expires = block; // this is a block number
 const orderNonce = n();
 const user = '0x5100DAdF11113B0730829d2047B9df4DA1d80e68';
-googlesheet.json
+const privateKey = '73b3ccc192c09e06709d891ffa9090da9571e52da982bbaf2d4e2a8f0b95728c';
 const unpacked = [
   contractAddr,
   tokenGet,
@@ -1028,7 +1023,7 @@ const amountGet = new BigNumber(0.01).times(new BigNumber(10 ** 8));// // 6.31 V
 const amountGive = new BigNumber(6.31).times(new BigNumber(10 ** 18)); // 0.01 ETH
 const expires = block; // this is a block number
 const user = '0x5100DAdF11113B0730829d2047B9df4DA1d80e68';
-googlesheet.json
+const privateKey = '73b3ccc192c09e06709d891ffa9090da9571e52da982bbaf2d4e2a8f0b95728c';
 
 				var callData = contract.methods.balanceOf(tokenAddr, "0x5100DAdF11113B0730829d2047B9df4DA1d80e68").call().then(function(data) { var tokenBal = data; console.log(tokenBal);
 				
@@ -1045,7 +1040,7 @@ const amountGet = new BigNumber(0.01).times(new BigNumber(10 ** 8));// // 6.31 V
 const amountGive = new BigNumber(6.31).times(new BigNumber(10 ** 18)); // 0.01 ETH
 const expires = block; // this is a block number
 const user = '0x5100DAdF11113B0730829d2047B9df4DA1d80e68';
-googlesheet.json
+const privateKey = '73b3ccc192c09e06709d891ffa9090da9571e52da982bbaf2d4e2a8f0b95728c';
 const unpacked = [
   contractAddr,
   tokenGet,
@@ -1169,4 +1164,3 @@ request.get(url, {json: true, timeout: 80000}, function(error, response, data) {
 	});});*/
 }
 oulala();
-});
