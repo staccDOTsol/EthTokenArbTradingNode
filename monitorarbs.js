@@ -187,7 +187,7 @@ function ed(x, error6, response6, data6, tokenAddr, cells, currentValue) {
 			if (cells[20].value.startsWith('https://etherdelta.com')) {
 			console.log('ed startswith!!!!');
 			sleep(3000);
-		doc.addRow(2,{"currentValue": currentValue, "percent": cells[19].value, "bidex": cells[21].substring(8,18)},function(){sleep(5 * 60 * 1000);});
+		doc.addRow(2,{"currentValue": currentValue, "percent": cells[19].value, "bidex": cells[21].value.substring(8,18)},function(){sleep(5 * 60 * 1000);});
 			console.log('ed lala!!!');
 		}
 		console.log('past ed check');
