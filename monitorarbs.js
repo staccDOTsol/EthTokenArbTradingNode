@@ -4,61 +4,63 @@ var sleep = require('system-sleep');
 var doc = new GoogleSpreadsheet('1GgCCW2uH_4HKRdd9JzXIKcnPpcesxWnqnSXmixS9VbY');
 var sheet;
 var fees = {
-    "CAS": 358,
+	"DAY":51.05,
+	"KIN": 258065,
+    "CAS": 1089,
     "NET": 3.96,
-    "DRT": 545,
-    "LOC": 11.076,
-    "MANA": 143,
+    "DRT": 4695,
+    "LOC": 8.32,
+    "MANA": 169.6,
     "ICOS": .76,
-    "SNC": 88,
+    "SNC": 415.4,
     "FYN": 1.849,
-    "ENG": 14,
-    "DENT": 1000,
-    "PLR": 15,
+    "ENG": 18.29 ,
+    "DENT": 8538 ,
+    "PLR": 308.6,
     "BAS": 578,
-    "AMM": 39,
+    "AMM": 1405 ,
     "CTX": 780,
-    "1ST": 75,
-    "TAAS": 3.1,
+    "1ST": 195.8 ,
+    "TAAS": 28.74,
     "MSP": 121,
-    "LEND": 200,
-    "PLU": 0.87,
+    "LEND": 856 ,
+    "PLU": 4.325,
     "AIR": 1294,
     "WRC": 107,
-    "AMB": 36,
-    "TNT": 180,
-    "FUEL": 123,
-    "GVT": 0.8,
-    "ADX": 13.38,
-    "DATA": 166,
-    "STAR": 2.144,
-    "SAN": 6.5,
-    "BNT": 2.57,
+    "AMB": 129 ,
+    "TNT": 425.2 ,
+    "FUEL": 681.7 ,
+    "GVT": 1.962 ,
+    "ADX": 56.19,
+    "DATA": 402.1 ,
+    "STAR": 2174 ,
+    "SAN": 16.86 ,
+    "BNT": 13.18   ,
     "DDF": 152,
-    "SWT": 7.7,
+    "SWT": 72.72 ,
     "ATS": 860,
     "ATM": 1588,
-    "PTOY": 91,
-    "HVN": 120,
+    "PTOY": 505.2 ,
+    "HVN":2545 ,
     "EBET": 84,
-    "IND": 221,
-    "PRO": 13,
-    "BQX": 4.7,
+    "IND": 1170 ,
+    "PRO": 57.68 ,
+    "BQX": 49.2 ,
     "CCT": 195,
-    "IXT": 24,
-    "POE": 329,
-    "BMC": 20,
-    "ZRX": 23,
-    "PIX": 225,
-    "PAY": 3.1,
+    "IXT": 507.7 ,
+    "POE": 1573 ,
+    "BMC": 55.93 ,
+    "ZRX": 29.4 ,
+    "PIX": 1570 ,
+    "PAY": 29.87 ,
     "CTR": 15,
-    "OMG": 1.22,
-    "MTH": 92,
-    "AVT": 8.8,
-    "TRX": 270,
-    "VERI": 0.087, "LA": 41, "QVT": 26, "CFI": 181, "SUB": 36, "BET": 363, 
-		"DICE": 8.5, "NEU": 20.1, "STX": 45, "ZSC": 701, "FUN": 203, "BCPT": 20.15, "CDT": 210, 
-		"SNT": 233, "EOS": 1.5, "VEN": 3.6, "R": 6 // do not include SMART
+    "OMG": 5.552 ,
+    "MTH": 403 ,
+    "AVT": 57.02 ,
+    "TRX": 150.5 ,
+    "VERI": 0.087, "LA": 96.3 , "QVT": 26, "CFI": 181, "SUB": 540.5 , "BET": 915 , 
+		"DICE": 24.15 , "NEU": 46.14 , "STX": 520.8 , "ZSC": 6270 , "FUN": 1892 , "BCPT": 167.2 , "CDT": 929 , 
+		"SNT": 349.3 , "VEN": 3.6, "R": 6 // do not include SMART
 };
 var currentdo = [];
 var tokendo = [];
@@ -66,7 +68,7 @@ var threshold = .4;
 //var creds = require('/home/jd4/EthTokenArbTradingNodeGoogleSheets/googlesheet.json');
 var cheerio = require('cheerio');
 
-var creds = require('C:\\Users\\owner\\Documents\\EthTokenArbTradingNode-master\\googlesheet.json');
+var creds = require('./googlesheet.json');
 const commandLineArgs = require('command-line-args')
 const optionDefinitions = [{
         name: 'start',
@@ -83,9 +85,8 @@ const options = commandLineArgs(optionDefinitions)
 ////console.log(options['starSt']);
 ////console.log(options['max']);
 function ed(x, error6, response6, data6, tokenAddr, cells, currentValue) {
-
+if (data6.buys.length > 0){
     try {
-        if (!error6 && response6.statusCode === 200) {
             //////////console.log(data6);
             var buyDone = false;
             var sellDone = false;
@@ -98,14 +99,14 @@ function ed(x, error6, response6, data6, tokenAddr, cells, currentValue) {
                         break;
                         buyPrice = 0;
 
-                        //console.log('ed buy' + buyPrice);
+                        console.log('ed buy' + buyPrice);
                     }
                     buyTotal = buyTotal + parseFloat(data6['buys'][buys]['ethAvailableVolumeBase']);
                     if (buyTotal >= threshold) {
                         buyDone = true;
                         buyPrice = data6['buys'][buys]['price'];
                         //////console.log(buyPrice);
-                        //console.log('ed buy' + buyPrice);
+                        console.log('ed buy' + buyPrice);
                         //bps['ed'] = buyPrice;
                         break;
                     }
@@ -135,17 +136,12 @@ function ed(x, error6, response6, data6, tokenAddr, cells, currentValue) {
                 }}catch(err){}
             } try{
             if (buyDone == false || sellDone == false) {
-                var url6 = 'https://api.etherdelta.com/orders/' + tokenAddr + '/0'; //sleep(1060);
-                //console.log(url6);
-                setTimeout(function() {
-                    request.get(url6, {
-                        json: true,
-                        timeout: 33000
-                    }, function(error, response, data) {
-                        ed(x, error, response, data, tokenAddr, cells, currentValue);
-			
-                    });
-                }, Math.random() * (9000 - 1000) + 1000);
+                socket.emit('getMarket', { token: tokenAddr, user: "0x8545d4515e27c092bd25d30EB1deb4fDF100AF92"});
+				socket.once('market', (market) => {
+					console.log(tokenAddr);
+
+				ed(x, error, market.orders, market.orders, tokenAddr, cells, currentValue);
+				});
                 //sleep(Math.random() * (43000 - 25000) + 25000);
             } else {
 				if (sellPrice > 0.0000001){
@@ -186,13 +182,21 @@ function ed(x, error6, response6, data6, tokenAddr, cells, currentValue) {
 		setTimeout(function(){
 			if (cells[20].value.startsWith('https://etherdelta.com')) {
 			console.log('ed startswith!!!!');
-			sleep(3000);
-		doc.addRow(2,{"currentValue": currentValue, "percent": cells[19].value, "bidex": cells[21].value.substring(8,18)},function(){sleep(5 * 60 * 1000);});
+		doc.addRow(2,{"currentValue": currentValue, "percent": cells[19].value, "bidex": cells[21].value.substring(8,18)},function(){	x = x + 1;
+		if (x <= options['max']) {
+			console.log('row added');
+			setTimeout(function() {
+		//console.log(count11);
+		goforit = true;
+		doit = true;
+		console.log('lala');
+		console.log(x);
+		oulala123(x, sheet);
+		}, 4000);}});
 			console.log('ed lala!!!');
 		}
 		console.log('past ed check');
 		}, 9000);
-		sleep(10000);
                 x = x + 1;
                 if (x == (options['max'])) {
                     //x = options['start'];
@@ -206,26 +210,105 @@ function ed(x, error6, response6, data6, tokenAddr, cells, currentValue) {
                     }, 5000);
 					
 		}}catch(err){console.log(err);}
-        } else { try {
-            var url6 = 'https://api.etherdelta.com/orders/' + tokenAddr + '/0'; //sleep(1060);
-            //console.log(url6);
-            setTimeout(function() {
-                request.get(url6, {
-                    json: true,
-                    timeout: 43000
-                }, function(error, response, data) {
-                    ed(x, error, response, data, tokenAddr, cells, currentValue);
-                });
-            }, Math.random() * (9000 - 1000) + 1000);
-        }catch(err){} }
+        
 		
     } catch (err) {
-        //console.log(err);
+        console.log(err);
     }
+    
+}else{
+	x = x + 1;
+                if (x == (options['max'])) {
+                    //x = options['start'];
+                console.log('exiting....');
+						process.exit();
+				}
+                setTimeout(function() {
+                        //console.log(count11);
+						
+                        oulala123(x, sheet);
+                    }, 5000);
 }
 
-function rest(x, tokenAddr, cells, currentValue) {
+	}
+	
+					var Bancor = require("bancor-api-node");
 
+var bancor = new Bancor();
+
+function rest(x, tokenAddr, cells, currentValue, threshold) {
+	
+request.get("https://api.kyber.network/currencies", function (e, r, d1){
+	for (var v in JSON.parse(d1).data){
+		if(JSON.parse(d1).data[v].symbol == currentValue){
+			let code = JSON.parse(d1).data[v].id;
+			console.log('id: ' + code);
+			var url = "https://api.kyber.network/sell_rate?id=" + code + "&qty=" + threshold.toString();
+			console.log(url);
+			request.get(url, function (e, r, d2){
+				console.log(d2);
+				console.log(JSON.parse(d2).data);
+	var sellrate = (JSON.parse(d2).data[0].dst_qty[0]);
+	sellrate = sellrate / threshold
+	var url = "https://api.kyber.network/buy_rate?id=" + code + "&qty=" + threshold.toString();
+			console.log(url);
+			request.get(url, function (e, r, d3){
+				console.log(d2);
+	console.log(JSON.parse(d3).data[0].src_qty[0]);
+	
+	var buyrate = (JSON.parse(d3).data[0].src_qty[0]);
+	buyrate = buyrate / threshold
+					console.log('buyrate: ' + buyrate);
+					console.log('sellrate: ' + sellrate);
+									
+				 cells[72].value = buyrate.toString();
+				cells[74].value = sellrate.toString();
+				cells[72].save();
+				cells[74].save();
+})
+})
+		}
+	}
+})
+	request.get("https://api.bancor.network/0.1/currencies/tokens?limit=100&skip=0&fromCurrencyCode=ETH&includeTotal=false&orderBy=liquidityDepth&sortOrder=desc", function (err, resp, data3){
+	console.log(JSON.parse(data3));
+		for (var currency in JSON.parse(data3).data.currencies.page){
+			if(JSON.parse(data3).data.currencies.page[currency].code == currentValue){
+				let code = JSON.parse(data3).data.currencies.page[currency]._id;
+				console.log('code: ' + code);
+				request.get("https://api.bancor.network/0.1/currencies/"+code+"/value?toCurrencyId=5937d635231e97001f744267&toAmount="+ (threshold * Math.pow(10,18)).toString(), function (err, resp, data4	){
+                var lineReader = require('readline').createInterface({
+                    input: require('fs').createReadStream('decimals.csv')
+                });
+                var lc = 0;
+                var currents = [];
+                var tokens = [];
+                lineReader.on('line', function(line) {
+                    var arr = line.split(",");
+                    currents[lc] = arr[0];
+                    tokens[lc] = arr[2];
+                    lc++;
+                });
+setTimeout(function(){				
+				let rate = JSON.parse(data4).data;
+					for (var c in currents){
+					if (currents[c] == currentValue){
+					rate = (rate / Math.pow(10, tokens[c]));
+					rate = rate / threshold
+					rate = 1 / rate
+					console.log('rate: ' + rate);
+						
+	 cells[71].value = rate.toString();
+	cells[73].value = rate.toString();
+	cells[71].save();
+	cells[73].save();
+					}
+					}
+				})
+				}, 2500);
+			}
+		}
+	})
     if (options['max'] == 2) {
         for (var abc = 1; abc < 16; abc++) {
             if (cells[abc]) {
@@ -313,9 +396,9 @@ function rest(x, tokenAddr, cells, currentValue) {
             }
         } catch (err) {
             if (err instanceof TypeError) {} else {
-                //console.log(err);
+                console.log(err);
             }
-            // //console.log(err);
+            console.log(err);
         }
 
         var url3 = 'https://www.binance.com/api/v1/depth?symbol=' + currentValue + "ETH";
@@ -395,10 +478,10 @@ function rest(x, tokenAddr, cells, currentValue) {
                 }
             } catch (err) {
                 if (err instanceof TypeError) {} else {
-                    //console.log(err);
+                    console.log(err);
                 }
 
-                //  //console.log(err)
+                //  console.log(err)
             }
             var url9 = "https://api.liqui.io/api/3/depth/" + currentValue.toLowerCase() + "_eth";
             //console.log(url9);
@@ -420,7 +503,7 @@ function rest(x, tokenAddr, cells, currentValue) {
                         sellDone = true;
                     }
                 } catch (err) {
-                    //console.log(err);
+                    console.log(err);
                 }
                 try {
                     //////console.log(buyTotal);
@@ -478,20 +561,196 @@ function rest(x, tokenAddr, cells, currentValue) {
                     }
                     var url6 = 'https://api.etherdelta.com/orders/' + tokenAddr + '/0'; //sleep(1060);
                     //console.log(url6);
-                    request.get(url6, {
-                        json: true,
-                        timeout: 43000
-                    }, function(error6, response6, data6) {
-                        sleep(Math.random() * (9000 - 1000) + 1000)
-                        ed(x, error6, response6, data6, tokenAddr, cells, currentValue);
-						
+                   socket.emit('getMarket', { token: tokenAddr, user: "0x8545d4515e27c092bd25d30EB1deb4fDF100AF92"});
+				socket.once('market', (market) => {
+				console.log(tokenAddr);
 
-                    });
+				ed(x, error, market.orders, market.orders, tokenAddr, cells, currentValue);
+				var url9 = "https://api.idex.market/returnOrderBook?count=10&market=ETH_" + currentValue;
+            console.log(url9);
+            sleep(1);
+            request.get(url9, {
+                json: true,
+                timeout: 13000
+            }, function(error, response, data9) {
+                console.log(data9);
+                var buyDone = false;
+                var sellDone = false;
+                var buyTotal = 0;
+                var sellTotal = 0;
+                //////console.log(data9);
+                try {
+                    if (data9.success == 0) {
+
+                        buyDone = true;
+                        sellDone = true;
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+                try {
+                    console.log(buyTotal);
+                    console.log(sellTotal);
+                    while (buyDone == false) {
+                        for (var buys in data9['bids']) {
+                            buyTotal = buyTotal + parseFloat(data9['bids'][buys]['total']);
+                            if (buys == data9['bids'].length) {
+                                buyDone = true;
+                                break;
+                                buyPrice = 0;
+
+                            }
+                            console.log(buyTotal);
+                            if (buyTotal >= threshold) {
+                                buyDone = true;
+                                buyPrice = parseFloat(data9['bids'][buys]['price']);
+                                //////console.log(buyPrice);
+
+                                cells[64].value = buyPrice.toString();
+                                cells[66].value = buyTotal.toString();
+                                cells[64].save();
+                                cells[66].save();
+                                //bps['liq'] = buyPrice;
+                                break;
+                            }
+                        }
+                    }
+                    while (sellDone == false) {
+                        for (var sells in data9['asks']) {
+                            if (sells == data9['asks'].length) {
+                                sellDone = true;
+                                break;
+                                sellPrice = 1000000;
+
+                            }
+                            sellTotal = sellTotal + parseFloat(data9['asks'][sells]['total']);
+
+                            console.log(sellTotal);
+                            if (sellTotal >= threshold) {
+                                sellDone = true;
+                                sellPrice = (parseFloat(data9['asks'][sells]['price']));
+                                //////console.log(sellPrice);
+
+                                cells[63].value = sellPrice.toString();
+                                cells[65].value = sellTotal.toString();
+
+                                cells[65].save();
+                                cells[63].save();
+
+                                //sps['liq'] = sellPrice;
+                                break;
+                            }
+                        }
+                    }
+					var url9 = "https://v1-1.api.token.store/orderbook/ETH_" + currentValue;
+            console.log(url9);
+            sleep(1);
+            request.get(url9, {
+                json: true,
+                timeout: 13000
+            }, function(error, response, data9) {
+                console.log(data9);
+                var buyDone = false;
+                var sellDone = false;
+                var buyTotal = 0;
+                var sellTotal = 0;
+                //////console.log(data9);
+                try {
+                    if (data9.success == 0) {
+
+                        buyDone = true;
+                        sellDone = true;
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+                try {
+                    console.log(buyTotal);
+                    console.log(sellTotal);
+                    while (buyDone == false) {
+						if (data9['bids'].length == 0){
+							buyDone = true;
+							break;
+						}
+                        for (var buys in data9['bids']) {
+                            buyTotal = buyTotal + parseFloat(data9['bids'][buys]['price']) * parseFloat(data9['bids'][buys]['volume']);
+                            if (buys == data9['bids'].length - 1) {
+                                buyDone = true;
+                                buyPrice = 0;
+
+                                cells[68].value = buyPrice.toString();
+                                cells[70].value = buyTotal.toString();
+                                cells[68].save();
+                                cells[70].save();
+                                break;
+                            }
+							
+                            if (buyTotal >= threshold) {
+                                buyDone = true;
+                                buyPrice = parseFloat(data9['bids'][buys]['price']);
+                                //////console.log(buyPrice);
+
+                                cells[68].value = buyPrice.toString();
+                                cells[70].value = buyTotal.toString();
+                                cells[68].save();
+                                cells[70].save();
+                                //bps['liq'] = buyPrice;
+                                break;
+                            }
+                        }
+                    }
+                    while (sellDone == false) {
+						if (data9['asks'].length == 0){
+							sellDone = true;
+							break;
+						}
+                        for (var sells in data9['asks']) {
+                            if (sells == data9['asks'].length - 1) {
+                                sellDone = true;
+                                sellPrice = 1000000;
+
+                                cells[67].value = sellPrice.toString();
+                                cells[69].value = sellTotal.toString();
+
+                                cells[69].save();
+                                cells[67].save();
+                                break;
+                            }
+                            sellTotal = sellTotal + parseFloat(data9['asks'][sells]['price']) * parseFloat(data9['asks'][sells]['volume']);
+
+								
+                            if (sellTotal >= threshold) {
+                                sellDone = true;
+                                sellPrice = (parseFloat(data9['asks'][sells]['price']));
+                                //////console.log(sellPrice);
+
+                                cells[67].value = sellPrice.toString();
+                                cells[69].value = sellTotal.toString();
+
+                                cells[69].save();
+                                cells[67].save();
+
+                                //sps['liq'] = sellPrice;
+                                break;
+                            }
+                        }
+                    }
+				}catch(err){
+					console.log(err);
+				}
+				
+			})
+				}catch(err){
+					console.log(err);
+				}
+				
+			})
+				})
                 } catch (err) {
                     if (err instanceof TypeError) {} else {
-                        //console.log(err);
+                        console.log(err);
                     }
-                    //     //console.log(err);
+                   console.log(err);
                 }
 
             }); //5th
@@ -500,19 +759,35 @@ function rest(x, tokenAddr, cells, currentValue) {
     }); // 3rd
 
 }
+const io = require('socket.io-client');
+const Web3 = require('web3');
 
+const config = {
+  addressEtherDelta: '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819',
+  provider: 'https://mainnet.infura.io/Ky03pelFIxoZdAUsr82w',
+  socketURL: 'https://api.forkdelta.com',
+  gasLimit: 150000,
+  gasPrice: 4000000000,
+};    
+web3 = new Web3(new Web3.providers.HttpProvider(config.provider));
+socket = io.connect(config.socketURL, { transports: ['websocket'] })
 function oulala123(x, sheet) {
     var y = 0;
-	sleep(Math.random() * (28000 - 1000) + 1000);
     //console.log('lala' + x);
     //console.log(currentdo[x - 2]);
     sleep(50);
+	
+			
     sheet.getCells({
         'min-row': x,
         'max-row': x,
         'return-empty': true
     }, function(err, cells) {
-        threshold = parseFloat(cells[58].value);
+		//threshold = Math.random() * 0.75 + 0.25;
+		// cells[62].value = threshold.toString();
+         //           cells[62].save();
+		threshold = cells[62].value;
+		console.log('threshold ' + threshold);
         //console.log(threshold);
 
         //console.log(currentdo[x - 2]);
@@ -572,10 +847,10 @@ function oulala123(x, sheet) {
 
                     });
                 } else {
-                    //console.log(error);
+                    console.log(error);
                 }
 
-                if (goforit == true && currentValue != "STU"  && currentValue != "SMART"&& currentValue != "STV") {
+                if (goforit == true && currentValue != "STU"&& currentValue != "GEN" && currentValue != "NIO" && currentValue != "CAS" && currentValue != "SMART"&& currentValue != "STV") {
 
                     ////console.log(Object.keys(data)[y + options['start']]);
 
@@ -680,12 +955,13 @@ function oulala123(x, sheet) {
                                     }
                                 } catch (err) {
                                     if (err instanceof TypeError) {} else {
-                                        //console.log(err);
+                                        console.log(err);
                                     }
 
-                                    ////console.log(err)
+                                    console.log(err)
                                 }
-                                rest(x, tokenAddr, cells, currentValue); 
+                                rest(x, tokenAddr, cells, currentValue, threshold);
+								
 /* var url6 = 'https://api.etherdelta.com/orders/' + tokenAddr + '/0'; //sleep(1060);
             //console.log(url6);
                 request.get(url6, {
@@ -704,7 +980,7 @@ function oulala123(x, sheet) {
 
                             });
                         } catch (err) {
-                            //console.log(err);
+                            console.log(err);
                         }
 
                     } else {
@@ -730,14 +1006,19 @@ function oulala123(x, sheet) {
                         oulala123(x, sheet);
                     }, 5000);
 					
-                        }
+                        } else {
+							x = options['start'];
+							console.log('exiting...');
+							process.exit();
+						}
                 }
             });
-            if (goforit == true) {}
-        } catch (err) {
-            //console.log(err);
+            }catch (err) {
+				x = options['start'];
+				console.log('exiting...');
+				process.exit();
+            console.log(err);
         }
-        y++;
     });
 }
 
@@ -783,17 +1064,17 @@ function oulala() {
                     var x = 0;
                     var count11 = 0;
                     ////console.log(currents[currentValue]);
-                    var lalaurl = "https://api.hitbtc.com/api/1/public/symbols";
+                    var lalaurl = "https://api.idex.market/returnTicker";
                     request.get(lalaurl, {
                         json: true,
                         timeout: 13000
                     }, function(error, response, lala) {
                         for (var currentValue in currents) {
                             var doit = false;
-                            ////console.log(lala['symbols']);
-                            for (symbol in lala['symbols']) {
+                            //console.log(lala);
+                            for (symbol in lala) {
                                 ////console.log(lala['symbols'][symbol]['symbol']);
-                                if (currents[currentValue] + "ETH" == lala['symbols'][symbol]['symbol']) {
+                                if ("ETH_" + currents[currentValue] == symbol) {
                                     //console.log(lala['symbols'][symbol]['symbol']);
                                     console.log(currents[currentValue] + "ETH");
                                     doit = true;

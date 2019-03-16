@@ -14,7 +14,7 @@ fs.readFile("decimals.csv", function(err, data) {
 });
 
 sleep(2000);
-var url = 'https://api.etherdelta.com/returnTicker';
+var url = 'https://api.forkdelta.com/returnTicker';
 //console.log(url);//sleep(1060)
 function decimalWrite(x, data) {
 

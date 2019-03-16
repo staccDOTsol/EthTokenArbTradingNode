@@ -5,7 +5,7 @@ var isLin = /^linux/.test(process.platform);
 if (isLin) {
     var creds = require('/root/googlesheet.json');
 } else if (isWin) {
-    var creds = require('D:\\Projects\\googlesheet.json');
+    var creds = require('./googlesheet.json');
 }
 var lineReader = require('readline').createInterface({
     input: require('fs').createReadStream('decimals.csv')

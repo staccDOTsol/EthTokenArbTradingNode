@@ -43,11 +43,25 @@ taskkill /f /im node.exe
   
 
   @start /b cmd /c node monitorarbs.js -s 80 -m 84
+
+  @start /b cmd /c node monitorarbs.js -s 84 -m 88
+
+  @start /b cmd /c node monitorarbs.js -s 88 -m 92
+
+  @start /b cmd /c node monitorarbs.js -s 92 -m 96
+
+  @start /b cmd /c node monitorarbs.js -s 96 -m 100
+
+  @start /b cmd /c node monitorarbs.js -s 100 -m 104
+
+  @start /b cmd /c node monitorarbs.js -s 104 -m 108
+  
+  @start /b cmd /c node monitorarbs.js -s 108 -m 112
   ping 127.0.0.1 -n 10 > nul
   goto again
  :again
  for /f "tokens=1,*" %%a in ('tasklist ^| find /I /C "node.exe"') do set var1=%%a
  echo %var1%
- if %var1% gtr 6 ping 127.0.0.1 -n 60 > nul
- if %var1% leq 6 goto run
+ if %var1% gtr 10 ping 127.0.0.1 -n 60 > nul
+ if %var1% leq 10 goto run
  goto again
